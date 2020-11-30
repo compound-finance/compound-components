@@ -1,0 +1,79 @@
+@import '../variables';
+
+.progress {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  height: 5px;
+  max-width: 100%;
+  overflow: hidden; // force rounded corners by cropping it
+  background-color: $color_dark_matting_clear;
+  border-radius: 100px;
+  margin-top: 1rem;
+
+  &.dark-clear {
+    background: $color_dark_clear;
+  }
+
+  &.thin {
+    height: 3px;
+  }
+}
+
+.progress-bar {
+  display: flex;
+  background-color: #627EEA;
+
+  &:last-of-type {
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
+
+  &.BAT {
+    background-color: #FF5000;
+  }
+
+  &.DAI {
+    background-color: #FAB323;
+  }
+
+  &.ETH, &.WETH {
+    background-color: #627EEA;
+  }
+
+  &.REP {
+    background-color: #553580;
+  }
+
+  &.SAI {
+    background-color: #FAB323;
+  }
+
+  &.USDC {
+    background-color: #2775C9;
+  }
+
+  &.USDT {
+    background-color: #26A17B;
+  }
+
+  &.WBTC {
+    background-color: #F6941A;
+  }
+
+  &.ZRX {
+    background-color: #000000;
+  }
+
+  &.red {
+    background-color: $color_caution;
+  }
+
+  &.yellow {
+    background-color: $color_notice; 
+  }
+
+  &.green {
+    background-color: $color_supply;
+  }
+}

@@ -1,0 +1,216 @@
+$color_supply: #00D395;
+$color_borrow: #9669ED;
+$color_dark_1: #070A0E;
+$color_dark_2: #141E27;
+$color_dark_3: #2F3F4E;
+$color_light_1: #FFFFFF;
+$color_light_2: #F9FAFB;
+$color_grey_1: #657786;
+$color_grey_2: #AAB8C1;
+$color_grey_3: #CCD6DD;
+$color_blue_1: #0DAEF3;
+$color_red_1: #DF5F67;
+
+$color_supply_light: #D4F6EC;
+$color_borrow_light: #EAE1FB;
+$color_neutral: #546E7A;
+
+$color_border: rgba(#000000, 0.05);
+
+$color_dark_mostly_opaque: rgba(20, 30, 39, 0.98);
+$color_dark_clear: rgba(54, 61, 68, 0.5);
+$color_dark_matting_clear: rgba(40, 49, 55, 0.1);
+
+$color_label: #ACBBC2;
+$color_disabled: #CFD8DC;
+
+$color_caution: #F35454;
+$color_text_muted: #90A4AE;  //TODO: See if we can kill in favor of color grey 2?
+$color_notice: #FFD24A;
+
+$device-sm: 40em;
+$device-md: 60em;
+$device-lg: 82em;
+$column-gutter: 1.33rem;
+$gov-column-gutter: 1.75rem;
+$border_radius: 3px;
+
+$color_kovan: #6C58F6;
+$color_rinkeby: #EEC55C;
+$color_goerli: #5197EB;
+$color_ropsten: #EC598D;
+
+//TODO: Should probably have this kept in typography but we'll leave here for now.
+@mixin typography-colors {
+  h2 {
+    color: $color_dark_2;
+  }
+
+  h3 {
+    color: $color_dark_2;
+  }
+
+  h4 {
+    color: $color_dark_2;
+  }
+
+  p {
+    color: $color_grey_1;
+  }
+}
+
+@mixin transition($transition-property, $transition-time, $method){
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -ms-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+@mixin linear-gradient($fromColor, $toColor, $degree){
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor));
+  background-image: -webkit-linear-gradient($degree, $fromColor, $toColor);
+  background-image:    -moz-linear-gradient($degree, $fromColor, $toColor);
+  background-image:     -ms-linear-gradient($degree, $fromColor, $toColor);
+  background-image:      -o-linear-gradient($degree, $fromColor, $toColor);
+  background-image:         linear-gradient($degree, $fromColor, $toColor);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
+}
+
+@mixin shadow(){
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.04);
+}
+
+@mixin panel(){
+  background: #FFFFFF;
+  border: 1px solid $color_light_2;
+  border-radius: $border_radius;
+  @include shadow();
+}
+
+@mixin contrast($color_base){
+  background-color: $color_base;
+
+  @if lightness($color_base) > 80%{
+    color: mix($color_base, #000000, 20%);
+  }
+  @else{
+    color: #FFFFFF;
+  }
+}
+
+@mixin anchor(){
+  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@mixin action-arrow {
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 17px;
+    height: 11px;
+    margin-left: 6px;
+    margin-bottom: -1px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/images/icn-arrow.svg);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  &:hover {
+    color: $color_supply;
+    text-decoration: underline;
+
+    &::after {
+      -webkit-transform: translateX(5px);
+      transform: translateX(5px);
+    }
+  }
+}
+
+@mixin before-circle($background-color) {
+  &::before {
+    position: absolute;
+    left: -12px;
+    top: 0px;
+    transform: translateY(-50%);
+    content: " ";
+    border-radius: 500%;
+    background: $background-color;
+    height: 24px;
+    width: 24px;
+    transition: all 500ms ease-in-out;
+    background-size: 100% 100%;
+  }
+}
+
+@mixin after-checkmark() {
+  &::after {
+    content: " ";
+    display: block;
+    width: 0.3em; // the short bar of the mark is half as long as the long bar
+    height: 0.6em;
+    border: solid white;
+    border-width: 0 0.1em 0.1em 0; // creates the inverted "L" shape
+    position: absolute;
+    left: -2px;
+    top: -3px;
+    margin-top: -0.2em;
+    transform: rotate(45deg);
+  }
+}
+
+@mixin call-to-action {
+  .call-to-action {
+    display: flex;
+    user-select: none;
+
+    a {
+      color: $color_supply;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom 0.2s ease-in-out;
+    }
+
+    #arrow {
+      margin-left: 10px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    &:hover {
+      a {
+        border-bottom: 1px solid $color_supply;
+      }
+
+      #arrow {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+      }
+    }
+  }
+}
+
+@mixin pager-caret() {
+  border-style: solid;
+  border-width: 2px 2px 0 0;
+  content: '';
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  transform: rotate(-135deg);
+}
+
+@mixin state-circle($background-color) {
+  position: absolute;
+  transform: translateY(-50%);
+  content: ' ';
+  border-radius: 50%;
+  background: $background-color;
+  height: 24px;
+  width: 24px;
+  background-size: 100% 100%;
+}

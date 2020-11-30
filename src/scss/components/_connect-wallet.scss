@@ -1,0 +1,242 @@
+@import '../variables';
+
+@import './connecting-ring';
+
+@mixin connect-wallet-typography-colors {
+  h2 {
+    color: $color_dark_2;
+  }
+
+  h3 {
+    color: $color_dark_2;
+  }
+
+  h4 {
+    color: $color_dark_2;
+  }
+
+  p {
+    color: $color_grey_1;
+  }
+}
+
+.connect-wallet {
+  $connectItemWidth: 380px;
+  $connectItemLeftRightPadding: 38px;
+
+  @include connect-wallet-typography-colors;
+
+  p {
+    color: $color_grey_1;
+  }
+
+  p[class*=center-text]{
+    text-align: center;
+  }
+
+  h4 {
+    margin-top: 1em;
+    margin-bottom: .25em;
+  }
+
+  a {
+    text-decoration: none;
+    text-transform: none;
+  }
+
+  .container-small {
+    min-width: 30em;
+    max-width: 30em;
+  }
+
+  .panel {
+    .header {
+      border-bottom: none;
+      height: 48px;
+      .back-arrow {
+        display: flex;
+        align-items: center;
+        .icon{
+          background-image: url(/images/icn-arrow-back-dark.svg);
+          width: 1.5rem;
+          opacity: .7;
+        }
+        &:hover .icon{
+          opacity: 1.0;
+        }
+      }
+    }
+    .copy {
+      margin-top: 0;
+      padding-left: ($column-gutter / 2);
+      padding-right: ($column-gutter / 2);
+      padding-bottom: $column-gutter;
+      margin-bottom: 0;
+      .mark {
+        width: 78px;
+        height: 78px;
+        background-size: 50%;
+        background-position: center;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.07);
+        border-radius: 100px;
+
+        &--error {
+          background-image: url(/images/icn-ledger-error-no-bkg.svg);
+        }
+      }
+
+      div.dropdown .line {
+        margin: 0;
+      }
+
+      div.dropdown__option--light {
+        p:nth-of-type(1) {
+          color: $color_dark_2;
+        }
+
+        p:only-child {
+          color: $color_grey_1;
+        }
+
+        &:hover {
+          p {
+            color: $color_supply;
+          }
+        }
+      }
+
+      div.bullet-points p {
+        margin-top: $column-gutter;
+        padding-left: ($connectItemLeftRightPadding + 2px);
+        padding-right: ($connectItemLeftRightPadding + 2px);
+      }
+
+      .icon {
+        flex-shrink: 0;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        min-height: 35px;
+        margin: 0;
+      }
+
+      .icon.coinbase {
+        background-image: url(/images/icn-coinbase-wallet.svg);
+      }
+
+      .icon.ledger {
+        background-image: url(/images/icn-ledger.svg);
+      }
+
+      .icon.metamask {
+        background-image: url(/images/icn-metamask.svg);
+      }
+
+      button {
+        width: 17.75rem;
+        margin-bottom: 64px;
+      }
+    }
+  }
+
+  .connect-choices {
+    margin-top: 34px;
+    margin-bottom: 34px;
+  }
+
+  .connect-item {
+    width: $connectItemWidth;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: $connectItemLeftRightPadding;
+    padding-right: $connectItemLeftRightPadding;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    border-radius: 2px;
+    transition: box-shadow 0.3s ease-in-out;
+
+    .arrow {
+      height: 25px;
+      width: 25px;
+      margin: 0;
+
+      :hover > &,
+      &:hover {
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
+    &:hover {
+      box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.08);
+
+      .connect-item-text {
+        color: $color_dark_2;
+      }
+    }
+
+    .connect-item-text {
+      flex-grow: 1;
+      margin-left: 20px;
+      margin-bottom: 0;
+    }
+
+    .connect-item-text > * {
+      pointer-events: auto;
+    }
+  }
+
+  .line {
+    height: 1px;
+    margin-left: $connectItemLeftRightPadding;
+    margin-right: $connectItemLeftRightPadding;
+    background: $color_grey_2;
+    opacity: 0.3;
+  }
+
+  .connecting-ring {
+    margin-top: 66px;
+    margin-bottom: 96px;
+  }
+
+  .dropdown:nth-of-type(1) {
+    margin-top: 1em;
+    margin-bottom: .4em;
+  }
+
+  .dropdown:nth-of-type(2) {
+    margin-bottom: 2em;
+  }
+
+  .terms-agreement {
+    p {
+      color: $color_grey_2;
+
+      &.small {
+        font-size: 12px;
+      }
+    }
+
+    a {
+      border-bottom: 1px solid transparent;
+      color: $color_supply;
+      font-family: 'Haas Grot Text R';
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0;
+      padding-bottom: 0.02rem;
+      margin: 0px;
+      text-decoration: none;
+      text-transform: none;
+
+      &:hover {
+        border-bottom: 1px solid $color_supply;
+      }
+    }
+  }
+}

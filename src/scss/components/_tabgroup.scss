@@ -1,0 +1,97 @@
+@import "../variables";
+
+.tab-group {
+  display: inline-block;
+  // flex-direction: column;
+
+  &__line {
+    background-color: $color_grey_3;
+    height: 2px;
+    width: 100%;
+    margin-top: -2px;
+    z-index: 0;
+  }
+
+  &__options {
+    width: 100%;
+    display: inline-flex;
+    z-index: 1;
+
+    &--align-between {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &__option {
+    cursor: pointer;
+    color: $color_grey_3;
+    font-size: 1.25rem;
+    height: 100%;
+    padding: 0.5rem 0;
+
+    &:not(:first-child) {
+      margin-left: 1.5rem;
+    }
+
+    &--grow {
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    &--landing-grey {
+      color: $color_grey_1;
+    }
+
+    &--action-modal-grey {
+      color: $color_grey_2;
+    }
+
+    &--active {
+      color: $color_dark_1;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid $color_dark_1;
+
+      &--large {
+        position: relative;
+        padding-bottom: 0.8rem;
+        border: none;
+
+        &::after {
+          content:'';
+          position:absolute;
+          bottom:0;
+          left:0;
+          right:0;
+          background: $color_dark_1;
+          height:3px;
+          border-radius:10px 10px 0 0;
+        }
+
+        &--green {
+          color: $color_supply;
+          &::after {
+            background: $color_supply;
+          }
+        }
+
+        &--purple {
+          color: $color_borrow;
+          &::after {
+            background: $color_borrow;
+          }
+        }
+      }
+
+      &--green {
+        color: $color_supply;
+        border-color: $color_supply;
+      }
+
+      &--purple {
+        color: $color_borrow;
+        border-color: $color_borrow;
+      }
+    }
+  }
+}

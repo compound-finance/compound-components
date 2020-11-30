@@ -1,0 +1,29 @@
+@mixin landing-panel {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 14px 20px 32px;
+  border-style: none;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.04);
+  border-radius: 2px;
+  transition: box-shadow 0.3s ease-in-out;
+
+  @media (min-width: $device-sm) {
+    height: 260px;
+  }
+
+  &:hover {
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@mixin panel-image {
+  flex-shrink: 0;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}

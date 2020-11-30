@@ -1,0 +1,103 @@
+@import "../variables";
+
+.tooltip {
+  position: relative;
+
+  &:hover .tooltip__text {
+    visibility: visible;
+  }
+
+  &__text {
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: $color_dark_2;
+    color: $color_light_2;
+    text-align: left;
+    border-radius: 4px;
+    padding: 1rem;
+    position: absolute;
+    z-index: 1;
+    top: 115%;
+    margin-left: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &__headline {
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1rem;
+    }
+
+    &__subtext {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+
+      &--grey {
+        color: $color_grey_2;
+      }
+    }
+
+    &__link {
+      color: $color_supply;
+      font-weight: 500;
+      letter-spacing: 0;
+      margin-top: 0.875rem;
+      text-transform: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      margin-top: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent $color_dark_2 transparent;
+    }
+
+    &--left {
+      width: 13.125rem;
+      top: -25%;
+      left: auto;
+      right: 0%;
+      transform: translate(-40%, -40%);
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: auto;
+        right: 0%;
+        bottom: 50%;
+        margin-top: 0;
+        margin-right: -10px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent transparent $color_dark_2;
+        transform: rotate(1deg);
+      }
+
+      @media (max-width: $device-sm) {
+        top: 0%;
+        left: 100%;
+        bottom: auto;
+        right: auto;
+        transform: translate(-25%, -110%);
+
+        &::after {
+          top: 100%;
+          left: 0%;
+          bottom: auto;
+          right: auto;
+          margin-top: -2px;
+          margin-right: 0;
+          border-color: $color_dark_2 transparent transparent
+           transparent;
+        }
+      }
+    }
+  }
+}

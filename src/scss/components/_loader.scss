@@ -1,0 +1,48 @@
+@import './connecting-ring';
+
+.loader {
+  position: absolute;
+  height: 2.635rem;
+  width: 2.635rem;
+  display: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0);
+
+  &.active {
+    display: block;
+  }
+}
+
+.spinner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $color_border;
+  border-radius: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background: $color_supply;
+  border-color: $color_supply;
+
+  &::after {
+    content: '';
+    box-sizing: border-box;
+    display: block;
+    width: 70%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+  }
+}

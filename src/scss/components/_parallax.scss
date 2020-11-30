@@ -1,0 +1,126 @@
+@import '../variables';
+
+.parallax {
+  display: block;
+  height: auto;
+  position: relative;
+  width: auto;
+
+  &__content {
+    height: auto;
+    transform: perspective(1600px);
+    transform-style: preserve-3d;
+    transition: all 0.4s ease;
+    width: 100%;
+
+    &:before {
+      content: '';
+      display: block;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  &__front {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    transition: all 0.4s ease;
+    width: 100%;
+    z-index: 1;
+  }
+
+  &__top-left {
+    height: 50%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    z-index: 300;
+    cursor: pointer;
+
+    &:hover ~ .parallax__content {
+      transform: perspective(1600px) rotateX(-5deg) rotateY(5deg);
+      &:before {
+        background: linear-gradient(135deg, rgba($color_grey_1, 0.05) 0%, rgba($color_grey_1, 0) 50%);
+      }
+
+      .parallax__front {
+        transform: translate3d(-0.1px, -0.1px, 16px);
+      }
+    }
+  }
+
+  &__top-right {
+    height: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    z-index: 300;
+    cursor: pointer;
+
+    &:hover ~ .parallax__content {
+      transform: perspective(1600px) rotateX(-5deg) rotateY(-5deg);
+      &:before {
+        background: linear-gradient(-135deg, rgba($color_grey_1, 0.05) 0%, rgba($color_grey_1, 0) 50%);
+      }
+
+      .parallax__front {
+        transform: translate3d(-0.1px, -0.1px, 16px);
+      }
+    }
+  }
+
+  &__bottom-left {
+    bottom: 0;
+    height: 50%;
+    left: 0;
+    position: absolute;
+    width: 50%;
+    z-index: 300;
+    cursor: pointer;
+
+    &:hover ~ .parallax__content {
+      transform: perspective(1600px) rotateX(5deg) rotateY(5deg);
+
+      &:before {
+        background: linear-gradient(45deg, rgba($color_grey_1, 0.05) 0%, rgba($color_grey_1, 0) 50%);
+      }
+
+      .parallax__front {
+        transform: translate3d(-0.1px, -0.1px, 16px);
+      }
+    }
+  }
+
+  &__bottom-right {
+    bottom: 0;
+    height: 50%;
+    position: absolute;
+    right: 0;
+    width: 50%;
+    z-index: 300;
+    cursor: pointer;
+
+    &:hover ~ .parallax__content {
+      transform: perspective(1600px) rotateX(5deg) rotateY(-5deg);
+
+      &:before {
+        background: linear-gradient(-45deg, rgba($color_grey_1, 0.05) 0%, rgba($color_grey_1, 0) 50%);
+      }
+      .parallax__front {
+        transform: translate3d(-0.1px, -0.1px, 16px);
+      }
+    }
+  }
+}

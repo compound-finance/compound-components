@@ -1,0 +1,220 @@
+@import '../abstracts/variables';
+
+@font-face {
+  font-family: 'Haas Grot Disp R';
+  src: url('/fonts/NeueHaasGrotDispRound-55Roman.otf');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Haas Grot Disp R';
+  src: url('/fonts/NeueHaasGrotDispRound-65Medium.otf');
+  font-style: medium;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Haas Grot Text R';
+  src: url('/fonts/NeueHaasGrotTextRound-55Roman.otf');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Haas Grot Text R';
+  src: url('/fonts/NeueHaasGrotTextRound-65Medium.otf');
+  font-style: medium;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Haas Grot Text R';
+  src: url('/fonts/NeueHaasGrotTextRound-75Bold.otf');
+  font-style: bold;
+  font-weight: 700;
+}
+
+body {
+  font-family: 'Haas Grot Text R', sans-serif;
+  font-weight: 500;
+  line-height: 1;
+  color: $color_dark_2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0 0 1em 0;
+  text-rendering: optimizelegibility;
+  font-weight: 500;
+}
+
+h1 {
+  font-family: 'Haas Grot Disp R';
+  font-size: 2.462rem;
+  line-height: 3.231rem;
+
+  @media (min-width: $device-md) {
+    font-family: 'Haas Grot Disp R';
+    font-size: 3.5rem;
+    line-height: 4.5rem;
+  }
+}
+
+h2 {
+  font-family: 'Haas Grot Disp R';
+  font-style: medium;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+h3 {
+  font-family: 'Haas Grot Disp R';
+  font-weight: 700;
+  font-style: medium;
+  font-size: 1.5rem;
+  line-height: 2.1rem;
+  letter-spacing: 0;
+}
+
+h4 {
+  font-family: 'Haas Grot Disp R';
+  font-weight: 700;
+  font-style: medium;
+  font-size: 1.35rem;
+  line-height: 1.75rem;
+  letter-spacing: 0;
+
+  @media (min-width: $device-md) {
+    font-size: 1.1rem;
+  }
+}
+
+h5 {
+  font-family: 'Haas Grot Disp R';
+  font-style: normal;
+  font-size: 1.35rem;
+  line-height: 1.75rem;
+  letter-spacing: 0;
+
+  @media (min-width: $device-md) {
+    font-size: 1.1rem;
+  }
+}
+
+p {
+  font-family: 'Haas Grot Text R';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  margin: 0px;
+
+  &.small {
+    font-size: 12px;
+  }
+}
+
+pre {
+  display: block;
+  margin: 0 0 10px 0;
+  padding: 9.5px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid #d9dfdb;
+  border-radius: 4px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.label,
+label {
+  font-family: 'Haas Grot Text R';
+  font-style: medium;
+  font-weight: 600;
+  font-size: 12px;
+  color: $color_grey_2;
+
+  &.big {
+    font-family: 'Haas Grot Disp R';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 2rem;
+  }
+
+  &.medium {
+    font-family: 'Haas Grot Disp R';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.5rem;
+  }
+  &.dark {
+    color: $color_grey_1;
+  }
+  &.supply {
+    color: $color_supply;
+  }
+  &.borrow {
+    color: $color_borrow;
+  }
+}
+
+a {
+  color: inherit;
+  @include anchor();
+}
+
+a:focus {
+  outline: 0;
+}
+
+a:active,
+a:hover {
+  color: $color_supply;
+  outline: 0;
+  text-decoration: none;
+}
+
+.text-small {
+  font-size: 0.8em;
+}
+
+.text-large {
+  font-size: 1.2em;
+}
+
+.text-largest {
+  font-size: 1.4em;
+}
+
+.null {
+  color: $color_disabled;
+}
+
+.headline {
+  font-size: 1.39rem;
+  font-weight: 300;
+  color: #ffffff;
+  margin-top: 0.7rem;
+}
+
+.italic {
+  font-style: italic;
+}
