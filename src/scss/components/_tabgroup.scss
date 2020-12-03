@@ -1,4 +1,4 @@
-@import "../variables";
+@import '../abstracts/variables';
 
 .tab-group {
   display: inline-block;
@@ -58,14 +58,14 @@
         border: none;
 
         &::after {
-          content:'';
-          position:absolute;
-          bottom:0;
-          left:0;
-          right:0;
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
           background: $color_dark_1;
-          height:3px;
-          border-radius:10px 10px 0 0;
+          height: 3px;
+          border-radius: 10px 10px 0 0;
         }
 
         &--green {

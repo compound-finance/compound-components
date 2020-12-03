@@ -1,4 +1,4 @@
-@import '../variables';
+@import '../abstracts/variables';
 
 .progress {
   display: flex;
@@ -22,7 +22,7 @@
 
 .progress-bar {
   display: flex;
-  background-color: #627EEA;
+  background-color: #627eea;
 
   &:last-of-type {
     border-top-right-radius: 100px;
@@ -30,15 +30,16 @@
   }
 
   &.BAT {
-    background-color: #FF5000;
+    background-color: #ff5000;
   }
 
   &.DAI {
-    background-color: #FAB323;
+    background-color: #fab323;
   }
 
-  &.ETH, &.WETH {
-    background-color: #627EEA;
+  &.ETH,
+  &.WETH {
+    background-color: #627eea;
   }
 
   &.REP {
@@ -46,19 +47,19 @@
   }
 
   &.SAI {
-    background-color: #FAB323;
+    background-color: #fab323;
   }
 
   &.USDC {
-    background-color: #2775C9;
+    background-color: #2775c9;
   }
 
   &.USDT {
-    background-color: #26A17B;
+    background-color: #26a17b;
   }
 
   &.WBTC {
-    background-color: #F6941A;
+    background-color: #f6941a;
   }
 
   &.ZRX {
@@ -70,7 +71,7 @@
   }
 
   &.yellow {
-    background-color: $color_notice; 
+    background-color: $color_notice;
   }
 
   &.green {

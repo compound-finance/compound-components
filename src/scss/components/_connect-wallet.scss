@@ -1,4 +1,4 @@
-@import '../variables';
+@import '../abstracts/variables';
 
 @import './connecting-ring';
 
@@ -57,7 +57,7 @@
         display: flex;
         align-items: center;
         .icon{
-          background-image: url(/images/icn-arrow-back-dark.svg);
+          background-image: url(/compound-components/assets/icn-arrow-back-dark.svg);
           width: 1.5rem;
           opacity: .7;
         }
@@ -81,7 +81,7 @@
         border-radius: 100px;
 
         &--error {
-          background-image: url(/images/icn-ledger-error-no-bkg.svg);
+          background-image: url(/compound-components/assets/icn-ledger-error-no-bkg.svg);
         }
       }
 
@@ -125,15 +125,15 @@
       }
 
       .icon.coinbase {
-        background-image: url(/images/icn-coinbase-wallet.svg);
+        background-image: url(/compound-components/assets/icn-coinbase-wallet.svg);
       }
 
       .icon.ledger {
-        background-image: url(/images/icn-ledger.svg);
+        background-image: url(/compound-components/assets/icn-ledger.svg);
       }
 
       .icon.metamask {
-        background-image: url(/images/icn-metamask.svg);
+        background-image: url(/compound-components/assets/icn-metamask.svg);
       }
 
       button {

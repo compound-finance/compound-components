@@ -1,44 +1,31 @@
-@import 'variables';
+@import '../abstracts/variables';
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-size: 12px;
 }
 
-#main {
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-
-  & > div:not(.alert) {
-    flex-grow: 1;
-
-    & > :last-child:not(.docs) {
-      padding-bottom: 10rem;
-    }
-  }
-}
-
-*, *:after, *:before{
+*,
+*:after,
+*:before {
   box-sizing: border-box;
 }
 
-[class*=container]{
+[class*='container'] {
   margin: 0 auto;
   padding-right: $column-gutter;
   padding-left: $column-gutter;
 }
-.container-small{
+.container-small {
   max-width: $device-sm;
 }
 .container {
   position: relative;
   max-width: 66rem;
 }
-.container-large{
+.container-large {
   position: relative;
   max-width: $device-lg;
 }
@@ -48,86 +35,89 @@ body, html {
   flex-flow: row wrap;
   margin-right: -($column-gutter/2);
   margin-left: -($column-gutter/2);
-  &.align-middle{
+  &.align-middle {
     align-items: center;
   }
-  &.align-bottom{
+  &.align-bottom {
     align-items: flex-end;
   }
-  &.align-stretch{
+  &.align-stretch {
     align-items: stretch;
   }
-  &.align-left{
+  &.align-left {
     justify-content: flex-start;
   }
-  &.align-center{
+  &.align-center {
     justify-content: center;
   }
-  &.align-right{
+  &.align-right {
     justify-content: flex-end;
   }
-  &.align-between{
+  &.align-between {
     justify-content: space-between;
   }
-  &.reverse{
+  &.reverse {
     flex-wrap: wrap-reverse;
   }
 }
 
-[class*=col] {
+[class*='col'] {
   flex-basis: 100%;
   padding: 0 $column-gutter/2;
 }
 
-@mixin col-size($col){
+@mixin col-size($col) {
   flex-basis: (100% * $col / 12);
   max-width: (100% * $col / 12);
 }
 
-@each $col in (1,2,3,4,5,6,7,8,9,10,11,12){
-  .col-xs-#{$col}{
+@each $col in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) {
+  .col-xs-#{$col} {
     @include col-size($col);
   }
 }
 
-@media (min-width: $device-sm){
-  html, body{
+@media (min-width: $device-sm) {
+  html,
+  body {
     font-size: 14px;
   }
-  @each $col in (1,2,3,4,5,6,7,8,9,10,11,12){
-    .col-sm-#{$col}{
+  @each $col in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) {
+    .col-sm-#{$col} {
       @include col-size($col);
     }
   }
-  .col-sm-auto{
+  .col-sm-auto {
     flex-basis: auto;
   }
 }
 
-@media (min-width: $device-md){
-  html, body{
+@media (min-width: $device-md) {
+  html,
+  body {
     font-size: 15px;
   }
-  @each $col in (1,2,3,4,5,6,7,8,9,10,11,12){
-    .col-md-#{$col}{
+  @each $col in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) {
+    .col-md-#{$col} {
       @include col-size($col);
     }
   }
-  .col-md-auto{
+  .col-md-auto {
     flex-basis: auto;
   }
 }
 
-@media (min-width: $device-lg){
-  html, body{
+@media (min-width: $device-lg) {
+  html,
+  body {
     font-size: 16px;
   }
-  @each $col in (1,2,3,4,5,6,7,8,9,10,11,12){
-    .col-lg-#{$col}{
+  @each $col in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) {
+    .col-lg-#{$col} {
       @include col-size($col);
     }
   }
-  .col-lg-auto{
+  .col-lg-auto {
     flex-basis: auto;
   }
 }

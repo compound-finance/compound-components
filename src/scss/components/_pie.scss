@@ -1,4 +1,4 @@
-@import '../variables';
+@import '../abstracts/variables';
 
 .pie {
   border-radius: 100%;
@@ -20,8 +20,7 @@
     width: 100%;
     z-index: calc(1 + var(--over50));
 
-    &:after
-    &:before {
+    &:after &:before {
       background: var(--bg, #e74c3c);
       content: '';
       height: 100%;
@@ -33,7 +32,7 @@
       --degrees: calc((var(--value, 45) / 100) * 360);
       transform: translate(0, 100%) rotate(calc(var(--degrees) * 1deg));
       transform-origin: 50% 0%;
-     }
+    }
 
     &:after {
       opacity: var(--over50, 0);

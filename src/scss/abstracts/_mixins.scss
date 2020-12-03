@@ -10,6 +10,60 @@
   }
 }
 
+@mixin inline-anchor {
+  a {
+    border-bottom: 1px solid transparent;
+    color: $color_supply;
+    font-family: 'Haas Grot Text R';
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0;
+    padding-bottom: 0.02rem;
+    margin: 0px;
+    text-decoration: none;
+    text-transform: none;
+
+    &:hover {
+      border-bottom: 1px solid $color_supply;
+    }
+  }
+}
+
+@mixin unordered-list {
+  ul {
+    list-style: none;
+    list-style-position: outside;
+    padding-left: 0;
+
+    li {
+      margin-bottom: 1rem;
+      padding-left: 1.1rem;
+
+      @include inline-anchor;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &::before {
+        content: '\2022\00a0\00a0';
+        color: $color_supply;
+        position: absolute;
+        left: 0;
+        margin-top: 0.26rem;
+      }
+    }
+  }
+  ol {
+    margin-top: 10px;
+    li {
+      &::before {
+        content: '';
+      }
+    }
+  }
+}
+
 @keyframes placeHolderShimmer {
   0% {
     background-position: -468px 0;

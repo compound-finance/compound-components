@@ -9,47 +9,47 @@
   height: 17px;
 
   &--copy {
-    background-image: url("/images/icn-copy.svg");
+    background-image: url('/compound-components/assets/icn-copy.svg');
 
     &:hover {
-      background-image: url("/images/icn-copy-green.svg");
+      background-image: url('/compound-components/assets/icn-copy-green.svg');
     }
   }
 
   &--external-link {
-    background-image: url("/images/icn-external-link.svg");
+    background-image: url('/compound-components/assets/icn-external-link.svg');
 
     &:hover {
-      background-image: url("/images/icn-external-link-green.svg");
+      background-image: url('/compound-components/assets/icn-external-link-green.svg');
     }
 
     &--gray {
-      background-image: url("/images/icn-external-link-gray.svg");
+      background-image: url('/compound-components/assets/icn-external-link-gray.svg');
     }
 
     &--green {
-      background-image: url("/images/icn-external-link-green.svg");
+      background-image: url('/compound-components/assets/icn-external-link-green.svg');
     }
 
     &--black {
-      background-image: url("/images/icn-external-link-black.svg");
+      background-image: url('/compound-components/assets/icn-external-link-black.svg');
     }
   }
 
   &--complete {
-    background-image: url("/images/icn-complete.svg");
+    background-image: url('/compound-components/assets/icn-complete.svg');
   }
 
   &--edit {
     height: 30px;
     width: 30px;
-    background-image: url("/images/icn-edit.svg");
+    background-image: url('/compound-components/assets/icn-edit.svg');
   }
 
   &--plus {
     height: 30px;
     width: 30px;
-    background-image: url("/images/icn-plus.svg");
+    background-image: url('/compound-components/assets/icn-plus.svg');
   }
 
   &--small {
@@ -57,4 +57,3 @@
     height: 12px;
   }
 }
-

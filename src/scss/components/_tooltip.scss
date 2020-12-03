@@ -1,4 +1,4 @@
-@import "../variables";
+@import '../abstracts/variables';
 
 .tooltip {
   position: relative;
@@ -49,7 +49,7 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       left: 50%;
       bottom: 100%;
@@ -67,7 +67,7 @@
       transform: translate(-40%, -40%);
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         left: auto;
         right: 0%;
@@ -94,8 +94,7 @@
           right: auto;
           margin-top: -2px;
           margin-right: 0;
-          border-color: $color_dark_2 transparent transparent
-           transparent;
+          border-color: $color_dark_2 transparent transparent transparent;
         }
       }
     }

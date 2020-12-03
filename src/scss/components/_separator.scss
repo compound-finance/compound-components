@@ -1,8 +1,8 @@
-@import '../variables';
+@import '../abstracts/variables';
 
 .separator {
-    height: 1px;
-    width: 100%;
-    background: $color_grey_3;
-    opacity: 0.3;
-  }
+  height: 1px;
+  width: 100%;
+  background: $color_grey_3;
+  opacity: 0.3;
+}
