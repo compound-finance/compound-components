@@ -1,13 +1,10 @@
-import { ethers } from '../../../node_modules/ethers';
+import { ethers } from 'ethers';
 
 // import Eth from '../../../node_modules/web3-eth';
-import LedgerEth from '../../../node_modules/@ledgerhq/hw-app-eth';
-import Transport from "../../../node_modules/@ledgerhq/hw-transport-webusb";
-import SignerProvider from "./signer_provider";
-import {
-  encodeSignedTx,
-  encodeTx
-} from "./trx";
+import LedgerEth from '@ledgerhq/hw-app-eth';
+import Transport from '@ledgerhq/hw-transport-webusb';
+import SignerProvider from './signer_provider';
+import { encodeSignedTx, encodeTx } from './trx';
 
 // We use this to serialize all calls to the Ledger; we should probably do this
 // on a per-transport basis, but we only support one transport (per library)
@@ -17,11 +14,11 @@ let _oldLedgerPaths = ["44'/60'/0'/0", "44'/60'/0'/1", "44'/60'/0'/2"];
 let _ledgerLivePaths = ["44'/60'/0'/0/0", "44'/60'/1'/0/0", "44'/60'/2'/0/0"];
 
 class Ledger {
-  constructor(transport, provider, options={}) {
+  constructor(transport, provider, options = {}) {
     options = {
       path: "44'/60'/0'/0/0",
       networkId: 1,
-      ...options
+      ...options,
     };
 
     this.provider = provider;
@@ -36,9 +33,7 @@ class Ledger {
 
     _pending = this._ready;
 
-
     this._config = JSON.stringify(null);
-
   }
 
   get config() {
@@ -68,10 +63,9 @@ class Ledger {
     await _pending; // be nice if there's other transactions pending
 
     // set ourselves as the global pending tx
-    _pending = this._eth.signTransaction(this.path, unsignedTx.substring(2))
-      .catch((error) => {
-        //User rejected here. Don't have specific rejection UX yet.
-      });
+    _pending = this._eth.signTransaction(this.path, unsignedTx.substring(2)).catch((error) => {
+      //User rejected here. Don't have specific rejection UX yet.
+    });
     let signature = await _pending; // await completion of our signature trx
 
     return encodeSignedTx(transaction, signature);
@@ -84,7 +78,7 @@ class Ledger {
   }
 
   signMessage(message) {
-    if (typeof(message) === 'string' && message.slice(0, 2) !== "0x") {
+    if (typeof message === 'string' && message.slice(0, 2) !== '0x') {
       message = ethers.utils.toUtf8Bytes(message);
     }
 
@@ -106,26 +100,32 @@ class Ledger {
   getProvider() {
     return new SignerProvider(this.provider.host, {
       signTransaction: (rawTx, cb) => {
-        this.sign(rawTx).then((signedTx) => {
-          cb(null, signedTx);
-        }).catch((err) => {
-          console.log("ledger sign error:", err);
-          cb(err, null)
-        });
+        this.sign(rawTx)
+          .then((signedTx) => {
+            cb(null, signedTx);
+          })
+          .catch((err) => {
+            console.log('ledger sign error:', err);
+            cb(err, null);
+          });
       },
       accounts: (cb) => {
-        this.getAddress().then((address) => {
-          cb(null, [address])
-        }).catch(error => {
-          console.log("connect error" + error);
-          // TODO: Torrey we need a callback to handle connection errors
-        });
+        this.getAddress()
+          .then((address) => {
+            cb(null, [address]);
+          })
+          .catch((error) => {
+            console.log('connect error' + error);
+            // TODO: Torrey we need a callback to handle connection errors
+          });
       },
       signPersonalMessage: (message, cb) => {
-        this.signMessage(message).then((signResult) => {
-          cb(null, signResult);
-        }).catch((err) => cb(err, null));
-      }
+        this.signMessage(message)
+          .then((signResult) => {
+            cb(null, signResult);
+          })
+          .catch((err) => cb(err, null));
+      },
     });
   }
 
@@ -134,7 +134,7 @@ class Ledger {
   }
 
   static async connect(provider, options) {
-    let transport = await Transport.create().catch(error => console.log("connect error" + error));
+    let transport = await Transport.create().catch((error) => console.log('connect error' + error));
     if (transport == undefined) {
       return null; //TODO: what to do here?
     }
@@ -143,6 +143,4 @@ class Ledger {
   }
 }
 
-export {
-  Ledger
-};
+export { Ledger };

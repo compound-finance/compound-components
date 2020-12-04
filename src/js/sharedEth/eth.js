@@ -1,17 +1,17 @@
-import Eth from '../../node_modules/web3-eth';
-import EthUtils from '../../node_modules/web3-utils';
-import BN from '../../node_modules/bn.js';
+import Eth from 'web3-eth';
+import EthUtils from 'web3-utils';
+import BN from '../../../node_modules/bn.js';
 
-import { at, fetchContract, getContractEvent } from './contract';
+import { at, fetchContract, getContractEvent } from './contract.js';
 import {
   reverseObject,
   debug,
   isUserCancel,
   providerType,
   PROVIDER_TYPE_COINBASE_WALLET,
-  PROVIDER_TYPE_IM_TOKEN
-} from './utils';
-import { Ledger } from './ledger/ledger';
+  PROVIDER_TYPE_IM_TOKEN,
+} from './utils.js';
+import { Ledger } from './ledger/ledger.js';
 
 const actionSubmittedTypeMap = {
   mint: 0,
@@ -19,7 +19,7 @@ const actionSubmittedTypeMap = {
   redeemUnderlying: 1,
   borrow: 2,
   repayBorrow: 3,
-  repayBehalf: 3
+  repayBehalf: 3,
 };
 
 const DEFAULT_GAS_PRICE = 8000000000; // 8 Gwei
@@ -68,7 +68,7 @@ function makeEth(dataProviders, networkMap, networkAbiMap, configNameToAddressMa
     defaultNetworkId: networkMap[defaultNetwork],
     currentAbiMap: targetAbiMap,
     currentAddressToNameMap: targetAddressToNameMap,
-    appProviderType: undefined
+    appProviderType: undefined,
   };
 }
 
@@ -94,41 +94,41 @@ export async function giveNewTrx(
     asset: assetAddress,
     customer: customerAddress,
     function: funcName,
-    args: args.map(a => a.toString()),
-    expectedNonce: computedNonce
+    args: args.map((a) => a.toString()),
+    expectedNonce: computedNonce,
   });
 }
 
-async function wrapCallErr(app, eth, calls, errorHandler, blockNumber='latest') {
+async function wrapCallErr(app, eth, calls, errorHandler, blockNumber = 'latest') {
   try {
-    return await wrapCall(app, eth, calls, blockNumber)
+    return await wrapCall(app, eth, calls, blockNumber);
   } catch (e) {
     await errorHandler(e);
   }
 }
 
 async function callWeb3(web3, contractJson, address, method, args) {
-  let funcABI = contractJson.abi.find(({name, inputs}) => name == method && inputs.length === args.length);
+  let funcABI = contractJson.abi.find(({ name, inputs }) => name == method && inputs.length === args.length);
   if (!funcABI) {
     throw new Error(`Cannot find ABI function ${name} in ${contractJson.name}`);
   }
 
   let callResult = await web3.call({
     to: address,
-    data: web3.abi.encodeFunctionCall(funcABI, args)
+    data: web3.abi.encodeFunctionCall(funcABI, args),
   });
 
   try {
     return web3.abi.decodeParameters(funcABI.outputs, callResult)[0];
   } catch (e) {
-    console.error(["Error decoding call result", callResult]);
+    console.error(['Error decoding call result', callResult]);
     throw e;
   }
 }
 
-function wrapCall(app, eth, calls, blockNumber='latest') {
+function wrapCall(app, eth, calls, blockNumber = 'latest') {
   // Setup each call as a promise
-  return withWeb3Eth(eth).then(web3Eth => {
+  return withWeb3Eth(eth).then((web3Eth) => {
     return Promise.all(
       calls.map(async ([contractJson, address, method, args]) => {
         let host = web3Eth.currentProvider.host;
@@ -137,7 +137,7 @@ function wrapCall(app, eth, calls, blockNumber='latest') {
         try {
           return await callWeb3(web3Eth, contractJson, address, method, args);
         } catch (e) {
-          console.error(`Error calling web3`, {address, method, args, host});
+          console.error(`Error calling web3`, { address, method, args, host });
           console.error(e);
           throw e;
         }
@@ -146,13 +146,13 @@ function wrapCall(app, eth, calls, blockNumber='latest') {
   });
 }
 
-function getLogs(app, eth, address, topics, fromBlock, toBlock='latest') {
-  return withWeb3Eth(eth).then(web3Eth => {
+function getLogs(app, eth, address, topics, fromBlock, toBlock = 'latest') {
+  return withWeb3Eth(eth).then((web3Eth) => {
     return web3Eth.getPastLogs({
       fromBlock,
       toBlock,
       address,
-      topics
+      topics,
     });
   });
 }
@@ -188,7 +188,7 @@ function wrapSend(
           const defaultParamsClone = Object.assign({}, defaultSendParams);
           let sendParams = Object.assign(defaultParamsClone, {
             from: customerAddress,
-            gasLimit: estimatedGasLimit
+            gasLimit: estimatedGasLimit,
           });
 
           if (currentGasPrice !== undefined) {
@@ -201,7 +201,7 @@ function wrapSend(
             sendParams.value = opts.value;
           }
 
-          const sendArgs = args.map(arg => {
+          const sendArgs = args.map((arg) => {
             if (arg instanceof BN) {
               return arg.toString();
             } else {
@@ -210,7 +210,7 @@ function wrapSend(
           });
           const promiEvent = contract.methods[funcName](...sendArgs).send(sendParams);
 
-          promiEvent.on('error', error => {
+          promiEvent.on('error', (error) => {
             if (isUserCancel(error)) {
               // Swallow these errors, since they aren't really errors;
               resolve(null);
@@ -219,7 +219,7 @@ function wrapSend(
             }
           });
 
-          promiEvent.on('transactionHash', trxHash => {
+          promiEvent.on('transactionHash', (trxHash) => {
             if (trxHash) {
               const displayName = opts.displayName || funcName;
               const displayArgs = opts.displayArgs || args;
@@ -249,19 +249,19 @@ function wrapSend(
 }
 
 function withGasLimitAndTrxCount(app, eth, contractJson, contractAddress, funcName, args, customerAddress, opts = {}) {
-  return withWeb3Eth(eth).then(web3Eth => {
+  return withWeb3Eth(eth).then((web3Eth) => {
     const contract = fetchContract(web3Eth, contractJson, contractAddress);
 
     const defaultParamsClone = Object.assign({}, defaultSendParams);
     let sendParams = Object.assign(defaultParamsClone, {
-      from: customerAddress
+      from: customerAddress,
     });
 
     if (opts.value !== undefined) {
       sendParams.value = opts.value;
     }
 
-    const sendArgs = args.map(arg => {
+    const sendArgs = args.map((arg) => {
       if (arg instanceof BN) {
         return arg.toString();
       } else {
@@ -269,95 +269,95 @@ function withGasLimitAndTrxCount(app, eth, contractJson, contractAddress, funcNa
       }
     });
 
-    return Promise.all(
-      [
-        contract.methods[funcName](...sendArgs)
-          .estimateGas(sendParams)
-          .then(estimatedGas => {
-            const roundedGasWithBuffer = Math.round(estimatedGas * ESTIMATED_GAS_MULTIPLIER);
+    return Promise.all([
+      contract.methods[funcName](...sendArgs)
+        .estimateGas(sendParams)
+        .then((estimatedGas) => {
+          const roundedGasWithBuffer = Math.round(estimatedGas * ESTIMATED_GAS_MULTIPLIER);
 
-            // Some integrations require the gas to end with specific values.
-            const maskedGasLimit = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
-            let actualGasLimit;
-            switch (eth.appProviderType) {
-              case PROVIDER_TYPE_COINBASE_WALLET:
-                actualGasLimit = maskedGasLimit + COINBASE_WALLET_GAS_SUFFIX;
-                break;
-              case PROVIDER_TYPE_IM_TOKEN:
-                actualGasLimit = maskedGasLimit + IM_TOKEN_GAS_SUFFIX;
-                break;
-              default:
-                actualGasLimit = maskedGasLimit + DEFAULT_GAS_SUFFIX;
-                break;
-            }
+          // Some integrations require the gas to end with specific values.
+          const maskedGasLimit = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
+          let actualGasLimit;
+          switch (eth.appProviderType) {
+            case PROVIDER_TYPE_COINBASE_WALLET:
+              actualGasLimit = maskedGasLimit + COINBASE_WALLET_GAS_SUFFIX;
+              break;
+            case PROVIDER_TYPE_IM_TOKEN:
+              actualGasLimit = maskedGasLimit + IM_TOKEN_GAS_SUFFIX;
+              break;
+            default:
+              actualGasLimit = maskedGasLimit + DEFAULT_GAS_SUFFIX;
+              break;
+          }
 
-            return Promise.resolve(actualGasLimit);
-          })
-          .catch(error => {
-            let upperGasLimit;
-            switch (eth.appProviderType) {
-              case PROVIDER_TYPE_COINBASE_WALLET:
-                upperGasLimit = COINBASE_WALLET_UPPER_GAS_LIMIT;
-                break;
-              case PROVIDER_TYPE_IM_TOKEN:
-                upperGasLimit = IM_TOKEN_UPPER_GAS_LIMIT;
-                break;
-              default:
-                upperGasLimit = DEFAULT_UPPER_GAS_LIMIT;
-                break;
-            }
+          return Promise.resolve(actualGasLimit);
+        })
+        .catch((error) => {
+          let upperGasLimit;
+          switch (eth.appProviderType) {
+            case PROVIDER_TYPE_COINBASE_WALLET:
+              upperGasLimit = COINBASE_WALLET_UPPER_GAS_LIMIT;
+              break;
+            case PROVIDER_TYPE_IM_TOKEN:
+              upperGasLimit = IM_TOKEN_UPPER_GAS_LIMIT;
+              break;
+            default:
+              upperGasLimit = DEFAULT_UPPER_GAS_LIMIT;
+              break;
+          }
 
-            return Promise.resolve(upperGasLimit);
-          }),
-        web3Eth.getTransactionCount(customerAddress)
-          .then(transactionCount => {
-            return Promise.resolve(transactionCount);
-          })
-          .catch(error => {
-            return Promise.resolve(-1);
-          })
-      ]
-    );
+          return Promise.resolve(upperGasLimit);
+        }),
+      web3Eth
+        .getTransactionCount(customerAddress)
+        .then((transactionCount) => {
+          return Promise.resolve(transactionCount);
+        })
+        .catch((error) => {
+          return Promise.resolve(-1);
+        }),
+    ]);
   });
 }
 
 function withGasLimitFromPayload(web3Eth, trxPayload) {
-    return web3Eth.estimateGas(trxPayload)
-      .then(estimatedGas => {
-        const roundedGasWithBuffer = Math.round(estimatedGas * ESTIMATED_GAS_MULTIPLIER);
+  return web3Eth
+    .estimateGas(trxPayload)
+    .then((estimatedGas) => {
+      const roundedGasWithBuffer = Math.round(estimatedGas * ESTIMATED_GAS_MULTIPLIER);
 
-        // Some integrations require the gas to end with specific values.
-        const maskedGasLimit = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
-        let actualGasLimit;
-        switch (web3Eth.appProviderType) {
-          case PROVIDER_TYPE_COINBASE_WALLET:
-            actualGasLimit = maskedGasLimit + COINBASE_WALLET_GAS_SUFFIX;
-            break;
-          case PROVIDER_TYPE_IM_TOKEN:
-            actualGasLimit = maskedGasLimit + IM_TOKEN_GAS_SUFFIX;
-            break;
-          default:
-            actualGasLimit = maskedGasLimit + DEFAULT_GAS_SUFFIX;
-            break;
-        }
-        return Promise.resolve(actualGasLimit);
-      })
-      .catch(error => {
-        let upperGasLimit;
-        switch (web3Eth.appProviderType) {
-          case PROVIDER_TYPE_COINBASE_WALLET:
-            upperGasLimit = COINBASE_WALLET_UPPER_GAS_LIMIT;
-            break;
-          case PROVIDER_TYPE_IM_TOKEN:
-            upperGasLimit = IM_TOKEN_UPPER_GAS_LIMIT;
-            break;
-          default:
-            upperGasLimit = DEFAULT_UPPER_GAS_LIMIT;
-            break;
-        }
+      // Some integrations require the gas to end with specific values.
+      const maskedGasLimit = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
+      let actualGasLimit;
+      switch (web3Eth.appProviderType) {
+        case PROVIDER_TYPE_COINBASE_WALLET:
+          actualGasLimit = maskedGasLimit + COINBASE_WALLET_GAS_SUFFIX;
+          break;
+        case PROVIDER_TYPE_IM_TOKEN:
+          actualGasLimit = maskedGasLimit + IM_TOKEN_GAS_SUFFIX;
+          break;
+        default:
+          actualGasLimit = maskedGasLimit + DEFAULT_GAS_SUFFIX;
+          break;
+      }
+      return Promise.resolve(actualGasLimit);
+    })
+    .catch((error) => {
+      let upperGasLimit;
+      switch (web3Eth.appProviderType) {
+        case PROVIDER_TYPE_COINBASE_WALLET:
+          upperGasLimit = COINBASE_WALLET_UPPER_GAS_LIMIT;
+          break;
+        case PROVIDER_TYPE_IM_TOKEN:
+          upperGasLimit = IM_TOKEN_UPPER_GAS_LIMIT;
+          break;
+        default:
+          upperGasLimit = DEFAULT_UPPER_GAS_LIMIT;
+          break;
+      }
 
-        return Promise.resolve(upperGasLimit);
-      });
+      return Promise.resolve(upperGasLimit);
+    });
 }
 
 function withWeb3Eth(eth) {
@@ -387,19 +387,19 @@ async function getLedgerAddressAndBalance(eth, derivationPath) {
   let networkMap = reverseObject(eth.networkIdMap);
   let ledger = await Ledger.connect(mainnetEth.currentProvider, {
     networkId: networkMap['mainnet'],
-    path: derivationPath
+    path: derivationPath,
   });
   let accountAddress = null;
   let ethBalanceWei = null;
   if (ledger != null) {
-    accountAddress = await ledger.getAddress().catch(error => console.log('caught ledger error: %o', error));
+    accountAddress = await ledger.getAddress().catch((error) => console.log('caught ledger error: %o', error));
     if (accountAddress != null) {
       ethBalanceWei = await mainnetEth.getBalance(accountAddress);
     }
   }
   return {
     accountAddress,
-    ethBalanceWei
+    ethBalanceWei,
   };
 }
 
@@ -408,7 +408,7 @@ async function setLedgerProvider(eth, networkId, ledgerDerivationPath) {
   const web3Eth = await withWeb3Eth(eth);
   let ledger = await Ledger.connect(web3Eth.currentProvider, {
     networkId: networkId,
-    path: ledgerDerivationPath
+    path: ledgerDerivationPath,
   });
   let trxProvider = ledger.getProvider();
 
@@ -462,7 +462,7 @@ function setNetworkId(eth, networkId) {
 async function getNetworkId(eth) {
   return withTrxWeb3(
     eth,
-    trxEth => trxEth.net.getId(),
+    (trxEth) => trxEth.net.getId(),
     () => eth.defaultNetworkId
   );
 }
@@ -482,8 +482,8 @@ async function getBlockNumber(eth) {
 async function getAccounts(eth) {
   return withTrxWeb3(
     eth,
-    trxEth => trxEth.getAccounts(),
-    () => eth.showAccount ? [eth.showAccount] : []
+    (trxEth) => trxEth.getAccounts(),
+    () => (eth.showAccount ? [eth.showAccount] : [])
   );
 }
 
@@ -508,7 +508,7 @@ async function getTransactionReceipt(eth, trxHash) {
 async function sign(eth, message, address) {
   return withTrxWeb3(
     eth,
-    trxEth => trxEth.personal.sign(EthUtils.fromUtf8(message), address),
+    (trxEth) => trxEth.personal.sign(EthUtils.fromUtf8(message), address),
     () => {
       throw 'Cannot sign message without transactional Web3';
     }
@@ -541,5 +541,5 @@ export {
   withGasLimitFromPayload,
   wrapCall,
   wrapCallErr,
-  wrapSend
+  wrapSend,
 };

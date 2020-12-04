@@ -1,7 +1,7 @@
-import RLP from '../../../node_modules/eth-lib/lib/rlp'
-import Bytes from '../../../node_modules/eth-lib/lib/bytes'
-import utils from '../../../node_modules/web3-utils'
-import helpers from '../../../node_modules/web3-core-helpers'
+import RLP from 'eth-lib/lib/rlp';
+import Bytes from 'eth-lib/lib/bytes';
+import utils from 'web3-utils';
+import helpers from 'web3-core-helpers';
 
 function trimLeadingZero(hex) {
   while (hex && hex.startsWith('0x0')) {
@@ -24,10 +24,7 @@ export function encodeTx(tx) {
     throw new Error('"gas" is missing');
   }
 
-  if (tx.nonce  < 0 ||
-      tx.gas  < 0 ||
-      tx.gasPrice  < 0 ||
-      tx.chainId  < 0) {
+  if (tx.nonce < 0 || tx.gas < 0 || tx.gasPrice < 0 || tx.chainId < 0) {
     throw new Error('Gas, gasPrice, nonce or chainId is lower than 0');
   }
 
@@ -40,25 +37,24 @@ export function encodeTx(tx) {
   transaction.chainId = utils.numberToHex(tx.chainId);
 
   return RLP.encode([
-      Bytes.fromNat(transaction.nonce),
-      Bytes.fromNat(transaction.gasPrice),
-      Bytes.fromNat(transaction.gas),
-      transaction.to.toLowerCase(),
-      Bytes.fromNat(transaction.value),
-      transaction.data,
-      Bytes.fromNat(transaction.chainId || "0x1"),
-      "0x",
-      "0x"]);
+    Bytes.fromNat(transaction.nonce),
+    Bytes.fromNat(transaction.gasPrice),
+    Bytes.fromNat(transaction.gas),
+    transaction.to.toLowerCase(),
+    Bytes.fromNat(transaction.value),
+    transaction.data,
+    Bytes.fromNat(transaction.chainId || '0x1'),
+    '0x',
+    '0x',
+  ]);
 }
 
 export function encodeSignedTx(tx, signature) {
   const rlpEncoded = encodeTx(tx);
 
-  var rawTx = RLP.decode(rlpEncoded).slice(0, 6).concat([
-    `0x${signature.v}`,
-    `0x${signature.r}`,
-    `0x${signature.s}`
-  ]);
+  var rawTx = RLP.decode(rlpEncoded)
+    .slice(0, 6)
+    .concat([`0x${signature.v}`, `0x${signature.r}`, `0x${signature.s}`]);
 
   rawTx[6] = makeEven(trimLeadingZero(rawTx[6]));
   rawTx[7] = makeEven(trimLeadingZero(rawTx[7]));

@@ -1,19 +1,14 @@
-import Eth from '../../node_modules/web3-eth';
-import {
-  getAccounts,
-  getNetworkId,
-  setLedgerProvider,
-  setNewTrxProvider
-} from './eth';
+import Eth from 'web3-eth';
+import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from './eth';
 import WalletLink from 'walletlink';
 
-async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog=false) {
+async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false) {
   // Never auto-connect to ledger, since it's complicated
   if (disallowAuthDialog) {
     return {
       networkId: null,
       account: null,
-      ethereum: null
+      ethereum: null,
     };
   }
 
@@ -24,26 +19,26 @@ async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog=false
   return {
     networkId,
     account,
-    ethereum: null
+    ethereum: null,
   };
 }
 
-async function connectWalletLink(eth, disallowAuthDialog=false) {
+async function connectWalletLink(eth, disallowAuthDialog = false) {
   const JSONRPC_URL = eth.dataProviders['mainnet'].host;
   const CHAIN_ID = 1;
 
   const walletLink = new WalletLink({
-    appName: "Compound",
-    appLogoUrl: "https://app.compound.finance/images/compound-192.png"
+    appName: 'Compound',
+    appLogoUrl: 'https://app.compound.finance/images/compound-192.png',
   });
 
   const trxProvider = walletLink.makeWeb3Provider(JSONRPC_URL, CHAIN_ID);
 
-  if (disallowAuthDialog && await requiresAuthDialog(trxProvider)) {
+  if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
     return {
       networkId: null,
       account: null,
-      ethereum: null
+      ethereum: null,
     };
   }
 
@@ -56,7 +51,7 @@ async function connectWalletLink(eth, disallowAuthDialog=false) {
   }
 
   // This method actually triggers the UI flow from as spec'd in EIP-1102
-  await trxProvider.send("eth_requestAccounts").then((accounts) => {
+  await trxProvider.send('eth_requestAccounts').then((accounts) => {
     //Currently don't need accounts here as we synchronous get next.
   });
 
@@ -65,7 +60,7 @@ async function connectWalletLink(eth, disallowAuthDialog=false) {
   return {
     networkId,
     account,
-    ethereum: trxProvider
+    ethereum: trxProvider,
   };
 }
 
@@ -75,15 +70,15 @@ async function requiresAuthDialog(ethereum) {
   return !account;
 }
 
-async function connectWeb3(eth, ethereum, disallowAuthDialog=false, isAutoConnect=false) {
+async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
   if (ethereum) {
     let trxProvider = ethereum;
 
-    if (disallowAuthDialog && await requiresAuthDialog(ethereum)) {
+    if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
       return {
         networkId: null,
         account: null,
-        ethereum: null
+        ethereum: null,
       };
     }
 
@@ -101,12 +96,12 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog=false, isAutoConnec
       networkId = null;
     }
 
-    return {networkId, account, ethereum};
+    return { networkId, account, ethereum };
   } else {
     return {
       networkId: null,
       account: null,
-      ethereum: null
+      ethereum: null,
     };
   }
 }
@@ -134,10 +129,4 @@ async function disconnect(eth) {
   return [null, null, null];
 }
 
-export {
-  connectLedger,
-  connectWalletLink,
-  connectWeb3,
-  connectShowAccount,
-  disconnect,
-};
+export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, disconnect };
