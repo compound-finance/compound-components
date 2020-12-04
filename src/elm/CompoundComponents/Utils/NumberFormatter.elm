@@ -155,7 +155,7 @@ formatPercentageToNearestWhole decimalValue =
 
 formatPercentageWithDots : Maybe Decimal -> String
 formatPercentageWithDots maybeDecimalValue =
-    SharedElm.Functions.defaultMap formatPercentage "..." maybeDecimalValue
+    CompoundComponents.Functions.defaultMap formatPercentage "..." maybeDecimalValue
 
 
 formatOriginationFee : Decimal -> String

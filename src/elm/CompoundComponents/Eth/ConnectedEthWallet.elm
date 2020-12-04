@@ -382,7 +382,7 @@ selectLedgerAddressModal userLanguage model =
                 _ ->
                     ( ""
                     , Translations.select_address userLanguage
-                    , button [ class "button main", SharedElm.Utils.Markup.disabled ]
+                    , button [ class "button main", CompoundComponents.Utils.Markup.disabled ]
                         [ text (Translations.select userLanguage) ]
                     )
     in
