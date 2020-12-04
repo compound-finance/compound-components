@@ -1,4 +1,4 @@
-module SharedEth.Network exposing (Network(..), getEtherscanDomain, networkFromId, networkFromName, networkId, networkName)
+module CompoundComponents.Eth.Network exposing (Network(..), getEtherscanDomain, networkFromId, networkFromName, networkId, networkName)
 
 -- From https://ethereum.stackexchange.com/a/17101
 

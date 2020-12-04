@@ -1,4 +1,4 @@
-module SharedElm.Utils.CompoundHtmlAttributes exposing
+module CompoundComponents.Utils.CompoundHtmlAttributes exposing
     ( HrefLinkType(..)
     , autocomplete
     , class

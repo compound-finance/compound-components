@@ -1,4 +1,4 @@
-port module SharedElm.Console exposing (error, errorExt, log)
+port module CompoundComponents.Console exposing (error, errorExt, log)
 
 -- Log message to console
 

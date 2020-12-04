@@ -1,4 +1,4 @@
-module SharedElm.Functions exposing (andThen3, andThen6, cond, decimalMax, decimalMin, decimalMin3, default, defaultMap, demaybeify, dictFilterMap, first, handleError, map2, map3, map4, map5, maybeMap)
+module CompoundComponents.Functions exposing (andThen3, andThen6, cond, decimalMax, decimalMin, decimalMin3, default, defaultMap, demaybeify, dictFilterMap, first, handleError, map2, map3, map4, map5, maybeMap)
 
 import Decimal exposing (Decimal)
 import Dict exposing (Dict)

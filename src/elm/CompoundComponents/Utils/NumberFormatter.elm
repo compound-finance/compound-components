@@ -1,4 +1,4 @@
-module SharedElm.Utils.NumberFormatter exposing
+module CompoundComponents.Utils.NumberFormatter exposing
     ( commonFormatInThousandsOrMillions
     , formatActionInput
     , formatBlockNumber
@@ -33,8 +33,8 @@ module SharedElm.Utils.NumberFormatter exposing
     , interestRateAsPercentage
     )
 
+import CompoundComponents.Functions exposing (default)
 import Decimal exposing (Decimal)
-import SharedElm.Functions exposing (default)
 
 
 tokenDecimalPlaces : Int

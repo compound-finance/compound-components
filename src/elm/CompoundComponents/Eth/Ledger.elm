@@ -1,4 +1,4 @@
-module SharedEth.Ledger exposing (LedgerAccount(..), intToLedgerAccount, ledgerAccountToInt)
+module CompoundComponents.Eth.Ledger exposing (LedgerAccount(..), intToLedgerAccount, ledgerAccountToInt)
 
 
 type LedgerAccount

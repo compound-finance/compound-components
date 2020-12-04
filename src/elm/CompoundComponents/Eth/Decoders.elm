@@ -1,4 +1,4 @@
-module SharedEth.Decoders exposing
+module CompoundComponents.Eth.Decoders exposing
     ( decimal
     , decodeAssetAddress
     , decodeContractAddress
@@ -14,11 +14,11 @@ module SharedEth.Decoders exposing
     , stringDecimalWithDefault
     )
 
+import CompoundComponents.Eth.Ethereum exposing (AssetAddress(..), ContractAddress(..), CustomerAddress(..), TrxHash)
+import CompoundComponents.Eth.Ledger exposing (LedgerAccount, intToLedgerAccount)
+import CompoundComponents.Eth.Network exposing (Network, networkFromId)
 import Decimal exposing (Decimal)
 import Json.Decode exposing (Decoder, andThen, fail, field, float, int, map, map2, maybe, oneOf, string, succeed)
-import SharedEth.Ethereum exposing (AssetAddress(..), ContractAddress(..), CustomerAddress(..), TrxHash)
-import SharedEth.Ledger exposing (LedgerAccount, intToLedgerAccount)
-import SharedEth.Network exposing (Network, networkFromId)
 
 
 forceMaybe : String -> Maybe b -> Decoder b

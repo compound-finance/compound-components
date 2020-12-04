@@ -1,4 +1,4 @@
-port module SharedEth.ConnectedEthWallet exposing
+port module CompoundComponents.Eth.ConnectedEthWallet exposing
     ( ChooseWalletState(..)
     , ConnectionState(..)
     , InternalMsg
@@ -18,17 +18,17 @@ port module SharedEth.ConnectedEthWallet exposing
     , update
     )
 
+import CompoundComponents.Eth.Decoders
+import CompoundComponents.Eth.Ethereum exposing (Account(..), CustomerAddress(..), getCustomerAddressString, shortenedAddressString)
+import CompoundComponents.Eth.Network exposing (Network, networkFromId, networkId)
+import CompoundComponents.Functions exposing (handleError)
+import CompoundComponents.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), class, id, onClickStopPropagation)
+import CompoundComponents.Utils.Markup
+import CompoundComponents.Utils.NumberFormatter exposing (formatTokenBalanceWithSymbol)
 import Decimal exposing (Decimal)
 import Html exposing (Html, a, button, div, h4, h5, p, span, text)
 import Html.Events exposing (onClick)
 import Json.Decode
-import SharedElm.Functions exposing (handleError)
-import SharedElm.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), class, id, onClickStopPropagation)
-import SharedElm.Utils.Markup
-import SharedElm.Utils.NumberFormatter exposing (formatTokenBalanceWithSymbol)
-import SharedEth.Decoders
-import SharedEth.Ethereum exposing (Account(..), CustomerAddress(..), getCustomerAddressString, shortenedAddressString)
-import SharedEth.Network exposing (Network, networkFromId, networkId)
 import Strings.Translations as Translations
 
 
@@ -498,8 +498,8 @@ giveLedgerAccountAdddress wrapper =
         decoder =
             Json.Decode.map3 LedgerAcccountData
                 (Json.Decode.field "derivationPath" Json.Decode.string)
-                (Json.Decode.field "account" (Json.Decode.maybe SharedEth.Decoders.decodeCustomerAddress))
-                (Json.Decode.field "ethBalance" (Json.Decode.maybe SharedEth.Decoders.decimal))
+                (Json.Decode.field "account" (Json.Decode.maybe CompoundComponents.Eth.Decoders.decodeCustomerAddress))
+                (Json.Decode.field "ethBalance" (Json.Decode.maybe CompoundComponents.Eth.Decoders.decimal))
     in
     giveLedgerAccount
         (Json.Decode.decodeValue decoder >> wrapper)
@@ -563,7 +563,7 @@ giveAccount : (Result Json.Decode.Error (Maybe CustomerAddress) -> msg) -> Sub m
 giveAccount wrapper =
     let
         decoder =
-            Json.Decode.field "account" (Json.Decode.maybe SharedEth.Decoders.decodeCustomerAddress)
+            Json.Decode.field "account" (Json.Decode.maybe CompoundComponents.Eth.Decoders.decodeCustomerAddress)
     in
     giveAccountWeb3Port
         (Json.Decode.decodeValue decoder >> wrapper)
@@ -588,7 +588,7 @@ giveAccountBalance : (Result Json.Decode.Error Decimal -> msg) -> Sub msg
 giveAccountBalance wrapper =
     let
         decoder =
-            Json.Decode.field "balance" SharedEth.Decoders.decimal
+            Json.Decode.field "balance" CompoundComponents.Eth.Decoders.decimal
     in
     giveAccountBalancePort
         (Json.Decode.decodeValue decoder >> wrapper)

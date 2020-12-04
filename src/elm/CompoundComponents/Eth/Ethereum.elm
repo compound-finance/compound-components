@@ -1,4 +1,4 @@
-module SharedEth.Ethereum exposing
+module CompoundComponents.Eth.Ethereum exposing
     ( Account(..)
     , AssetAddress(..)
     , ContractAddress(..)
@@ -20,11 +20,11 @@ module SharedEth.Ethereum exposing
     , zeroAddress
     )
 
+import CompoundComponents.Eth.Network exposing (Network(..))
+import CompoundComponents.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), href, target)
 import Decimal exposing (Decimal)
 import Html exposing (Attribute, Html, a)
 import Regex
-import SharedElm.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), href, target)
-import SharedEth.Network exposing (Network(..))
 
 
 

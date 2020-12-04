@@ -1,4 +1,4 @@
-module SharedElm.Utils.Markup exposing (checked, disabled, selected)
+module CompoundComponents.Utils.Markup exposing (checked, disabled, selected)
 
 import Html exposing (Attribute, Html)
 import Html.Attributes
