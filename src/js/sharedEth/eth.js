@@ -55,7 +55,8 @@ function makeEth(dataProviders, networkMap, networkAbiMap, configNameToAddressMa
     acc[key] = reverseObject(value);
     return acc;
   }, {});
-  const targetAddressToNameMap = networkAddressToNameMap[defaultNetwork] || networkAddressToNameMap['mainnet'];
+  const targetAddressToNameMap =
+    networkAddressToNameMap[defaultNetwork] || networkAddressToNameMap['mainnet'];
 
   return {
     trxEth: undefined,
@@ -248,7 +249,16 @@ function wrapSend(
   );
 }
 
-function withGasLimitAndTrxCount(app, eth, contractJson, contractAddress, funcName, args, customerAddress, opts = {}) {
+function withGasLimitAndTrxCount(
+  app,
+  eth,
+  contractJson,
+  contractAddress,
+  funcName,
+  args,
+  customerAddress,
+  opts = {}
+) {
   return withWeb3Eth(eth).then((web3Eth) => {
     const contract = fetchContract(web3Eth, contractJson, contractAddress);
 
@@ -392,7 +402,9 @@ async function getLedgerAddressAndBalance(eth, derivationPath) {
   let accountAddress = null;
   let ethBalanceWei = null;
   if (ledger != null) {
-    accountAddress = await ledger.getAddress().catch((error) => console.log('caught ledger error: %o', error));
+    accountAddress = await ledger
+      .getAddress()
+      .catch((error) => console.log('caught ledger error: %o', error));
     if (accountAddress != null) {
       ethBalanceWei = await mainnetEth.getBalance(accountAddress);
     }
@@ -474,7 +486,9 @@ async function getBalance(eth, address) {
 }
 
 async function getBlockNumber(eth) {
+  console.log('AM I GETTING BLOCKNUmber', eth, eth.dataEth);
   const web3Eth = await withWeb3Eth(eth);
+  console.log('DOW I HABE WEBE EHt');
 
   return web3Eth.getBlockNumber();
 }

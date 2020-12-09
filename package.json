@@ -17,10 +17,12 @@
     "ethereumjs-wallet": "https://github.com/ethereumjs/ethereumjs-wallet.git#2121d5a32195e595accc9dce81d14bae8b4e6de6",
     "ethers": "^5.0.23",
     "ethjs-provider-signer": "^0.1.4",
+    "google-translate": "^3.0.0",
     "walletlink": "^2.0.1",
     "web3-core-helpers": "1.2.7",
     "web3-eth": "1.2.7",
-    "web3-utils": "1.2.7"
+    "web3-utils": "1.2.7",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "elm-format": "^0.8.1",
