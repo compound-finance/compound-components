@@ -486,9 +486,7 @@ async function getBalance(eth, address) {
 }
 
 async function getBlockNumber(eth) {
-  console.log('AM I GETTING BLOCKNUmber', eth, eth.dataEth);
   const web3Eth = await withWeb3Eth(eth);
-  console.log('DOW I HABE WEBE EHt');
 
   return web3Eth.getBlockNumber();
 }

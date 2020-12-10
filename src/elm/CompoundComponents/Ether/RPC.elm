@@ -210,6 +210,30 @@ ethBatchCall endpoint ethCalls =
             )
 
 
+ethBalance : String -> Address -> Block -> Http.Request (Result String BigInt)
+ethBalance endpoint address blockNumber =
+    let
+        encoded =
+            Encode.list identity [ encodeAddress address, encodeBlock blockNumber ]
+
+        zeroPad : Hex -> Hex
+        zeroPad (Hex.Hex string) =
+            let
+                padding =
+                    max 0 (64 - String.length string)
+
+                paddedString =
+                    String.repeat padding "0"
+                        ++ string
+            in
+            Hex.Hex paddedString
+    in
+    rpcPostSingle endpoint
+        "eth_getBalance"
+        encoded
+        (Tuple.second >> Hex.fromEthereum >> Result.andThen (\hex -> Decoder.decodeHex Decoder.uint (zeroPad hex)))
+
+
 encodeHex : Hex -> Encode.Value
 encodeHex hex =
     hex
