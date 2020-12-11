@@ -1,4 +1,13 @@
-module CompoundComponents.Utils.Time exposing (days, differenceInSeconds, hours, minutes, posixToSeconds, seconds, subtractMilliFromPosix, subtractMilliFromPosixAsSeconds)
+module CompoundComponents.Utils.Time exposing
+    ( days
+    , differenceInSeconds
+    , hours
+    , minutes
+    , posixToSeconds
+    , seconds
+    , subtractMilliFromPosix
+    , subtractMilliFromPosixAsSeconds
+    )
 
 import Time
 
