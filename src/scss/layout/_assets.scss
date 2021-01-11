@@ -1,6 +1,8 @@
 @import '../abstracts/mixins';
 @import '../abstracts/variables';
 
+@import '../components/governance-panel';
+
 .asset-list {
   .icon {
     width: 2.25rem;
@@ -26,9 +28,54 @@
   text-transform: capitalize;
   letter-spacing: 0;
   transition: none;
+
+  @include governance-row--hover();
+
+  &:hover {
+    background: inherit;
+  }
+
   &:last-child {
     border-bottom: none;
     border-radius: 0 0 $border_radius $border_radius;
+  }
+
+  &--loading {
+    &:hover {
+      border-left: 2px solid transparent;
+    }
+  }
+
+  &:nth-of-type(4n + 2) {
+    .name {
+      &--loading {
+        width: 7.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 3) {
+    .name {
+      &--loading {
+        width: 5.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 4) {
+    .name {
+      &--loading {
+        width: 9.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 5) {
+    .name {
+      &--loading {
+        width: 6.1875rem;
+      }
+    }
   }
 }
 
