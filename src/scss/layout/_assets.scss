@@ -35,6 +35,24 @@
     background: inherit;
   }
 
+  &--dark {
+    background: $color_dark_2;
+    border-bottom: 1px solid $color_dark_1;
+
+    &:hover {
+      border-left: 2px solid transparent;
+      background: $color_dark_mostly_opaque;
+    }
+
+    .balance {
+      color: #ffffff;
+
+      .label {
+        padding-bottom: 4px;
+      }
+    }
+  }
+
   &:last-child {
     border-bottom: none;
     border-radius: 0 0 $border_radius $border_radius;
