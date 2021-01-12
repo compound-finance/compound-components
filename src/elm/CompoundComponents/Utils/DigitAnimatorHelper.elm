@@ -131,7 +131,7 @@ valueFormattedStringToDigits maybePrevString totalValueFormattedString displayCu
                 in
                 div [ class ("digit" ++ digitExtraClass) ]
                     [ div
-                        [ class ("digit-container" ++ containerExtraClass ++ aciveClass)
+                        [ class ("digit-holder" ++ containerExtraClass ++ aciveClass)
                         , property "style" ("--num-digits: " ++ String.fromInt numDigits ++ ";")
                         ]
                         [ text textContent ]
@@ -205,7 +205,7 @@ valueFormattedStringToRandomDigits totalValueFormattedString =
                                     ( "", "", charAsString )
                 in
                 div [ class ("digit" ++ digitExtraClass) ]
-                    [ div [ class ("digit-container" ++ containerExtraClass ++ " active") ]
+                    [ div [ class ("digit-holder" ++ containerExtraClass ++ " active") ]
                         [ text textContent ]
                     ]
             )

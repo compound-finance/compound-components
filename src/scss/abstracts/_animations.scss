@@ -16,25 +16,25 @@ $digit_anim_length: 2.5s;
   border-left: none;
 }
 
-@mixin digit-container-setup {
+@mixin digit-holder-setup {
   --num-digits: 4;
   --digits-translation: calc(var(--num-digits) * -1.2em);
 }
-.digit-container {
+.digit-holder {
   line-height: $digit_line_height;
   padding: 0;
   margin-top: 0.2em;
   overflow: hidden;
 
   &.digit-thousand {
-    @include digit-container-setup;
+    @include digit-holder-setup;
     &.active {
       -webkit-animation: slide $digit_anim_length ease;
       animation: slide $digit_anim_length ease;
     }
   }
   &.digit-hundred {
-    @include digit-container-setup;
+    @include digit-holder-setup;
     line-height: $digit_line_height;
     &.active {
       -webkit-animation: slide $digit_anim_length ease-out;
@@ -42,7 +42,7 @@ $digit_anim_length: 2.5s;
     }
   }
   &.digit-ten {
-    @include digit-container-setup;
+    @include digit-holder-setup;
     line-height: $digit_line_height;
     &.active {
       -webkit-animation: slide $digit_anim_length ease-in-out;
