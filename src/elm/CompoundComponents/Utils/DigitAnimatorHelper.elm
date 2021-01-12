@@ -1,4 +1,4 @@
-module Utils.DigitAnimatorHelper exposing (valueFormattedStringToDigits, valueFormattedStringToRandomDigits)
+module CompoundComponents.Utils.DigitAnimatorHelper exposing (valueFormattedStringToDigits, valueFormattedStringToRandomDigits)
 
 import CompoundComponents.DisplayCurrency exposing (DisplayCurrency(..))
 import CompoundComponents.Utils.CompoundHtmlAttributes exposing (class, property)
