@@ -1,0 +1,194 @@
+@import '../abstracts/mixins';
+@import '../abstracts/variables';
+
+@import '../components/governance-panel';
+
+.asset-list {
+  .icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    &--loading {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+  }
+  .ctoken {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+.asset {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $color_border;
+  padding: 1.25rem $gov-column-gutter;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  letter-spacing: 0;
+  transition: none;
+
+  @include governance-row--hover();
+
+  &:hover {
+    background: inherit;
+  }
+
+  &--dark {
+    background: $color_dark_2;
+    border-bottom: 1px solid $color_dark_1;
+
+    &:hover {
+      border-left: 2px solid transparent;
+      background: $color_dark_mostly_opaque;
+    }
+
+    .balance {
+      color: #ffffff;
+
+      .label {
+        padding-bottom: 4px;
+      }
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+    border-radius: 0 0 $border_radius $border_radius;
+  }
+
+  &--loading {
+    &:hover {
+      border-left: 2px solid transparent;
+    }
+  }
+
+  &:nth-of-type(4n + 2) {
+    .name {
+      &--loading {
+        width: 7.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 3) {
+    .name {
+      &--loading {
+        width: 5.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 4) {
+    .name {
+      &--loading {
+        width: 9.1875rem;
+      }
+    }
+  }
+
+  &:nth-of-type(4n + 5) {
+    .name {
+      &--loading {
+        width: 6.1875rem;
+      }
+    }
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  .icon {
+    margin-right: 1rem;
+  }
+  .ctoken {
+    margin-right: 1rem;
+  }
+  .symbol {
+    margin-left: 1rem;
+    color: $color_label;
+
+    &--loading {
+      height: 0.75rem;
+      width: 2.375rem;
+
+      @extend .animated-background;
+    }
+  }
+}
+
+.name {
+  &--loading {
+    height: 1rem;
+    width: 4.1875rem;
+    @extend .animated-background;
+  }
+}
+
+.icon {
+  background-size: 100% 100%;
+  border: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+
+  &--loading {
+    @extend .animated-background;
+  }
+
+  &.BAT {
+    background-image: url(/compound-components/assets/asset_BAT.svg);
+  }
+
+  &.COMP {
+    background-image: url(/compound-components/assets/asset_COMP.svg);
+  }
+
+  &.DAI {
+    background-image: url(/compound-components/assets/asset_DAI.svg);
+  }
+
+  &.ETH,
+  &.WETH {
+    background-image: url(/compound-components/assets/asset_ETH.svg);
+  }
+
+  &.LINK {
+    background-image: url(/compound-components/assets/asset_LINK.png);
+  }
+
+  &.MKR {
+    background-image: url(/compound-components/assets/asset_MKR.svg);
+  }
+
+  &.REP {
+    background-image: url(/compound-components/assets/asset_REP.svg);
+  }
+
+  &.SAI {
+    background-image: url(/compound-components/assets/asset_SAI.svg);
+  }
+
+  &.UNI {
+    background-image: url(/compound-components/assets/asset_UNI.svg);
+  }
+
+  &.USDC {
+    background-image: url(/compound-components/assets/asset_USDC.svg);
+  }
+
+  &.USDT {
+    background-image: url(/compound-components/assets/asset_USDT.svg);
+  }
+
+  &.WBTC {
+    background-image: url(/compound-components/assets/asset_BTC.svg);
+  }
+
+  &.ZRX {
+    background-image: url(/compound-components/assets/asset_ZRX.svg);
+  }
+}

@@ -1,0 +1,168 @@
+@import '../abstracts/variables';
+
+@mixin governance-row() {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 1px solid $color_border;
+  padding: 1.25rem $gov-column-gutter;
+}
+
+@mixin governance-row--hover {
+  @include governance-row();
+  border-left: 2px solid transparent;
+  padding-left: $gov-column-gutter - 0.125rem;
+  text-transform: none;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  transition: none;
+
+  &:hover {
+    border-left: 2px solid $color_supply;
+    color: $color_dark_2;
+  }
+}
+
+.governance-panel {
+  background: #ffffff;
+  box-shadow: 0px 2px 4px rgba(16, 21, 24, 0.05);
+  border-radius: 4px;
+  margin-bottom: 1.33rem;
+
+  &__header {
+    display: flex;
+    flex-flow: inherit;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    padding: 1rem $gov-column-gutter;
+    border-bottom: 1px solid $color_border;
+
+    h4 {
+      margin: 0;
+    }
+  }
+
+  &__labels {
+    display: flex;
+    padding: 1rem $gov-column-gutter;
+    border-bottom: 1px solid $color_border;
+    align-items: center;
+
+    & > div {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  &__footer {
+    padding: 1.145rem 1.9375rem;
+    border-bottom: none;
+    border-radius: 0 0 4px 4px;
+    display: flex;
+    justify-content: center;
+    color: #050f19;
+    @include anchor;
+
+    &:hover {
+      color: $color_supply;
+    }
+
+    &--disabled {
+      color: $color_grey_3;
+      user-select: none;
+
+      &:hover {
+        color: $color_grey_3;
+        cursor: initial;
+      }
+    }
+  }
+
+  &__pager {
+    padding: 2rem 1.9375rem;
+    border-bottom: none;
+    border-radius: 0 0 4px 4px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #050f19;
+
+    @media (min-width: $device-md) {
+      padding: 1.145rem 1.9375rem;
+    }
+
+    &__previous {
+      position: absolute;
+      left: $gov-column-gutter;
+
+      &::before {
+        @include pager-caret();
+        margin-right: $column-gutter/2;
+      }
+
+      label {
+        text-transform: uppercase;
+        color: $color_dark_2;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      &:hover {
+        color: $color_supply;
+
+        label {
+          color: $color_supply;
+        }
+      }
+    }
+
+    &__indicator {
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+
+      &__text {
+        color: #b8c2cc;
+        padding: 0 0.5rem;
+
+        &--active {
+          color: $color_dark_2;
+        }
+      }
+    }
+
+    &__next {
+      position: absolute;
+      right: $gov-column-gutter;
+
+      &::after {
+        @include pager-caret();
+        transform: rotate(45deg);
+        margin-left: $column-gutter/2;
+      }
+
+      label {
+        text-transform: uppercase;
+        color: $color_dark_2;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      &:hover {
+        color: $color_supply;
+
+        label {
+          color: $color_supply;
+        }
+      }
+    }
+  }
+}

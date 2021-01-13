@@ -1,0 +1,29 @@
+@import '../abstracts/variables';
+
+.dot-indicator {
+  height: 9px;
+  width: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  &.red {
+    background-color: $color_caution;
+  }
+  &.yellow {
+    background-color: $color_notice;
+  }
+  &.green {
+    background-color: $color_supply;
+  }
+  &.kovan {
+    background-color: $color_kovan;
+  }
+  &.rinkeby {
+    background-color: $color_rinkeby;
+  }
+  &.goerli {
+    background-color: $color_goerli;
+  }
+  &.ropsten {
+    background-color: $color_ropsten;
+  }
+}

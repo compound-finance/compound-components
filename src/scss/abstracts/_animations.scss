@@ -1,0 +1,106 @@
+$digit_height: 1.2em;
+$digit_line_height: 1.3em;
+$digit_anim_length: 2.5s;
+
+.digit {
+  display: inline-block;
+  height: $digit_height;
+  width: 0.59em;
+  overflow: hidden;
+  &.comma {
+    width: 0.3em;
+    overflow: hidden;
+  }
+}
+.digit:first-child {
+  border-left: none;
+}
+
+@mixin digit-holder-setup {
+  --num-digits: 4;
+  --digits-translation: calc(var(--num-digits) * -1.2em);
+}
+.digit-holder {
+  line-height: $digit_line_height;
+  padding: 0;
+  margin-top: 0.2em;
+  overflow: hidden;
+
+  &.digit-thousand {
+    @include digit-holder-setup;
+    &.active {
+      -webkit-animation: slide $digit_anim_length ease;
+      animation: slide $digit_anim_length ease;
+    }
+  }
+  &.digit-hundred {
+    @include digit-holder-setup;
+    line-height: $digit_line_height;
+    &.active {
+      -webkit-animation: slide $digit_anim_length ease-out;
+      animation: slide $digit_anim_length ease-out;
+    }
+  }
+  &.digit-ten {
+    @include digit-holder-setup;
+    line-height: $digit_line_height;
+    &.active {
+      -webkit-animation: slide $digit_anim_length ease-in-out;
+      animation: slide $digit_anim_length ease-in-out;
+    }
+  }
+  &.digit-one {
+    --digits-translation: calc(var(--num-digits, 0) * -1.2em);
+    line-height: $digit_line_height;
+    &.active {
+      -webkit-animation: slide $digit_anim_length linear;
+      animation: slide $digit_anim_length linear;
+    }
+  }
+
+  @-webkit-keyframes slide {
+    0% {
+      -webkit-transform: translateY(var(--digits-translation));
+    }
+    /* delay between animations by adding extra transform type with the same value as transform for 100% */
+    40% {
+      transform: translateY(0);
+    }
+    100% {
+      -webkit-transform: translateY(0);
+    }
+  }
+  @keyframes slide {
+    0% {
+      transform: translateY(var(--digits-translation));
+    }
+    40% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes project-slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
