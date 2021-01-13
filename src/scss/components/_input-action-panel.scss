@@ -1,0 +1,314 @@
+@import '../abstracts/variables';
+
+.input-action-panel {
+  position: relative;
+  width: 25.5rem;
+
+  [class*='col'] {
+    padding: 0 0;
+  }
+
+  &.panel {
+    background: $color_light_2;
+
+    .icon, .asset {
+      display: inline-block;
+    }
+
+    .header {
+      .icon, .asset {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-right: 0.5rem;
+        transform: translateY(25%);
+      }
+
+      @media (max-width: $device-sm) {
+        .title {
+          top: $column-gutter/2;
+          .icon, .asset {
+            margin-top: -$column-gutter/2;
+          }
+        }
+      }
+    }
+  }
+
+  .center-icon {
+    width: 4.75rem;
+    height: 4.75rem;
+  }
+
+  .tab-group {
+    width: 100%;
+
+    .tab-group__option {
+      font-size: 0.75rem;
+      margin-left: 0;
+      text-align: center;
+      text-transform: uppercase;
+      width: 50%;
+    }
+
+    .tab-group__line {
+      background-color: rgba($color_grey_2, 0.1);
+      height: 1px;
+      margin-top: -1px;
+    }
+  }
+
+  p {
+    margin-top: 1.25rem;
+    color: $color_grey_2;
+
+    &.small {
+      font-size: 12px;
+    }
+  }
+
+  .description {
+    color: $color_grey_2;
+    text-align: center;
+  }
+
+  .enable-asset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: ($gov-column-gutter * 2) $gov-column-gutter ($gov-column-gutter * 2) $gov-column-gutter;
+
+    &.extra-bottom-margin {
+      margin-bottom: ($gov-column-gutter * 4);
+    }
+
+    .ctoken {
+      background-repeat: no-repeat;
+    }
+
+    .etherscan-button {
+      width: 25.5rem - ($gov-column-gutter * 2);
+      position: absolute;
+      left: $gov-column-gutter;
+      bottom: ($gov-column-gutter / 2);
+    }
+  }
+
+  .input {
+    position: relative;
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  input {
+    width: 25.5rem - ($gov-column-gutter * 2);
+    height: 82px;
+    margin: 32px $gov-column-gutter 30px $gov-column-gutter;
+    background: $color_light_2;
+    font-size: 2.625rem; //This value is overwritten in elm based on character count
+    font-weight: 500;
+    text-align: center;
+    color: $color_dark_2;
+    &.supply {
+      caret-color: $color_supply;
+    }
+    &.borrow {
+      caret-color: $color_borrow;
+    }
+  }
+  .max {
+    display: block;
+    padding: 4.2rem ($gov-column-gutter) 4.875rem ($gov-column-gutter/2);
+    text-align: center;
+    width: auto;
+    background: $color_light_2;
+  }
+
+  .info {
+    background: $color_light_1;
+    padding-bottom: $gov-column-gutter + 7.25rem;
+  }
+
+  .form {
+    padding: 2.25rem $gov-column-gutter 0 $gov-column-gutter;
+
+    .label-link {
+      label {
+        cursor: pointer;
+        text-transform: none;
+        letter-spacing: normal;
+      }
+      .line-icon {
+        margin-left: 0.5rem;
+      }
+
+      &:hover {
+        label {
+          color: $color_supply;
+        }
+        .line-icon {
+          background-image: url('/compound-components/assets/icn-external-link-green.svg');
+        }
+      }
+    }
+
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    &:nth-of-type(2) {
+      padding-top: 1.75rem;
+    }
+  }
+
+  .calculation {
+    .icon {
+      margin-top: -0.3rem;
+      margin-bottom: -0.45rem;
+      margin-right: 0.5rem;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+
+  .market-bar {
+    margin: -0.75rem $gov-column-gutter 0 $gov-column-gutter;
+
+    .bar {
+      width: 25.5rem - ($gov-column-gutter * 2);
+      background: $color_dark_matting_clear;
+      border-radius: 100px;
+    }
+    .fill {
+      border-radius: 100px;
+    }
+  }
+
+  //TODO: should really have an arrow component for this I thing
+  .arrow {
+    width: 14px;
+    height: 12px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/compound-components/assets/icn-build-arrows-green.svg');
+    margin-right: 8px;
+    margin-left: 8px;
+    &.borrow {
+      background-image: url('/compound-components/assets/icn-build-arrows-purple.svg');
+    }
+  }
+
+  .submit-button {
+    width: 25.5rem - ($gov-column-gutter * 2);
+    position: absolute;
+    bottom: $gov-column-gutter * 2.25;
+    left: $gov-column-gutter;
+  }
+
+  .faucet-link {
+    position: absolute;
+    bottom: $gov-column-gutter/2;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (max-width: $device-sm) {
+      bottom: 0;
+    }
+  }
+
+  .bottom-note {
+    position: absolute;
+    bottom: $gov-column-gutter;
+    left: $gov-column-gutter;
+    right: $gov-column-gutter;
+
+    .calculation {
+      padding: 0;
+      margin: 0;
+    }
+
+    @media (max-width: $device-sm) {
+      bottom: $gov-column-gutter/2;
+    }
+  }
+
+  @media (max-width: $device-sm) {
+    width: 100%;
+
+    &.panel {
+      width: 100%;
+      border-radius: $border_radius;
+    }
+
+    input {
+      width: 100%;
+      padding: 3.225rem $column-gutter 3.225rem $column-gutter;
+      margin: 0;
+    }
+    .max {
+      margin: 0.125rem 0 0.125rem 0;
+      padding: 0 ($column-gutter) ($column-gutter/2);
+    }
+
+    .action-button {
+      width: 100%;
+      padding: $gov-column-gutter;
+
+      .submit-button {
+        width: 100%;
+        position: static;
+      }
+    }
+
+    .info {
+      padding-bottom: $gov-column-gutter;
+
+      .etherscan-button {
+        width: 100%;
+        position: static;
+        padding: 0 $gov-column-gutter 0 $gov-column-gutter;
+
+        .submit-button {
+          width: 100%;
+          position: static;
+        }
+      }
+    }
+
+    .enable-asset {
+      margin-top: 3.125rem;
+      margin-bottom: $column-gutter;
+
+      &.extra-bottom-margin {
+        margin-bottom: ($gov-column-gutter * 2.75);
+      }
+
+      .etherscan-button {
+        width: auto;
+        position: absolute;
+        left: $gov-column-gutter;
+        right: $gov-column-gutter;
+        bottom: ($gov-column-gutter / 2);
+      }
+    }
+
+    .action-selector {
+      .button {
+        height: auto;
+      }
+    }
+
+    .market-bar {
+      .bar {
+        width: 100%;
+      }
+    }
+  }
+}

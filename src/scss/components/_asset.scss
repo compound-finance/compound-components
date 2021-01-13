@@ -1,0 +1,119 @@
+@import '../abstracts/mixins';
+@import '../abstracts/variables';
+
+.asset {
+  flex-shrink: 0;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+  width: 3.375rem;
+  height: 3.375rem;
+
+  &--small {
+    width: 25px;
+    height: 25px;
+  }
+
+  &--loading {
+    @extend .animated-background;
+  }
+
+  &--AMPL {
+    background-image: url('/compound-components/assets/asset_AMPL.svg');
+  }
+
+  &--BAT {
+    background-image: url('/compound-components/assets/asset_BAT.svg');
+  }
+
+  &--COMP {
+    background-image: url('/compound-components/assets/asset_COMP.svg');
+  }
+
+  &--DAI {
+    background-image: url('/compound-components/assets/asset_DAI.svg');
+  }
+
+  &--ETH,
+  &--WETH {
+    background-image: url('/compound-components/assets/asset_ETH.svg');
+  }
+
+  &--FXC {
+    background-image: url('/compound-components/assets/asset_FXC.svg');
+  }
+
+  &--HT {
+    background-image: url('/compound-components/assets/asset_HT.svg');
+  }
+
+  &--LINK {
+    background-image: url('/compound-components/assets/asset_LINK.png');
+  }
+
+  &--LOOM {
+    background-image: url('/compound-components/assets/asset_LOOM.svg');
+  }
+
+  &--MANA {
+    background-image: url('/compound-components/assets/asset_MANA.svg');
+  }
+
+  &--MKR {
+    background-image: url('/compound-components/assets/asset_MKR.svg');
+  }
+
+  &--NMR {
+    background-image: url('/compound-components/assets/asset_NMR.svg');
+  }
+
+  &--OMG {
+    background-image: url('/compound-components/assets/asset_OMG.svg');
+  }
+
+  &--PAX {
+    background-image: url('/compound-components/assets/asset_PAX.svg');
+  }
+
+  &--REP {
+    background-image: url('/compound-components/assets/asset_REP.svg');
+  }
+
+  &--SAI {
+    background-image: url('/compound-components/assets/asset_SAI.svg');
+  }
+
+  &--SUSD {
+    background-image: url('/compound-components/assets/asset_SUSD.svg');
+  }
+
+  &--TBTC {
+    background-image: url('/compound-components/assets/asset_TBTC.svg');
+  }
+
+  &--TUSD {
+    background-image: url('/compound-components/assets/asset_TUSD.svg');
+  }
+
+  &--UNI {
+    background-image: url('/compound-components/assets/asset_UNI.svg');
+  }
+
+  &--USDC {
+    background-image: url('/compound-components/assets/asset_USDC.svg');
+  }
+
+  &--USDT {
+    background-image: url('/compound-components/assets/asset_USDT.svg');
+  }
+
+  &--WBTC {
+    background-image: url('/compound-components/assets/asset_BTC.svg');
+  }
+
+  &--ZRX {
+    background-image: url('/compound-components/assets/asset_ZRX.svg');
+  }
+}

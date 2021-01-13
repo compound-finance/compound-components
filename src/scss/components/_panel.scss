@@ -1,0 +1,58 @@
+@import '../abstracts/variables';
+
+.panel {
+  @include panel();
+  margin-bottom: $column-gutter;
+  .header {
+    display: flex;
+    flex-flow: inherit;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $color_border;
+    padding: $column-gutter ($column-gutter * 1.5);
+    font-size: 1.1rem;
+    .icon {
+      margin-top: -1rem;
+      margin-bottom: -1rem;
+    }
+    label {
+      margin: 0;
+    }
+    h4,
+    h3 {
+      margin: 0;
+    }
+  }
+  .labels {
+    display: flex;
+    border-bottom: 1px solid $color_grey_3;
+    padding: 1rem $column-gutter 1rem;
+  }
+  //TODO: This whole section might be goin away once we update all panels to be using the governance-panel styles!
+  .content {
+    padding: 0 ($column-gutter * 1.5);
+
+    .text-largest {
+      margin: ($column-gutter * 1.5) 0;
+    }
+    p {
+      text-align: center;
+      color: $color_neutral;
+    }
+    .demi.row {
+      padding: $column-gutter 0 ($column-gutter * 1.5);
+    }
+  }
+
+  //TODO: Think about moving this into it's own component file. Lots of things use it.
+  .calculation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $color_grey_3;
+    padding: $column_gutter 0;
+    .description {
+      color: $color_text_muted;
+    }
+  }
+}
