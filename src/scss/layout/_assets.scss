@@ -1,7 +1,7 @@
 @import '../abstracts/mixins';
 @import '../abstracts/variables';
 
-@import '../components/governance-panel';
+@import '../components/panel';
 
 .asset-list {
   .icon {
@@ -29,7 +29,7 @@
   letter-spacing: 0;
   transition: none;
 
-  @include governance-row--hover();
+  @include row--hover();
 
   &:hover {
     background: inherit;
