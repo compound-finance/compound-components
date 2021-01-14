@@ -1,0 +1,20 @@
+@import '../abstracts/variables';
+
+input {
+  border: none;
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $color_dark_2;
+  @include transition(all, 0.2s, linear);
+}
+
+input::placeholder {
+  font-weight: 400;
+  color: $color_label;
+  padding-right: 1.6rem;
+}

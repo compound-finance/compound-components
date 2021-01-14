@@ -1,0 +1,153 @@
+@import '../abstracts/variables';
+
+@mixin btn($base_color) {
+  @include contrast($base_color);
+  border-color: $base_color;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: darken($base_color, 5%);
+    border-color: darken($base_color, 5%);
+  }
+}
+@mixin outline($base_color) {
+  border-color: $base_color;
+  color: $base_color;
+  &:hover {
+    background: mix($base_color, #ffffff, 5%);
+    color: darken($base_color, 10%);
+  }
+}
+@mixin shimmer($base_color) {
+  border-color: transparent;
+  background: linear-gradient(120deg, $base_color 40%, lighten($base_color, 20%) 50%, $base_color 60%);
+  background-size: 300%;
+
+  animation: AnimationName 2s linear infinite;
+
+  cursor: default;
+
+  @keyframes AnimationName {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+.button,
+button,
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
+  display: inline-block;
+  border-radius: $border_radius;
+  border-width: 1px;
+  border-style: solid;
+  padding: 1.2rem 1.6rem;
+  text-align: center;
+  font-family: inherit;
+  @include anchor();
+
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+
+  &.main {
+    @include btn($color_supply);
+    &.pending {
+      @include shimmer($color_supply);
+    }
+  }
+  &.borrow {
+    @include btn($color_borrow);
+    &.pending {
+      @include shimmer($color_borrow);
+    }
+  }
+  &.neutral {
+    @include btn($color_neutral);
+    &.pending {
+      @include shimmer($color_neutral);
+    }
+  }
+  &.hollow {
+    background: none;
+    border-color: $color_neutral;
+    color: $color_text_muted;
+    &:hover {
+      border-color: $color_text_muted;
+      color: $color_disabled;
+    }
+  }
+  &.dark {
+    @include btn($color_dark_2);
+    &.pending {
+      @include shimmer($color_dark_2);
+    }
+  }
+  &.outline-main {
+    @include outline($color_supply);
+    &.pending {
+      @include shimmer($color_light_2);
+    }
+  }
+  &.outline-borrow {
+    @include outline($color_borrow);
+    &.pending {
+      @include shimmer($color_light_2);
+    }
+  }
+  &.outline-neutral {
+    @include outline($color_neutral);
+    &.pending {
+      @include shimmer($color_light_2);
+    }
+  }
+  &.outline-dark {
+    @include outline($color_dark_2);
+    &.pending {
+      @include shimmer($color_light_2);
+    }
+  }
+
+  &.dark-blue {
+    @include btn(#627eea);
+    &.pending {
+      @include shimmer(#627eea);
+    }
+  }
+
+  &:disabled {
+    background: $color_grey_3 !important;
+    border-color: $color_grey_3 !important;
+    color: $color_light_1 !important;
+  }
+
+  &.max {
+    border: none;
+    text-align: right;
+    padding: 0 $column-gutter 0 0;
+    color: $color_label;
+    background: none;
+    &:hover {
+      color: $color_dark_2;
+    }
+  }
+}
+
+.button.long-text {
+  padding: 1.2rem 0.2rem;
+}
+
+.button + .button {
+  margin-left: ($column-gutter / 2);
+}

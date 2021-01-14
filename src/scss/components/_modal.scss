@@ -1,0 +1,139 @@
+@import '../abstracts/variables';
+
+.cover {
+  background: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  &.clear {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  [class*='container'] {
+    z-index: 2;
+  }
+
+  .container {
+    max-height: 95%;
+    margin-top: $column-gutter;
+    margin-bottom: $column-gutter;
+    overflow-y: auto;
+
+    @media (max-width: $device-sm) {
+      width: 95%;
+      .title {
+        top: $column-gutter/2;
+      }
+      .close-x {
+        top: $column-gutter/6;
+      }
+      .copy {
+        margin: $column-gutter;
+      }
+      .form {
+        padding: 0 $column-gutter $column-gutter;
+      }
+    }
+  }
+
+  .legacy-panel {
+    margin: 0;
+
+    .header {
+      position: relative;
+
+      @media (min-width: $device-md) {
+        padding: 1.995rem;
+      }
+
+      .back-arrow {
+        z-index: 3;
+        position: absolute;
+        bottom: $column-gutter;
+        left: $column-gutter;
+        button {
+          background-color: transparent;
+          background-image: url('/compound-components/assets/icn-arrow-back-dark.svg');
+          background-size: 100% 100%;
+          border: 0;
+          padding: 0.5rem 1rem;
+        }
+      }
+
+      .title {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        bottom: $column-gutter/1.75;
+        right: $column-gutter;
+
+        @media (min-width: $device-md) {
+          bottom: $column-gutter;
+          right: $column-gutter;
+        }
+      }
+      .close-x {
+        position: absolute;
+        bottom: $column-gutter/1.75;
+        right: $column-gutter/2;
+
+        @media (min-width: $device-md) {
+          bottom: $column-gutter;
+          right: $column-gutter;
+        }
+        button {
+          background-color: transparent;
+          background-image: url('/compound-components/assets/icon_close_x.svg');
+          background-size: 100% 100%;
+          border: 0;
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
+    .copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: ($column-gutter * 2) 0;
+
+      p {
+        font-size: 1rem;
+      }
+
+      @media (min-width: $device-md) {
+        font-size: 16px;
+      }
+
+      .icon {
+        height: 3rem;
+        width: 3rem;
+        margin: 0 0 0.6rem 0;
+      }
+    }
+    .available {
+      color: $color_dark_2;
+    }
+    .form {
+      padding: 0 ($column-gutter * 3) ($column-gutter * 2);
+    }
+  }
+  .actions {
+    margin: $column-gutter $column-gutter;
+  }
+}
