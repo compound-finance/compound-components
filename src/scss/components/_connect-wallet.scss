@@ -49,7 +49,7 @@
     max-width: 30em;
   }
 
-  .panel {
+  .legacy-panel {
     .header {
       border-bottom: none;
       height: 48px;
@@ -121,19 +121,21 @@
         height: 35px;
         min-width: 35px;
         min-height: 35px;
-        margin: 0;
-      }
 
-      .icon.coinbase {
-        background-image: url(/compound-components/assets/icn-coinbase-wallet.svg);
-      }
+        &.coinbase {
+          background-image: url(/compound-components/assets/icn-coinbase-wallet.svg);
+          margin: 0;
+        }
 
-      .icon.ledger {
-        background-image: url(/compound-components/assets/icn-ledger.svg);
-      }
+        &.ledger {
+          background-image: url(/compound-components/assets/icn-ledger.svg);
+          margin: 0;
+        }
 
-      .icon.metamask {
-        background-image: url(/compound-components/assets/icn-metamask.svg);
+        &.metamask {
+          background-image: url(/compound-components/assets/icn-metamask.svg);
+          margin: 0;
+        }
       }
 
       button {
