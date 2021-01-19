@@ -464,6 +464,13 @@ chooseWalletView userLanguage ({ chooseWalletState } as model) =
                         , span [ class "arrow big green" ] []
                         ]
                     ]
+                , div [ class "terms-agreement" ]
+                    [ p [ class "small" ]
+                        [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                        , text " "
+                        , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                        ]
+                    ]
                 ]
 
         ChooseLedgerAccount ->
@@ -615,6 +622,13 @@ selectLedgerAddressModal userLanguage model =
                 )
             ]
         , selectButton
+        , div [ class "terms-agreement" ]
+            [ p [ class "small" ]
+                [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                , text " "
+                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                ]
+            ]
         ]
 
 
@@ -636,6 +650,13 @@ ledgerConnectionErrorModal userLanguage model =
                 , span [ class "arrow big green" ] []
                 ]
             , div [ class "line" ] []
+            ]
+        , div [ class "terms-agreement" ]
+            [ p [ class "small" ]
+                [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                , text " "
+                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                ]
             ]
         ]
 
