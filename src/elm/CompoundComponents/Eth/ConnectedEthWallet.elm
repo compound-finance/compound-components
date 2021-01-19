@@ -11,10 +11,12 @@ port module CompoundComponents.Eth.ConnectedEthWallet exposing
     , giveFinishedLedgerRetrieval
     , giveLedgerAccountAdddress
     , giveTrxProviderType
+    , handleBack
     , init
     , resetModel
     , subscriptions
     , translator
+    , tryConnect
     , update
     )
 
@@ -171,17 +173,36 @@ resetLedgerState =
 resetModel : Model -> Model
 resetModel model =
     { model
-        | chooseWalletState = ChooseProvider
-        , selectedProvider = Just None
+        | chooseWalletState = WalletConnectedChooseHidden
         , chooseLedgerAcccountState = resetLedgerState
     }
+
+
+handleBack : Model -> Model
+handleBack model =
+    let
+        updatedChooseWalletState =
+            if
+                model.chooseWalletState
+                    == AttemptingConnectToWallet
+                    || model.chooseWalletState
+                    == ChooseLedgerAccount
+                    || model.chooseWalletState
+                    == LedgerConnectionError
+            then
+                ChooseProvider
+
+            else
+                model.chooseWalletState
+    in
+    { model | chooseWalletState = updatedChooseWalletState }
 
 
 init : String -> ( Model, Cmd Msg )
 init providerTypeString =
     let
         newEmptyModel =
-            { chooseWalletState = ChooseProvider
+            { chooseWalletState = AttemptingConnectToWallet
             , selectedProvider = Just None
             , connectionState = Nothing
             , connectionNetwork = Nothing
@@ -191,7 +212,7 @@ init providerTypeString =
             }
     in
     ( newEmptyModel
-    , tryConnect True
+    , Cmd.none
     )
 
 

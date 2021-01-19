@@ -1,6 +1,6 @@
 import Eth from 'web3-eth';
 import EthUtils from 'web3-utils';
-import BN from '../../../node_modules/bn.js';
+import BN from 'bn.js';
 
 import { at, fetchContract, getContractEvent } from './contract.js';
 import {
@@ -55,8 +55,7 @@ function makeEth(dataProviders, networkMap, networkAbiMap, configNameToAddressMa
     acc[key] = reverseObject(value);
     return acc;
   }, {});
-  const targetAddressToNameMap =
-    networkAddressToNameMap[defaultNetwork] || networkAddressToNameMap['mainnet'];
+  const targetAddressToNameMap = networkAddressToNameMap[defaultNetwork] || networkAddressToNameMap['mainnet'];
 
   return {
     trxEth: undefined,
@@ -249,16 +248,7 @@ function wrapSend(
   );
 }
 
-function withGasLimitAndTrxCount(
-  app,
-  eth,
-  contractJson,
-  contractAddress,
-  funcName,
-  args,
-  customerAddress,
-  opts = {}
-) {
+function withGasLimitAndTrxCount(app, eth, contractJson, contractAddress, funcName, args, customerAddress, opts = {}) {
   return withWeb3Eth(eth).then((web3Eth) => {
     const contract = fetchContract(web3Eth, contractJson, contractAddress);
 
@@ -402,9 +392,7 @@ async function getLedgerAddressAndBalance(eth, derivationPath) {
   let accountAddress = null;
   let ethBalanceWei = null;
   if (ledger != null) {
-    accountAddress = await ledger
-      .getAddress()
-      .catch((error) => console.log('caught ledger error: %o', error));
+    accountAddress = await ledger.getAddress().catch((error) => console.log('caught ledger error: %o', error));
     if (accountAddress != null) {
       ethBalanceWei = await mainnetEth.getBalance(accountAddress);
     }
