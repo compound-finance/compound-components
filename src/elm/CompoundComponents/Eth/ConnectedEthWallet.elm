@@ -21,6 +21,7 @@ port module CompoundComponents.Eth.ConnectedEthWallet exposing
 import CompoundComponents.Eth.Decoders
 import CompoundComponents.Eth.Ethereum exposing (Account(..), CustomerAddress(..), getCustomerAddressString, shortenedAddressString)
 import CompoundComponents.Eth.Network exposing (Network, networkFromId, networkId)
+import CompoundComponents.Eth.ProviderInfo as EthProviderInfo
 import CompoundComponents.Functions exposing (handleError)
 import CompoundComponents.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), class, id, onClickStopPropagation)
 import CompoundComponents.Utils.Markup
@@ -61,6 +62,7 @@ type alias Model =
     , connectionState : Maybe ConnectionState
     , connectionNetwork : Maybe Network
     , chooseLedgerAcccountState : ConnectingLedgerState
+    , providerType : EthProviderInfo.ProviderType
     , errors : List String
     }
 
@@ -174,8 +176,8 @@ resetModel model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : String -> ( Model, Cmd Msg )
+init providerTypeString =
     let
         newEmptyModel =
             { chooseWalletState = ChooseProvider
@@ -183,6 +185,7 @@ init =
             , connectionState = Nothing
             , connectionNetwork = Nothing
             , chooseLedgerAcccountState = resetLedgerState
+            , providerType = EthProviderInfo.detectProvider providerTypeString
             , errors = []
             }
     in
