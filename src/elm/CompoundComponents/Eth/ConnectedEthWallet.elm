@@ -18,6 +18,7 @@ port module CompoundComponents.Eth.ConnectedEthWallet exposing
     , update
     )
 
+import CompoundComponents.Console as Console
 import CompoundComponents.Eth.Decoders
 import CompoundComponents.Eth.Ethereum exposing (Account(..), CustomerAddress(..), getCustomerAddressString, shortenedAddressString)
 import CompoundComponents.Eth.Network exposing (Network, networkFromId, networkId)
@@ -235,17 +236,17 @@ update internalMsg model =
             let
                 updatedSelectedProvider =
                     case ( model.selectedProvider, model.providerType ) of
-                        ( Nothing, Utils.ProviderInfo.MetaMask ) ->
-                            Just WalletProviderType.Metamask
+                        ( Nothing, EthProviderInfo.MetaMask ) ->
+                            Just Metamask
 
-                        ( Just WalletProviderType.None, Utils.ProviderInfo.MetaMask ) ->
-                            Just WalletProviderType.Metamask
+                        ( Just None, EthProviderInfo.MetaMask ) ->
+                            Just Metamask
 
                         ( Nothing, _ ) ->
-                            Just WalletProviderType.OtherWeb3Browser
+                            Just OtherWeb3Browser
 
-                        ( Just WalletProviderType.None, _ ) ->
-                            Just WalletProviderType.OtherWeb3Browser
+                        ( Just None, _ ) ->
+                            Just OtherWeb3Browser
 
                         _ ->
                             model.selectedProvider
@@ -254,10 +255,10 @@ update internalMsg model =
                     if
                         model.connectionState
                             == Nothing
-                            || connectedWalletWithProvider.connectionState
-                            == Just ConnectionState.Connecting
+                            || model.connectionState
+                            == Just Connecting
                     then
-                        Just (ConnectionState.ConnectedAcct newAccount)
+                        Just (ConnectedAcct newAccount)
 
                     else
                         model.connectionState
@@ -283,7 +284,7 @@ update internalMsg model =
         ReceivedLedgerAccountAddress accountData ->
             let
                 oldLedgerAccounts =
-                    chooseLedgerAcccountState.ledgerAccounts
+                    model.chooseLedgerAcccountState.ledgerAccounts
 
                 updatedLegacyAccounts =
                     oldLedgerAccounts.legacyAccounts
@@ -310,8 +311,11 @@ update internalMsg model =
                 updatedLedgerAccounts =
                     { oldLedgerAccounts | legacyAccounts = updatedLegacyAccounts, liveAccounts = updatedLiveAccounts }
 
+                oldLedgerAccountState =
+                    model.chooseLedgerAcccountState
+
                 updatedChooseLedgerAcccountState =
-                    { chooseLedgerAcccountState | ledgerAccounts = updatedLedgerAccounts }
+                    { oldLedgerAccountState | ledgerAccounts = updatedLedgerAccounts }
             in
             ( { model | chooseLedgerAcccountState = updatedChooseLedgerAcccountState }, Cmd.none )
 
@@ -385,7 +389,7 @@ update internalMsg model =
                 ( updatedModel, ledgerCmd ) =
                     case ( model.chooseWalletState, model.chooseLedgerAcccountState.choosenLedgerAccount ) of
                         ( ChooseLedgerAccount, Just ledgerAccount ) ->
-                            selectWalletProvider model.connectedWallet ConnectedWallet.Ledger ledgerAccount.derivationPath
+                            selectWalletProvider model Ledger ledgerAccount.derivationPath
 
                         _ ->
                             ( model, Cmd.none )
@@ -403,6 +407,9 @@ update internalMsg model =
             ( { model | chooseWalletState = ChooseProvider }
             , Cmd.none
             )
+
+        Error error ->
+            ( { model | errors = model.errors }, Console.log error )
 
 
 
