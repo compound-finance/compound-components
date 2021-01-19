@@ -1,7 +1,7 @@
 port module CompoundComponents.Eth.ConnectedEthWallet exposing
     ( ChooseWalletState(..)
     , ConnectionState(..)
-    , InternalMsg
+    , InternalMsg(..)
     , LedgerAcccountData
     , Model
     , Translator
@@ -11,16 +11,20 @@ port module CompoundComponents.Eth.ConnectedEthWallet exposing
     , giveFinishedLedgerRetrieval
     , giveLedgerAccountAdddress
     , giveTrxProviderType
+    , handleBack
     , init
     , resetModel
     , subscriptions
     , translator
+    , tryConnect
     , update
     )
 
+import CompoundComponents.Console as Console
 import CompoundComponents.Eth.Decoders
 import CompoundComponents.Eth.Ethereum exposing (Account(..), CustomerAddress(..), getCustomerAddressString, shortenedAddressString)
 import CompoundComponents.Eth.Network exposing (Network, networkFromId, networkId)
+import CompoundComponents.Eth.ProviderInfo as EthProviderInfo
 import CompoundComponents.Functions exposing (handleError)
 import CompoundComponents.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..), class, id, onClickStopPropagation)
 import CompoundComponents.Utils.Markup
@@ -61,6 +65,7 @@ type alias Model =
     , connectionState : Maybe ConnectionState
     , connectionNetwork : Maybe Network
     , chooseLedgerAcccountState : ConnectingLedgerState
+    , providerType : EthProviderInfo.ProviderType
     , errors : List String
     }
 
@@ -168,26 +173,46 @@ resetLedgerState =
 resetModel : Model -> Model
 resetModel model =
     { model
-        | chooseWalletState = ChooseProvider
-        , selectedProvider = Just None
+        | chooseWalletState = WalletConnectedChooseHidden
         , chooseLedgerAcccountState = resetLedgerState
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+handleBack : Model -> Model
+handleBack model =
+    let
+        updatedChooseWalletState =
+            if
+                model.chooseWalletState
+                    == AttemptingConnectToWallet
+                    || model.chooseWalletState
+                    == ChooseLedgerAccount
+                    || model.chooseWalletState
+                    == LedgerConnectionError
+            then
+                ChooseProvider
+
+            else
+                model.chooseWalletState
+    in
+    { model | chooseWalletState = updatedChooseWalletState }
+
+
+init : String -> ( Model, Cmd Msg )
+init providerTypeString =
     let
         newEmptyModel =
-            { chooseWalletState = ChooseProvider
+            { chooseWalletState = AttemptingConnectToWallet
             , selectedProvider = Just None
             , connectionState = Nothing
             , connectionNetwork = Nothing
             , chooseLedgerAcccountState = resetLedgerState
+            , providerType = EthProviderInfo.detectProvider providerTypeString
             , errors = []
             }
     in
     ( newEmptyModel
-    , tryConnect True
+    , Cmd.none
     )
 
 
@@ -216,9 +241,9 @@ update internalMsg model =
                             AttemptingConnectToWallet
 
                         _ ->
-                            model.chooseWalletState
+                            updatedModel.chooseWalletState
             in
-            ( { model | chooseWalletState = updatedChooseWalletState }, connectedWalletCmd )
+            ( { updatedModel | chooseWalletState = updatedChooseWalletState }, connectedWalletCmd )
 
         -- This can be called from autoconnect
         SetWalletProvider walletProvider ->
@@ -230,8 +255,34 @@ update internalMsg model =
 
         SetAccount (Just newAccount) ->
             let
+                updatedSelectedProvider =
+                    case ( model.selectedProvider, model.providerType ) of
+                        ( Nothing, EthProviderInfo.MetaMask ) ->
+                            Just Metamask
+
+                        ( Just None, EthProviderInfo.MetaMask ) ->
+                            Just Metamask
+
+                        ( Nothing, _ ) ->
+                            Just OtherWeb3Browser
+
+                        ( Just None, _ ) ->
+                            Just OtherWeb3Browser
+
+                        _ ->
+                            model.selectedProvider
+
                 updatedConnectionState =
-                    Just (ConnectedAcct newAccount)
+                    if
+                        model.connectionState
+                            == Nothing
+                            || model.connectionState
+                            == Just Connecting
+                    then
+                        Just (ConnectedAcct newAccount)
+
+                    else
+                        model.connectionState
 
                 updatedChooseWalletState =
                     if model.chooseWalletState == AttemptingConnectToWallet || model.chooseWalletState == ChooseLedgerAccount then
@@ -241,8 +292,9 @@ update internalMsg model =
                         model.chooseWalletState
             in
             ( { model
-                | connectionState = updatedConnectionState
-                , chooseWalletState = updatedChooseWalletState
+                | chooseWalletState = updatedChooseWalletState
+                , connectionState = updatedConnectionState
+                , selectedProvider = updatedSelectedProvider
               }
             , Cmd.none
             )
@@ -250,9 +302,135 @@ update internalMsg model =
         SetNetwork network ->
             ( { model | connectionNetwork = network }, Cmd.none )
 
-        _ ->
-            --TODO: Finish moving me over.
-            ( model, Cmd.none )
+        ReceivedLedgerAccountAddress accountData ->
+            let
+                oldLedgerAccounts =
+                    model.chooseLedgerAcccountState.ledgerAccounts
+
+                updatedLegacyAccounts =
+                    oldLedgerAccounts.legacyAccounts
+                        |> List.map
+                            (\legacyAccount ->
+                                if legacyAccount.derivationPath == accountData.derivationPath then
+                                    accountData
+
+                                else
+                                    legacyAccount
+                            )
+
+                updatedLiveAccounts =
+                    oldLedgerAccounts.liveAccounts
+                        |> List.map
+                            (\liveAccount ->
+                                if liveAccount.derivationPath == accountData.derivationPath then
+                                    accountData
+
+                                else
+                                    liveAccount
+                            )
+
+                updatedLedgerAccounts =
+                    { oldLedgerAccounts | legacyAccounts = updatedLegacyAccounts, liveAccounts = updatedLiveAccounts }
+
+                oldLedgerAccountState =
+                    model.chooseLedgerAcccountState
+
+                updatedChooseLedgerAcccountState =
+                    { oldLedgerAccountState | ledgerAccounts = updatedLedgerAccounts }
+            in
+            ( { model | chooseLedgerAcccountState = updatedChooseLedgerAcccountState }, Cmd.none )
+
+        LedgerAccountsRetrievalDone success ->
+            if model.chooseWalletState == LoadingLegerAccounts then
+                if success then
+                    ( { model | chooseWalletState = ChooseLedgerAccount }, Cmd.none )
+
+                else
+                    ( { model | chooseWalletState = LedgerConnectionError }, Cmd.none )
+
+            else
+                ( model, Cmd.none )
+
+        ToggleLedgerAccountTypeDropdown ->
+            let
+                oldChooseLedgerAccountState =
+                    model.chooseLedgerAcccountState
+
+                updatedPathSelectorActive =
+                    not oldChooseLedgerAccountState.pathSelectorActive
+
+                updatedAddressSelectorActive =
+                    if updatedPathSelectorActive then
+                        False
+
+                    else
+                        oldChooseLedgerAccountState.addressSelectorActive
+
+                updatedChooseLedgerAccountState =
+                    { oldChooseLedgerAccountState | pathSelectorActive = updatedPathSelectorActive, addressSelectorActive = updatedAddressSelectorActive }
+            in
+            ( { model | chooseLedgerAcccountState = updatedChooseLedgerAccountState }, Cmd.none )
+
+        ToggleLedgerAccountSelectorDropwdown ->
+            let
+                oldChooseLedgerAccountState =
+                    model.chooseLedgerAcccountState
+
+                updatedAddressSelectorActive =
+                    not oldChooseLedgerAccountState.addressSelectorActive
+
+                updatedChooseLedgerAccountState =
+                    { oldChooseLedgerAccountState | addressSelectorActive = updatedAddressSelectorActive }
+            in
+            ( { model | chooseLedgerAcccountState = updatedChooseLedgerAccountState }, Cmd.none )
+
+        SelectLedgerAccountType useLegacy ->
+            let
+                oldChooseLedgerAccountState =
+                    model.chooseLedgerAcccountState
+
+                updatedChooseLedgerAccountState =
+                    { oldChooseLedgerAccountState | chooseLedgerInLegacyMode = useLegacy }
+            in
+            ( { model | chooseLedgerAcccountState = updatedChooseLedgerAccountState }, Cmd.none )
+
+        SelectLedgerAccount ledgerAccount ->
+            let
+                updatedChooseLedgerAccountState =
+                    let
+                        oldChooseLedgerAccountState =
+                            model.chooseLedgerAcccountState
+                    in
+                    { oldChooseLedgerAccountState | choosenLedgerAccount = Just ledgerAccount }
+            in
+            ( { model | chooseLedgerAcccountState = updatedChooseLedgerAccountState }, Cmd.none )
+
+        SelectLedgerAccountFinished ->
+            let
+                ( updatedModel, ledgerCmd ) =
+                    case ( model.chooseWalletState, model.chooseLedgerAcccountState.choosenLedgerAccount ) of
+                        ( ChooseLedgerAccount, Just ledgerAccount ) ->
+                            selectWalletProvider model Ledger ledgerAccount.derivationPath
+
+                        _ ->
+                            ( model, Cmd.none )
+
+                updatedChooseLedgerAccountState =
+                    let
+                        oldChooseLedgerModalState =
+                            model.chooseLedgerAcccountState
+                    in
+                    { oldChooseLedgerModalState | pathSelectorActive = False, addressSelectorActive = False }
+            in
+            ( { updatedModel | chooseLedgerAcccountState = updatedChooseLedgerAccountState }, ledgerCmd )
+
+        ResetToChooseProvider ->
+            ( { model | chooseWalletState = ChooseProvider }
+            , Cmd.none
+            )
+
+        Error error ->
+            ( { model | errors = model.errors }, Console.log error )
 
 
 
@@ -284,6 +462,13 @@ chooseWalletView userLanguage ({ chooseWalletState } as model) =
                         [ span [ class "icon metamask" ] []
                         , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
                         , span [ class "arrow big green" ] []
+                        ]
+                    ]
+                , div [ class "terms-agreement" ]
+                    [ p [ class "small" ]
+                        [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                        , text " "
+                        , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
                         ]
                     ]
                 ]
@@ -437,6 +622,13 @@ selectLedgerAddressModal userLanguage model =
                 )
             ]
         , selectButton
+        , div [ class "terms-agreement" ]
+            [ p [ class "small" ]
+                [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                , text " "
+                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                ]
+            ]
         ]
 
 
@@ -458,6 +650,13 @@ ledgerConnectionErrorModal userLanguage model =
                 , span [ class "arrow big green" ] []
                 ]
             , div [ class "line" ] []
+            ]
+        , div [ class "terms-agreement" ]
+            [ p [ class "small" ]
+                [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                , text " "
+                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                ]
             ]
         ]
 
