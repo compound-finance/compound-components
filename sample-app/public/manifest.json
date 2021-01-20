@@ -1,0 +1,9 @@
+{
+  "short_name": "Compound Components",
+  "name": "Compound Components",
+  "icons": [],
+  "start_url": "/",
+  "display": "minimal-ui",
+  "theme_color": "#00d395",
+  "background_color": "#070a0e"
+}
