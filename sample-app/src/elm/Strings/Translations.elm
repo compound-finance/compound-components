@@ -174,3 +174,10 @@ coinbase_wallet lang =
     case lang of
         En ->
             "Coinbase Wallet"
+
+
+wallet_connect : Lang -> String
+wallet_connect lang =
+    case lang of
+        En ->
+            "Wallet Connect"

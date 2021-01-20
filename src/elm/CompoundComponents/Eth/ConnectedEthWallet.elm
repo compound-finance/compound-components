@@ -41,6 +41,7 @@ type WalletProviderType
     | WalletLink
     | Ledger
     | OtherWeb3Browser
+    | WalletConnect
     | None
 
 
@@ -463,6 +464,12 @@ chooseWalletView userLanguage ({ chooseWalletState } as model) =
                         , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
                         , span [ class "arrow big green" ] []
                         ]
+                    , div [ class "line" ] []
+                    , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletConnect ]
+                        [ span [ class "icon wallet-connect" ] []
+                        , h5 [ class "connect-item-text" ] [ text (Translations.wallet_connect userLanguage) ]
+                        , span [ class "arrow big green" ] []
+                        ]
                     ]
                 , div [ class "terms-agreement" ]
                     [ p [ class "small" ]
@@ -738,6 +745,9 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath =
                 WalletLink ->
                     2
 
+                WalletConnect ->
+                    4
+
                 None ->
                     0
 
@@ -834,6 +844,9 @@ providerTypeFromId id =
 
         3 ->
             Just OtherWeb3Browser
+
+        4 ->
+            Just WalletConnect
 
         _ ->
             Nothing

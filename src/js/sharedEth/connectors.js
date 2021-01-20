@@ -123,10 +123,44 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
+async function connectWalletConnect(eth, disallowAuthDialog = false) {
+  //TODO: We need a web3Provider to be created here so we can send eth trxs
+  const trxProvider = null; //IMPLEMENT ME
+
+  if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+
+  setNewTrxProvider(eth, trxProvider);
+
+  let networkIdStr = await getNetworkId(eth);
+  let networkId = parseInt(networkIdStr);
+  if (networkId === NaN) {
+    networkId = null;
+  }
+
+  // This method actually triggers the UI flow from as spec'd in EIP-1102
+  await trxProvider.send('eth_requestAccounts').then((accounts) => {
+    //Currently don't need accounts here as we synchronous get next.
+  });
+
+  let [account, _] = await getAccounts(eth);
+
+  return {
+    networkId,
+    account,
+    ethereum: trxProvider,
+  };
+}
+
 async function disconnect(eth) {
   setNewTrxProvider(eth, null);
 
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, disconnect };
+export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, connectWalletConnect, disconnect };
