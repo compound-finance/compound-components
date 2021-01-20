@@ -127,6 +127,8 @@ async function connectWalletConnect(eth, disallowAuthDialog = false) {
   //TODO: We need a web3Provider to be created here so we can send eth trxs
   const trxProvider = null; //IMPLEMENT ME
 
+  console.log('HALP Wallet connect');
+
   if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
     return {
       networkId: null,
@@ -134,6 +136,13 @@ async function connectWalletConnect(eth, disallowAuthDialog = false) {
       ethereum: null,
     };
   }
+
+  //TODO: Remove me when have a valid provider
+  return {
+    networkId: null,
+    account: null,
+    ethereum: null,
+  };
 
   setNewTrxProvider(eth, trxProvider);
 
