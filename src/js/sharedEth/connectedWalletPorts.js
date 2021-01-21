@@ -184,21 +184,12 @@ async function showAccount(app, eth, showAccount) {
   await establishConnection(app, eth, networkId, account, ethereum, PROVIDER_TYPE_SHOW_ACCOUNT);
 }
 
-function subscribe(
-  app,
-  globEthereum,
-  dataProviders,
-  networkMap,
-  networkAbiMap,
-  defaultNetwork,
-  configNameToAddressMappings
-) {
-  const eth = makeEth(dataProviders, networkMap, networkAbiMap, configNameToAddressMappings, defaultNetwork);
-
+function subscribe(app, eth, globEthereum, networkMap, defaultNetwork) {
   subscribeToTrxProviderChanges(app, eth, globEthereum);
   subscribeToTryConnect(app, eth, globEthereum, networkMap[defaultNetwork]);
 }
 
 export default {
   subscribe,
+  showAccount,
 };
