@@ -195,6 +195,9 @@ view { connectedEthWalletModel, userLanguage } =
                             Just ConnectedEthWallet.OtherWeb3Browser ->
                                 "Other"
 
+                            Just ConnectedEthWallet.WalletConnect ->
+                                "Wallet Connect"
+
                             _ ->
                                 "None"
 

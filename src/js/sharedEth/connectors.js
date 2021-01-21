@@ -1,6 +1,7 @@
 import Eth from 'web3-eth';
 import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from './eth';
 import WalletLink from 'walletlink';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 
 async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false) {
   // Never auto-connect to ledger, since it's complicated
@@ -123,10 +124,58 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
+async function connectWalletConnect(eth, disallowAuthDialog = false) {
+  const JSONRPC_URL = eth.dataProviders['mainnet'].host;
+  const CHAIN_ID = 1;
+
+  const trxProvider = new WalletConnectProvider({
+    rpc: { [CHAIN_ID]: JSONRPC_URL },
+  });
+
+  try {
+    // Open the walletconnect modal
+    await trxProvider.enable();
+  } catch (e) {
+    // If the error is not just from the user closing the modal, we log it for debugging in the future
+    if (e.message !== 'User closed modal') {
+      console.log(e);
+    }
+  }
+
+  if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+
+  setNewTrxProvider(eth, trxProvider);
+
+  let networkIdStr = await getNetworkId(eth);
+  let networkId = parseInt(networkIdStr);
+  if (networkId === NaN) {
+    networkId = null;
+  }
+
+  // This method actually triggers the UI flow from as spec'd in EIP-1102
+  await trxProvider.send('eth_requestAccounts').then((accounts) => {
+    //Currently don't need accounts here as we synchronous get next.
+  });
+
+  let [account, _] = await getAccounts(eth);
+
+  return {
+    networkId,
+    account,
+    ethereum: trxProvider,
+  };
+}
+
 async function disconnect(eth) {
   setNewTrxProvider(eth, null);
 
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, disconnect };
+export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, connectWalletConnect, disconnect };

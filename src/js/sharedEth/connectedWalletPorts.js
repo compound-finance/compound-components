@@ -1,6 +1,13 @@
 import { shouldAutoConnect } from './utils';
 import { getAccounts, getLedgerAddressAndBalance, makeEth, setNetworkId } from './eth';
-import { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, disconnect } from './connectors';
+import {
+  connectLedger,
+  connectWalletLink,
+  connectWeb3,
+  connectShowAccount,
+  connectWalletConnect,
+  disconnect,
+} from './connectors';
 import storage from '../sharedJs/storage';
 
 const PROVIDER_TYPE_NONE = 0;
@@ -8,6 +15,7 @@ const PROVIDER_TYPE_LEDGER = 1;
 const PROVIDER_TYPE_WALLET_LINK = 2;
 const PROVIDER_TYPE_WEB3 = 3;
 const PROVIDER_TYPE_SHOW_ACCOUNT = 3;
+const PROVIDER_TYPE_WALLET_CONNECT = 4;
 
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
@@ -46,10 +54,11 @@ async function connectToTrxProvider(
   disallowAuthDialog = false,
   showAccount = undefined
 ) {
-  // We support 3 real provider types
+  // We support 4 real provider types
   // 1. Ledger
   // 2. WalletLink
   // 3. Provided Web3
+  // 4. WalletConnect
 
   let networkId, account, ethereum;
   let establishWithoutAccount = false;
@@ -66,6 +75,9 @@ async function connectToTrxProvider(
       break;
     case PROVIDER_TYPE_SHOW_ACCOUNT:
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
+      break;
+    case PROVIDER_TYPE_WALLET_CONNECT:
+      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount));
       break;
     default:
       ({ networkId, account, ethereum } = await disconnect(eth));
