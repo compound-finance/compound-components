@@ -1,6 +1,7 @@
 import Eth from 'web3-eth';
 import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from './eth';
 import WalletLink from 'walletlink';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 
 async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false) {
   // Never auto-connect to ledger, since it's complicated
@@ -124,10 +125,22 @@ async function connectShowAccount(eth, showAccount) {
 }
 
 async function connectWalletConnect(eth, disallowAuthDialog = false) {
-  //TODO: We need a web3Provider to be created here so we can send eth trxs
-  const trxProvider = null; //IMPLEMENT ME
+  const JSONRPC_URL = eth.dataProviders['mainnet'].host;
+  const CHAIN_ID = 1;
 
-  console.log('HALP Wallet connect');
+  const trxProvider = new WalletConnectProvider({
+    rpc: { [CHAIN_ID]: JSONRPC_URL },
+  });
+
+  try {
+    // Open the walletconnect modal
+    await trxProvider.enable();
+  } catch (e) {
+    // If the error is not just from the user closing the modal, we log it for debugging in the future
+    if (e.message !== 'User closed modal') {
+      console.log(e);
+    }
+  }
 
   if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
     return {
@@ -136,13 +149,6 @@ async function connectWalletConnect(eth, disallowAuthDialog = false) {
       ethereum: null,
     };
   }
-
-  //TODO: Remove me when have a valid provider
-  return {
-    networkId: null,
-    account: null,
-    ethereum: null,
-  };
 
   setNewTrxProvider(eth, trxProvider);
 
