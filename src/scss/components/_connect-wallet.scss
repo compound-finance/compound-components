@@ -66,12 +66,18 @@
         }
       }
     }
-    .copy {
-      margin-top: 0;
+    .connect-wallet-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding-left: ($column-gutter / 2);
       padding-right: ($column-gutter / 2);
       padding-bottom: $column-gutter;
-      margin-bottom: 0;
+
+      &--small-top {
+        margin-top: -$column-gutter;
+      }
+
       .mark {
         width: 78px;
         height: 78px;
@@ -111,7 +117,7 @@
         padding-right: ($connectItemLeftRightPadding + 2px);
       }
 
-      .icon {
+      .connect-wallet-icon {
         flex-shrink: 0;
         display: inline-block;
         background-repeat: no-repeat;
@@ -122,18 +128,23 @@
         min-width: 35px;
         min-height: 35px;
 
-        &.coinbase {
+        &--coinbase {
           background-image: url(/compound-components/assets/icn-coinbase-wallet.svg);
           margin: 0;
         }
 
-        &.ledger {
+        &--ledger {
           background-image: url(/compound-components/assets/icn-ledger.svg);
           margin: 0;
         }
 
-        &.metamask {
+        &--metamask {
           background-image: url(/compound-components/assets/icn-metamask.svg);
+          margin: 0;
+        }
+
+        &--wallet-connect {
+          background-image: url(/compound-components/assets/icn-wallet-connect.svg);
           margin: 0;
         }
       }
@@ -146,8 +157,8 @@
   }
 
   .connect-choices {
-    margin-top: 34px;
-    margin-bottom: 34px;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 
   .connect-item {
