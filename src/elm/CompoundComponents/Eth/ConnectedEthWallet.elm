@@ -52,7 +52,8 @@ type ConnectionState
 
 
 type ChooseWalletState
-    = ChooseProvider
+    = FirstTimeAutoconnecting
+    | ChooseProvider
     | LoadingLegerAccounts
     | LedgerConnectionError
     | ChooseLedgerAccount
@@ -107,6 +108,7 @@ type InternalMsg
     | SelectLedgerAccount LedgerAcccountData
     | SelectLedgerAccountFinished
     | ResetToChooseProvider
+    | RequestShowTerms
     | Error String
 
 
@@ -203,7 +205,7 @@ init : String -> ( Model, Cmd Msg )
 init providerTypeString =
     let
         newEmptyModel =
-            { chooseWalletState = AttemptingConnectToWallet
+            { chooseWalletState = FirstTimeAutoconnecting
             , selectedProvider = Just None
             , connectionState = Nothing
             , connectionNetwork = Nothing
@@ -430,6 +432,10 @@ update internalMsg model =
             , Cmd.none
             )
 
+        -- This can be used by parents to show an appropriate page by app.
+        RequestShowTerms ->
+            ( model, Cmd.none )
+
         Error error ->
             ( { model | errors = model.errors }, Console.log error )
 
@@ -442,31 +448,31 @@ chooseWalletView : Translations.Lang -> Model -> Html Msg
 chooseWalletView userLanguage ({ chooseWalletState } as model) =
     case chooseWalletState of
         ChooseProvider ->
-            div [ class "copy" ]
+            div [ class "connect-wallet-copy connect-wallet-copy--small-top" ]
                 [ span [ class "mark" ] []
                 , h4 [] [ text (Translations.connect_wallet userLanguage) ]
                 , p [ class "center-text" ] [ text (Translations.to_start_using_compound userLanguage) ]
                 , div [ class "connect-choices" ]
                     [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Metamask ]
-                        [ span [ class "icon metamask" ] []
+                        [ span [ class "connect-wallet-icon connect-wallet-icon--metamask" ] []
                         , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
                         , span [ class "arrow big green" ] []
                         ]
                     , div [ class "line" ] []
                     , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Ledger ]
-                        [ span [ class "icon ledger" ] []
+                        [ span [ class "connect-wallet-icon connect-wallet-icon--ledger" ] []
                         , h5 [ class "connect-item-text" ] [ text (Translations.ledger userLanguage) ]
                         , span [ class "arrow big green" ] []
                         ]
                     , div [ class "line" ] []
                     , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletConnect ]
-                        [ span [ class "icon wallet-connect" ] []
+                        [ span [ class "connect-wallet-icon connect-wallet-icon--wallet-connect" ] []
                         , h5 [ class "connect-item-text" ] [ text (Translations.wallet_connect userLanguage) ]
                         , span [ class "arrow big green" ] []
                         ]
                     , div [ class "line" ] []
                     , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletLink ]
-                        [ span [ class "icon coinbase" ] []
+                        [ span [ class "connect-wallet-icon connect-wallet-icon--coinbase" ] []
                         , h5 [ class "connect-item-text" ] [ text (Translations.coinbase_wallet userLanguage) ]
                         , span [ class "arrow big green" ] []
                         ]
@@ -475,7 +481,7 @@ chooseWalletView userLanguage ({ chooseWalletState } as model) =
                     [ p [ class "small" ]
                         [ text (Translations.choose_wallet_terms_part1 userLanguage)
                         , text " "
-                        , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                        , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
                         ]
                     ]
                 ]
@@ -493,6 +499,9 @@ chooseWalletView userLanguage ({ chooseWalletState } as model) =
             ledgerConnectionErrorModal userLanguage model
 
         WalletConnectedChooseHidden ->
+            text ""
+
+        FirstTimeAutoconnecting ->
             text ""
 
 
@@ -516,7 +525,7 @@ connectingModal userLanguage maybeSelectedProvider =
                     , Translations.click_extension userLanguage
                     )
     in
-    div [ class "copy" ]
+    div [ class "connect-wallet-copy" ]
         [ span [ class "mark" ] []
         , h4 [] [ text headerText ]
         , p [ class "center-text" ] [ text instructionsText ]
@@ -526,7 +535,7 @@ connectingModal userLanguage maybeSelectedProvider =
             [ p [ class "small" ]
                 [ text (Translations.choose_wallet_terms_part1 userLanguage)
                 , text " "
-                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
                 ]
             ]
         ]
@@ -578,7 +587,7 @@ selectLedgerAddressModal userLanguage model =
                         [ text (Translations.select userLanguage) ]
                     )
     in
-    div [ class "copy" ]
+    div [ class "connect-wallet-copy" ]
         [ span [ class "mark" ] []
         , h4 [] [ text (Translations.select_address userLanguage) ]
         , div [ class "dropdown dropdown--big", onClickStopPropagation <| ForSelf <| ToggleLedgerAccountTypeDropdown ]
@@ -633,7 +642,7 @@ selectLedgerAddressModal userLanguage model =
             [ p [ class "small" ]
                 [ text (Translations.choose_wallet_terms_part1 userLanguage)
                 , text " "
-                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
                 ]
             ]
         ]
@@ -641,7 +650,7 @@ selectLedgerAddressModal userLanguage model =
 
 ledgerConnectionErrorModal : Translations.Lang -> Model -> Html Msg
 ledgerConnectionErrorModal userLanguage model =
-    div [ class "copy" ]
+    div [ class "connect-wallet-copy" ]
         [ span [ class "mark mark--error" ] []
         , h4 [] [ text (Translations.ledger_connection_failed userLanguage) ]
         , div [ class "bullet-points" ]
@@ -652,7 +661,7 @@ ledgerConnectionErrorModal userLanguage model =
         , div [ class "connect-choices" ]
             [ div [ class "line" ] []
             , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Ledger ]
-                [ span [ class "icon ledger" ] []
+                [ span [ class "connect-wallet-icon connect-wallet-icon--ledger" ] []
                 , h5 [ class "connect-item-text" ] [ text (Translations.try_again userLanguage) ]
                 , span [ class "arrow big green" ] []
                 ]
@@ -662,7 +671,7 @@ ledgerConnectionErrorModal userLanguage model =
             [ p [ class "small" ]
                 [ text (Translations.choose_wallet_terms_part1 userLanguage)
                 , text " "
-                , a [] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
                 ]
             ]
         ]
