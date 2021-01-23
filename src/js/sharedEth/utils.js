@@ -47,10 +47,12 @@ function providerType(provider) {
     return PROVIDER_TYPE_COINBASE_WALLET;
   } else if (provider.isImToken) {
     return PROVIDER_TYPE_IM_TOKEN;
-  } else if (provider.isMetaMask && provider.constructor.name === 'MetamaskInpageProvider') {
-    return PROVIDER_TYPE_META_MASK;
-  } else if (provider.isMetaMask && provider.constructor.name === 'InpageBridge') {
-    return PROVIDER_TYPE_META_MASK_MOBILE;
+  } else if (provider.isMetaMask) {
+    if (provider.constructor.name === 'InpageBridge') {
+      return PROVIDER_TYPE_META_MASK_MOBILE;
+    } else {
+      return PROVIDER_TYPE_META_MASK;
+    }
   } else {
     return null;
   }
