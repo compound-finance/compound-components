@@ -8,7 +8,10 @@ import {
   connectWalletConnect,
   disconnect,
 } from './connectors';
+import { toScaledDecimal } from '../sharedJs/math';
 import storage from '../sharedJs/storage';
+
+const ETH_DECIMALS = 18;
 
 const PROVIDER_TYPE_NONE = 0;
 const PROVIDER_TYPE_LEDGER = 1;
