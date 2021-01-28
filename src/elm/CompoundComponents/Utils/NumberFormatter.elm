@@ -22,8 +22,10 @@ module CompoundComponents.Utils.NumberFormatter exposing
     , formatPercentageWithDots
     , formatProposalId
     , formatRate
+    , formatRiskLimitInNumberSpec
     , formatToDecimalPlaces
     , formatTokenBalance
+    , formatTokenBalanceInNumberSpec
     , formatTokenBalanceInNumberSpecWithSymbol
     , formatTokenBalanceWithSymbol
     , formatUsd
@@ -428,6 +430,29 @@ formatGbpInNumberSpec decimalValue =
 formatEuroInNumberSpec : Decimal -> String
 formatEuroInNumberSpec decimalValue =
     commonFormatInNumberSpec "€" decimalValue
+
+
+formatRiskLimitInNumberSpec : Decimal -> String
+formatRiskLimitInNumberSpec decimalValue =
+    let
+        roundedDecimals =
+            if Decimal.lt decimalValue (Decimal.fromInt 10) then
+                4
+
+            else if Decimal.lt decimalValue (Decimal.fromInt 10000) then
+                2
+
+            else
+                0
+
+        roundedValue =
+            decimalValue
+                |> Decimal.truncate -roundedDecimals
+
+        ( signString, absoluteDecimalValue ) =
+            getSignAndAbsValue roundedValue
+    in
+    signString ++ formatToDecimalPlaces roundedDecimals True absoluteDecimalValue
 
 
 formatTokenBalanceInNumberSpec : Decimal -> String
