@@ -436,14 +436,7 @@ formatRiskLimitInNumberSpec : Decimal -> String
 formatRiskLimitInNumberSpec decimalValue =
     let
         roundedDecimals =
-            if Decimal.lt decimalValue (Decimal.fromInt 10) then
-                4
-
-            else if Decimal.lt decimalValue (Decimal.fromInt 10000) then
-                2
-
-            else
-                0
+            2
 
         roundedValue =
             decimalValue
