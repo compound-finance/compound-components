@@ -76,6 +76,9 @@ networkFromName name =
         "rinkeby" ->
             Rinkeby
 
+        "development" ->
+            Development
+
         _ ->
             MainNet
 
