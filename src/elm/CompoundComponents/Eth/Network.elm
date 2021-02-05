@@ -54,6 +54,9 @@ networkFromId networkIdVal =
         999 ->
             Development
 
+        1337 ->
+            Development
+
         _ ->
             Unknown
 
