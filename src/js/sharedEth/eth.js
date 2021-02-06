@@ -327,7 +327,8 @@ function withGasLimitFromPayload(web3Eth, trxPayload) {
       const roundedGasWithBuffer = Math.round(estimatedGas * ESTIMATED_GAS_MULTIPLIER);
 
       // Some integrations require the gas to end with specific values.
-      const maskedGasLimit = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
+      const maybeMasked = roundedGasWithBuffer - (roundedGasWithBuffer % 10000);
+      const maskedGasLimit = maybeMasked < estimatedGas ? maybeMasked + 10000 : maybeMasked;
       let actualGasLimit;
       switch (web3Eth.appProviderType) {
         case PROVIDER_TYPE_COINBASE_WALLET:
