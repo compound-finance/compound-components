@@ -276,16 +276,7 @@ update internalMsg model =
                             model.selectedProvider
 
                 updatedConnectionState =
-                    if
-                        model.connectionState
-                            == Nothing
-                            || model.connectionState
-                            == Just Connecting
-                    then
-                        Just (ConnectedAcct newAccount)
-
-                    else
-                        model.connectionState
+                    Just (ConnectedAcct newAccount)
 
                 updatedChooseWalletState =
                     if model.chooseWalletState == AttemptingConnectToWallet || model.chooseWalletState == ChooseLedgerAccount then
