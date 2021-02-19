@@ -30,6 +30,22 @@
   border-radius: 4px;
   margin-bottom: 1.33rem;
 
+  &--dark {
+    background: $color_dark_2;
+
+    .panel__header {
+      border-bottom: 1px solid $color_dark_1;
+      h4 {
+        color: #ffffff;
+      }
+    }
+
+    .panel__labels {
+      background: $color_dark_2;
+      border-bottom: 1px solid $color_dark_1;
+    }
+  }
+
   &__header {
     display: flex;
     flex-flow: inherit;
