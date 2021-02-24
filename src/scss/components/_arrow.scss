@@ -11,4 +11,16 @@
   &.borrow {
     background-image: url('/compound-components/assets/icn-build-arrows-purple.svg');
   }
+
+  &--dark {
+    background-image: url('/compound-components/assets/icn-build-arrows.svg');
+  }
+
+  &--big {
+    width: 34px;
+    height: 31px;
+    background-position: center;
+    background-size: 100%;
+    transition: all 0.2s ease-in-out;
+  }
 }

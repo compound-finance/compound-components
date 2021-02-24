@@ -34,7 +34,11 @@
   }
 
   &--CASH {
-    background-image: url('/compound-components/assets/asset_CASH.svg');
+    background-image: url('/compound-components/assets/asset_CASH--green.svg');
+
+    &--dark {
+      background-image: url('/compound-components/assets/asset_CASH--white.svg');
+    }
   }
 
   &--COMP {
