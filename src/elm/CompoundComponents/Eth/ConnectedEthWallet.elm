@@ -435,47 +435,78 @@ update internalMsg model =
 -- Views
 
 
-chooseWalletView : Translations.Lang -> Model -> Html Msg
-chooseWalletView userLanguage ({ chooseWalletState } as model) =
+chooseWalletView : Translations.Lang -> Bool -> Model -> Html Msg
+chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
     case chooseWalletState of
         ChooseProvider ->
+            let
+                ( headerDescriptions, lineDivider ) =
+                    if isCompoundChain then
+                        ( [ p [ class "center-text" ] [ text (Translations.get_started userLanguage) ]
+                          , h4 [] [ text (Translations.connect_wallet userLanguage) ]
+                          ]
+                        , []
+                        )
+
+                    else
+                        ( [ h4 [] [ text (Translations.connect_wallet userLanguage) ]
+                          , p [ class "center-text" ] [ text (Translations.to_start_using_compound userLanguage) ]
+                          ]
+                        , [ div [ class "line" ] [] ]
+                        )
+
+                ( coinbasetWalletItem, terms ) =
+                    if isCompoundChain then
+                        ( [], [] )
+
+                    else
+                        ( [ div [ class "line" ] []
+                          , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletLink ]
+                                [ span [ class "connect-wallet-icon connect-wallet-icon--coinbase" ] []
+                                , h5 [ class "connect-item-text" ] [ text (Translations.coinbase_wallet userLanguage) ]
+                                , span [ class "arrow big green" ] []
+                                ]
+                          ]
+                        , [ div [ class "terms-agreement" ]
+                                [ p [ class "small" ]
+                                    [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                                    , text " "
+                                    , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                                    ]
+                                ]
+                          ]
+                        )
+            in
             div [ class "connect-wallet-copy connect-wallet-copy--small-top" ]
-                [ span [ class "mark" ] []
-                , h4 [] [ text (Translations.connect_wallet userLanguage) ]
-                , p [ class "center-text" ] [ text (Translations.to_start_using_compound userLanguage) ]
-                , div [ class "connect-choices" ]
-                    [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Metamask ]
-                        [ span [ class "connect-wallet-icon connect-wallet-icon--metamask" ] []
-                        , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
-                        , span [ class "arrow big green" ] []
-                        ]
-                    , div [ class "line" ] []
-                    , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Ledger ]
-                        [ span [ class "connect-wallet-icon connect-wallet-icon--ledger" ] []
-                        , h5 [ class "connect-item-text" ] [ text (Translations.ledger userLanguage) ]
-                        , span [ class "arrow big green" ] []
-                        ]
-                    , div [ class "line" ] []
-                    , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletConnect ]
-                        [ span [ class "connect-wallet-icon connect-wallet-icon--wallet-connect" ] []
-                        , h5 [ class "connect-item-text" ] [ text (Translations.wallet_connect userLanguage) ]
-                        , span [ class "arrow big green" ] []
-                        ]
-                    , div [ class "line" ] []
-                    , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletLink ]
-                        [ span [ class "connect-wallet-icon connect-wallet-icon--coinbase" ] []
-                        , h5 [ class "connect-item-text" ] [ text (Translations.coinbase_wallet userLanguage) ]
-                        , span [ class "arrow big green" ] []
-                        ]
-                    ]
-                , div [ class "terms-agreement" ]
-                    [ p [ class "small" ]
-                        [ text (Translations.choose_wallet_terms_part1 userLanguage)
-                        , text " "
-                        , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
-                        ]
-                    ]
-                ]
+                ([ span [ class "mark" ] []
+                 ]
+                    ++ headerDescriptions
+                    ++ [ div [ class "connect-choices" ]
+                            ([ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Metamask ]
+                                [ span [ class "connect-wallet-icon connect-wallet-icon--metamask" ] []
+                                , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
+                                , span [ class "arrow big green" ] []
+                                ]
+                             ]
+                                ++ lineDivider
+                                ++ [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Ledger ]
+                                        [ span [ class "connect-wallet-icon connect-wallet-icon--ledger" ] []
+                                        , h5 [ class "connect-item-text" ] [ text (Translations.ledger userLanguage) ]
+                                        , span [ class "arrow big green" ] []
+                                        ]
+                                   ]
+                                ++ lineDivider
+                                ++ [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletConnect ]
+                                        [ span [ class "connect-wallet-icon connect-wallet-icon--wallet-connect" ] []
+                                        , h5 [ class "connect-item-text" ] [ text (Translations.wallet_connect userLanguage) ]
+                                        , span [ class "arrow big green" ] []
+                                        ]
+                                   ]
+                                ++ coinbasetWalletItem
+                            )
+                       ]
+                    ++ terms
+                )
 
         ChooseLedgerAccount ->
             selectLedgerAddressModal userLanguage model
