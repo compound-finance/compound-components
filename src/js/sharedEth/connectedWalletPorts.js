@@ -161,11 +161,11 @@ function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {
     }
   });
 
-  // port retrieveLedgerAccounts : { derivationPaths : List String } -> Cmd msg
-  app.ports.retrieveLedgerAccounts.subscribe(async ({ derivationPaths }) => {
+  // port retrieveLedgerAccounts : { derivationPaths : List String, ledgerConnectRopsten : Bool } -> Cmd msg
+  app.ports.retrieveLedgerAccounts.subscribe(async ({ derivationPaths, ledgerConnectRopsten }) => {
     for (let i = 0; i < derivationPaths.length; i++) {
       const path = derivationPaths[i];
-      let { accountAddress, ethBalanceWei } = await getLedgerAddressAndBalance(eth, path);
+      let { accountAddress, ethBalanceWei } = await getLedgerAddressAndBalance(eth, path, ledgerConnectRopsten);
 
       let ethBalance = null;
       if (ethBalanceWei != null) {

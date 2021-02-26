@@ -381,13 +381,15 @@ function withTrxWeb3(eth, fnTrxWeb3, fnEls) {
   }
 }
 
-async function getLedgerAddressAndBalance(eth, derivationPath) {
-  let mainnetEth = new Eth(eth.dataProviders['mainnet']);
+async function getLedgerAddressAndBalance(eth, derivationPath, useRopsen = false) {
+  const desiredProvider = useRopsen ? 'ropsten' : 'mainnet';
+
+  let mainnetEth = new Eth(eth.dataProviders[desiredProvider]);
   mainnetEth.type = 'call';
 
   let networkMap = reverseObject(eth.networkIdMap);
   let ledger = await Ledger.connect(mainnetEth.currentProvider, {
-    networkId: networkMap['mainnet'],
+    networkId: networkMap[desiredProvider],
     path: derivationPath,
   });
   let accountAddress = null;

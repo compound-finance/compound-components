@@ -771,7 +771,7 @@ port tryConnect : Bool -> Cmd msg
 port chooseProvider : (Bool -> msg) -> Sub msg
 
 
-port retrieveLedgerAccounts : { derivationPaths : List String } -> Cmd msg
+port retrieveLedgerAccounts : { derivationPaths : List String, ledgerConnectRopsten : Bool } -> Cmd msg
 
 
 askRetrieveLedgerAccounts : Model -> Cmd msg
@@ -785,7 +785,7 @@ askRetrieveLedgerAccounts model =
                     |> List.map .derivationPath
                 ]
     in
-    retrieveLedgerAccounts { derivationPaths = allDerivationPaths }
+    retrieveLedgerAccounts { derivationPaths = allDerivationPaths, ledgerConnectRopsten = model.ledgerWalletConnectForceRopsten }
 
 
 port giveLedgerAccount : (Json.Decode.Value -> msg) -> Sub msg
