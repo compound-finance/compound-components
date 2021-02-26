@@ -120,6 +120,7 @@ function subscribeToTrxProviderChanges(app, eth, globEthereum) {
         newProviderType,
         ledgerDerivationPath,
         false,
+        false,
         desiredNetworkId
       );
     }

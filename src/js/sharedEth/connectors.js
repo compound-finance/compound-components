@@ -17,7 +17,7 @@ async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = fal
   let [account, _] = await getAccounts(eth);
 
   return {
-    networkId,
+    desiredNetworkId,
     account,
     ethereum: null,
   };
@@ -124,7 +124,8 @@ async function connectShowAccount(eth, showAccount) {
 }
 
 async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1) {
-  const JSONRPC_URL = eth.dataProviders['mainnet'].host;
+  const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
+  const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
   const CHAIN_ID = desiredNetworkId;
 
   const trxProvider = new WalletConnectProvider({
