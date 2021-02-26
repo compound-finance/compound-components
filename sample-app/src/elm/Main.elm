@@ -61,14 +61,14 @@ init : Flags -> ( Model, Cmd Msg )
 init {} =
     let
         ( initConnectedEthWalletModel, initConnectedEthWalletCmd ) =
-            ConnectedEthWallet.init "test"
+            ConnectedEthWallet.init False "test"
     in
     ( { connectedEthWalletModel = initConnectedEthWalletModel
       , userLanguage = Translations.En
       }
     , Cmd.batch
         [ Cmd.map connectedEthWalletTranslator initConnectedEthWalletCmd
-        , ConnectedEthWallet.tryConnect True
+        , ConnectedEthWallet.tryConnect False
         ]
     )
 
@@ -131,6 +131,9 @@ view { connectedEthWalletModel, userLanguage } =
     let
         headerHasBack =
             case connectedEthWalletModel.chooseWalletState of
+                ConnectedEthWallet.FirstTimeAutoconnecting ->
+                    False
+
                 ConnectedEthWallet.ChooseProvider ->
                     False
 
@@ -174,7 +177,7 @@ view { connectedEthWalletModel, userLanguage } =
                         [ div [ class "accent neutral" ] []
                         , div [ class "legacy-panel" ]
                             [ headerView
-                            , Html.map connectedEthWalletTranslator (ConnectedEthWallet.chooseWalletView userLanguage connectedEthWalletModel)
+                            , Html.map connectedEthWalletTranslator (ConnectedEthWallet.chooseWalletView userLanguage False connectedEthWalletModel)
                             ]
                         ]
                     ]

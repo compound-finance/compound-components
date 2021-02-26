@@ -55,7 +55,8 @@ async function connectToTrxProvider(
   newProviderType,
   ledgerDerivationPath,
   disallowAuthDialog = false,
-  showAccount = undefined
+  showAccount = undefined,
+  desiredNetworkId = 1
 ) {
   // We support 4 real provider types
   // 1. Ledger
@@ -68,7 +69,12 @@ async function connectToTrxProvider(
 
   switch (newProviderType) {
     case PROVIDER_TYPE_LEDGER:
-      ({ networkId, account, ethereum } = await connectLedger(eth, ledgerDerivationPath, disallowAuthDialog));
+      ({ networkId, account, ethereum } = await connectLedger(
+        eth,
+        ledgerDerivationPath,
+        disallowAuthDialog,
+        desiredNetworkId
+      ));
       break;
     case PROVIDER_TYPE_WALLET_LINK:
       ({ networkId, account, ethereum } = await connectWalletLink(eth, disallowAuthDialog));
@@ -80,7 +86,7 @@ async function connectToTrxProvider(
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
       break;
     case PROVIDER_TYPE_WALLET_CONNECT:
-      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount));
+      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount, desiredNetworkId));
       break;
     default:
       ({ networkId, account, ethereum } = await disconnect(eth));
@@ -103,10 +109,21 @@ async function connectToTrxProvider(
 }
 
 function subscribeToTrxProviderChanges(app, eth, globEthereum) {
-  // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String } -> Cmd msg
-  app.ports.changeTrxProviderType.subscribe(async ({ newProviderType, ledgerDerivationPath }) => {
-    return await connectToTrxProvider(app, eth, globEthereum, newProviderType, ledgerDerivationPath, false);
-  });
+  // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String, ledgerWalletConnectRopsten : Bool } -> Cmd msg
+  app.ports.changeTrxProviderType.subscribe(
+    async ({ newProviderType, ledgerDerivationPath, ledgerWalletConnectRopsten }) => {
+      const desiredNetworkId = ledgerWalletConnectRopsten ? 3 : 1;
+      return await connectToTrxProvider(
+        app,
+        eth,
+        globEthereum,
+        newProviderType,
+        ledgerDerivationPath,
+        false,
+        desiredNetworkId
+      );
+    }
+  );
 }
 
 function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {

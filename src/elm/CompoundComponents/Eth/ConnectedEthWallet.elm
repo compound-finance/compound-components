@@ -30,7 +30,7 @@ import CompoundComponents.Utils.CompoundHtmlAttributes exposing (HrefLinkType(..
 import CompoundComponents.Utils.Markup
 import CompoundComponents.Utils.NumberFormatter exposing (formatTokenBalanceWithSymbol)
 import Decimal exposing (Decimal)
-import Html exposing (Html, a, button, div, h4, h5, p, span, text)
+import Html exposing (Html, a, button, div, h3, h4, h5, p, span, text)
 import Html.Events exposing (onClick)
 import Json.Decode
 import Strings.Translations as Translations
@@ -68,6 +68,7 @@ type alias Model =
     , connectionNetwork : Maybe Network
     , chooseLedgerAcccountState : ConnectingLedgerState
     , providerType : EthProviderInfo.ProviderType
+    , ledgerWalletConnectForceRopsten : Bool
     , errors : List String
     }
 
@@ -201,8 +202,8 @@ handleBack model =
     { model | chooseWalletState = updatedChooseWalletState }
 
 
-init : String -> ( Model, Cmd Msg )
-init providerTypeString =
+init : Bool -> String -> ( Model, Cmd Msg )
+init ledgerWalletForceRopsten providerTypeString =
     let
         newEmptyModel =
             { chooseWalletState = FirstTimeAutoconnecting
@@ -211,6 +212,7 @@ init providerTypeString =
             , connectionNetwork = Nothing
             , chooseLedgerAcccountState = resetLedgerState
             , providerType = EthProviderInfo.detectProvider providerTypeString
+            , ledgerWalletConnectForceRopsten = ledgerWalletForceRopsten
             , errors = []
             }
     in
@@ -230,7 +232,7 @@ update internalMsg model =
                         ( model, askRetrieveLedgerAccounts model )
 
                     else
-                        selectWalletProvider model walletProvider ""
+                        selectWalletProvider model walletProvider "" model.ledgerWalletConnectForceRopsten
 
                 updatedChooseWalletState =
                     case ( model.chooseWalletState, walletProvider ) of
@@ -404,7 +406,7 @@ update internalMsg model =
                 ( updatedModel, ledgerCmd ) =
                     case ( model.chooseWalletState, model.chooseLedgerAcccountState.choosenLedgerAccount ) of
                         ( ChooseLedgerAccount, Just ledgerAccount ) ->
-                            selectWalletProvider model Ledger ledgerAccount.derivationPath
+                            selectWalletProvider model Ledger ledgerAccount.derivationPath model.ledgerWalletConnectForceRopsten
 
                         _ ->
                             ( model, Cmd.none )
@@ -435,100 +437,160 @@ update internalMsg model =
 -- Views
 
 
+inCopyBackArrow : Bool -> Html Msg
+inCopyBackArrow isCompoundChain =
+    if isCompoundChain then
+        div [ class "connect-wallet-copy__back-arrow-holder" ]
+            [ div [ class "connect-wallet-copy__back-arrow-holder__back-arrow", onClick <| ForSelf <| ResetToChooseProvider ]
+                []
+            ]
+
+    else
+        text ""
+
+
+markSpan : Bool -> Html Msg
+markSpan isCompoundChain =
+    if isCompoundChain then
+        text ""
+
+    else
+        span [ class "connect-wallet-copy__mark" ] []
+
+
+termsView : Translations.Lang -> Bool -> Html Msg
+termsView userLanguage isCompoundChain =
+    if isCompoundChain then
+        text ""
+
+    else
+        div [ class "terms-agreement" ]
+            [ p [ class "small" ]
+                [ text (Translations.choose_wallet_terms_part1 userLanguage)
+                , text " "
+                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+                ]
+            ]
+
+
+connectItemView : Translations.Lang -> Bool -> WalletProviderType -> Html Msg
+connectItemView userLanguage isCompoundChain providerType =
+    let
+        connectItemClass =
+            if isCompoundChain then
+                "connect-item connect-item--box-border"
+
+            else
+                "connect-item"
+
+        ( iconClass, itemText ) =
+            case providerType of
+                WalletLink ->
+                    ( " connect-wallet-icon--coinbase"
+                    , Translations.coinbase_wallet userLanguage
+                    )
+
+                Ledger ->
+                    ( " connect-wallet-icon--ledger"
+                    , Translations.ledger userLanguage
+                    )
+
+                WalletConnect ->
+                    ( " connect-wallet-icon--wallet-connect"
+                    , Translations.wallet_connect userLanguage
+                    )
+
+                _ ->
+                    ( " connect-wallet-icon--metamask"
+                    , Translations.metamask userLanguage
+                    )
+    in
+    a [ class connectItemClass, onClick <| ForSelf <| SelectWalletProvider providerType ]
+        [ span [ class ("connect-wallet-icon" ++ iconClass) ] []
+        , h5 [ class "connect-item-text" ] [ text itemText ]
+        , span [ class "arrow big green" ] []
+        ]
+
+
 chooseWalletView : Translations.Lang -> Bool -> Model -> Html Msg
 chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
-    case chooseWalletState of
-        ChooseProvider ->
-            let
-                ( headerDescriptions, lineDivider ) =
-                    if isCompoundChain then
-                        ( [ p [ class "center-text" ] [ text (Translations.get_started userLanguage) ]
-                          , h4 [] [ text (Translations.connect_wallet userLanguage) ]
-                          ]
-                        , []
-                        )
-
-                    else
-                        ( [ h4 [] [ text (Translations.connect_wallet userLanguage) ]
-                          , p [ class "center-text" ] [ text (Translations.to_start_using_compound userLanguage) ]
-                          ]
-                        , [ div [ class "line" ] [] ]
-                        )
-
-                ( coinbasetWalletItem, terms ) =
-                    if isCompoundChain then
-                        ( [], [] )
-
-                    else
-                        ( [ div [ class "line" ] []
-                          , a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletLink ]
-                                [ span [ class "connect-wallet-icon connect-wallet-icon--coinbase" ] []
-                                , h5 [ class "connect-item-text" ] [ text (Translations.coinbase_wallet userLanguage) ]
-                                , span [ class "arrow big green" ] []
-                                ]
-                          ]
-                        , [ div [ class "terms-agreement" ]
-                                [ p [ class "small" ]
-                                    [ text (Translations.choose_wallet_terms_part1 userLanguage)
-                                    , text " "
-                                    , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
+    let
+        walletCopy =
+            case chooseWalletState of
+                ChooseProvider ->
+                    let
+                        { headerDescriptions, lineDivider } =
+                            if isCompoundChain then
+                                { headerDescriptions =
+                                    [ div [ class "connect-wallet-copy__no-panel-header" ]
+                                        [ p [] [ text (Translations.get_started userLanguage) ]
+                                        , h3 [ class "connect-wallet-copy__no-panel-header__title" ] [ text (Translations.connect_wallet userLanguage) ]
+                                        ]
                                     ]
+                                , lineDivider = []
+                                }
+
+                            else
+                                { headerDescriptions =
+                                    [ h4 [] [ text (Translations.connect_wallet userLanguage) ]
+                                    , p [ class "center-text" ] [ text (Translations.to_start_using_compound userLanguage) ]
+                                    ]
+                                , lineDivider = [ div [ class "line" ] [] ]
+                                }
+
+                        coinbaseWalletItem =
+                            if isCompoundChain then
+                                []
+
+                            else
+                                [ div [ class "line" ] []
+                                , connectItemView userLanguage isCompoundChain WalletLink
                                 ]
-                          ]
+                    in
+                    div [ class "connect-wallet-copy connect-wallet-copy--small-top" ]
+                        ([ markSpan isCompoundChain
+                         ]
+                            ++ headerDescriptions
+                            ++ [ div [ class "connect-choices" ]
+                                    ([ connectItemView userLanguage isCompoundChain Metamask
+                                     ]
+                                        ++ lineDivider
+                                        ++ [ connectItemView userLanguage isCompoundChain Ledger
+                                           ]
+                                        ++ lineDivider
+                                        ++ [ connectItemView userLanguage isCompoundChain WalletConnect
+                                           ]
+                                        ++ coinbaseWalletItem
+                                    )
+                               ]
+                            ++ [ termsView userLanguage isCompoundChain ]
                         )
-            in
-            div [ class "connect-wallet-copy connect-wallet-copy--small-top" ]
-                ([ span [ class "mark" ] []
-                 ]
-                    ++ headerDescriptions
-                    ++ [ div [ class "connect-choices" ]
-                            ([ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Metamask ]
-                                [ span [ class "connect-wallet-icon connect-wallet-icon--metamask" ] []
-                                , h5 [ class "connect-item-text" ] [ text (Translations.metamask userLanguage) ]
-                                , span [ class "arrow big green" ] []
-                                ]
-                             ]
-                                ++ lineDivider
-                                ++ [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider Ledger ]
-                                        [ span [ class "connect-wallet-icon connect-wallet-icon--ledger" ] []
-                                        , h5 [ class "connect-item-text" ] [ text (Translations.ledger userLanguage) ]
-                                        , span [ class "arrow big green" ] []
-                                        ]
-                                   ]
-                                ++ lineDivider
-                                ++ [ a [ class "connect-item", onClick <| ForSelf <| SelectWalletProvider WalletConnect ]
-                                        [ span [ class "connect-wallet-icon connect-wallet-icon--wallet-connect" ] []
-                                        , h5 [ class "connect-item-text" ] [ text (Translations.wallet_connect userLanguage) ]
-                                        , span [ class "arrow big green" ] []
-                                        ]
-                                   ]
-                                ++ coinbasetWalletItem
-                            )
-                       ]
-                    ++ terms
-                )
 
-        ChooseLedgerAccount ->
-            selectLedgerAddressModal userLanguage model
+                ChooseLedgerAccount ->
+                    selectLedgerAddressModal userLanguage isCompoundChain model
 
-        LoadingLegerAccounts ->
-            connectingModal userLanguage (Just Ledger)
+                LoadingLegerAccounts ->
+                    connectingModal userLanguage (Just Ledger) isCompoundChain
 
-        AttemptingConnectToWallet ->
-            connectingModal userLanguage model.selectedProvider
+                AttemptingConnectToWallet ->
+                    connectingModal userLanguage model.selectedProvider isCompoundChain
 
-        LedgerConnectionError ->
-            ledgerConnectionErrorModal userLanguage model
+                LedgerConnectionError ->
+                    ledgerConnectionErrorModal userLanguage isCompoundChain model
 
-        WalletConnectedChooseHidden ->
-            text ""
+                WalletConnectedChooseHidden ->
+                    text ""
 
-        FirstTimeAutoconnecting ->
-            text ""
+                FirstTimeAutoconnecting ->
+                    text ""
+    in
+    div []
+        [ walletCopy
+        ]
 
 
-connectingModal : Translations.Lang -> Maybe WalletProviderType -> Html Msg
-connectingModal userLanguage maybeSelectedProvider =
+connectingModal : Translations.Lang -> Maybe WalletProviderType -> Bool -> Html Msg
+connectingModal userLanguage maybeSelectedProvider isCompoundChain =
     let
         ( headerText, instructionsText ) =
             case maybeSelectedProvider of
@@ -547,25 +609,27 @@ connectingModal userLanguage maybeSelectedProvider =
                     , Translations.click_extension userLanguage
                     )
     in
-    div [ class "connect-wallet-copy" ]
-        [ span [ class "mark" ] []
+    div [ class "connect-wallet-copy connect-wallet-copy--show-border" ]
+        [ inCopyBackArrow isCompoundChain
+        , markSpan isCompoundChain
         , h4 [] [ text headerText ]
-        , p [ class "center-text" ] [ text instructionsText ]
+        , p [] [ text instructionsText ]
         , div [ class "connecting-ring" ]
             [ div [] [] ]
-        , div [ class "terms-agreement" ]
-            [ p [ class "small" ]
-                [ text (Translations.choose_wallet_terms_part1 userLanguage)
-                , text " "
-                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
-                ]
-            ]
+        , termsView userLanguage isCompoundChain
         ]
 
 
-selectLedgerAddressModal : Translations.Lang -> Model -> Html Msg
-selectLedgerAddressModal userLanguage model =
+selectLedgerAddressModal : Translations.Lang -> Bool -> Model -> Html Msg
+selectLedgerAddressModal userLanguage isCompoundChain model =
     let
+        showBorderClass =
+            if isCompoundChain then
+                " connect-wallet-copy--show-border"
+
+            else
+                ""
+
         ( ledgerTypeDropdownActiveClass, ledgerAccountDropdownActiveClass ) =
             case ( model.chooseLedgerAcccountState.pathSelectorActive, model.chooseLedgerAcccountState.addressSelectorActive ) of
                 ( True, _ ) ->
@@ -609,8 +673,9 @@ selectLedgerAddressModal userLanguage model =
                         [ text (Translations.select userLanguage) ]
                     )
     in
-    div [ class "connect-wallet-copy" ]
-        [ span [ class "mark" ] []
+    div [ class ("connect-wallet-copy" ++ showBorderClass) ]
+        [ inCopyBackArrow isCompoundChain
+        , markSpan isCompoundChain
         , h4 [] [ text (Translations.select_address userLanguage) ]
         , div [ class "dropdown dropdown--big", onClickStopPropagation <| ForSelf <| ToggleLedgerAccountTypeDropdown ]
             [ div [ class ("dropdown__selected dropdown__selected--light chosen " ++ ledgerTypeDropdownActiveClass) ]
@@ -660,20 +725,23 @@ selectLedgerAddressModal userLanguage model =
                 )
             ]
         , selectButton
-        , div [ class "terms-agreement" ]
-            [ p [ class "small" ]
-                [ text (Translations.choose_wallet_terms_part1 userLanguage)
-                , text " "
-                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
-                ]
-            ]
+        , termsView userLanguage isCompoundChain
         ]
 
 
-ledgerConnectionErrorModal : Translations.Lang -> Model -> Html Msg
-ledgerConnectionErrorModal userLanguage model =
-    div [ class "connect-wallet-copy" ]
-        [ span [ class "mark mark--error" ] []
+ledgerConnectionErrorModal : Translations.Lang -> Bool -> Model -> Html Msg
+ledgerConnectionErrorModal userLanguage isCompoundChain model =
+    let
+        showBorderClass =
+            if isCompoundChain then
+                " connect-wallet-copy--show-border"
+
+            else
+                ""
+    in
+    div [ class ("connect-wallet-copy" ++ showBorderClass) ]
+        [ inCopyBackArrow isCompoundChain
+        , span [ class "connect-wallet-copy__mark connect-wallet-copy__mark--error" ] []
         , h4 [] [ text (Translations.ledger_connection_failed userLanguage) ]
         , div [ class "bullet-points" ]
             [ p [] [ text (Translations.ledger_connection_failed_instruction_1 userLanguage) ]
@@ -689,13 +757,7 @@ ledgerConnectionErrorModal userLanguage model =
                 ]
             , div [ class "line" ] []
             ]
-        , div [ class "terms-agreement" ]
-            [ p [ class "small" ]
-                [ text (Translations.choose_wallet_terms_part1 userLanguage)
-                , text " "
-                , a [ onClick <| ForSelf <| RequestShowTerms ] [ text (Translations.choose_wallet_terms_part2 userLanguage) ]
-                ]
-            ]
+        , termsView userLanguage isCompoundChain
         ]
 
 
@@ -755,18 +817,18 @@ giveFinishedLedgerRetrieval wrapper =
         (Json.Decode.decodeValue decoder >> wrapper)
 
 
-selectWalletProvider : Model -> WalletProviderType -> String -> ( Model, Cmd msg )
-selectWalletProvider model newProviderType ledgerDerivationPath =
+selectWalletProvider : Model -> WalletProviderType -> String -> Bool -> ( Model, Cmd msg )
+selectWalletProvider model newProviderType ledgerDerivationPath ledgerWalletForceRopsten =
     ( { model | selectedProvider = Just newProviderType, connectionState = Just Connecting }
-    , askChangeTrxProvider model newProviderType ledgerDerivationPath
+    , askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForceRopsten
     )
 
 
-port changeTrxProviderType : { newProviderType : Int, ledgerDerivationPath : String } -> Cmd msg
+port changeTrxProviderType : { newProviderType : Int, ledgerDerivationPath : String, ledgerWalletConnectRopsten : Bool } -> Cmd msg
 
 
-askChangeTrxProvider : Model -> WalletProviderType -> String -> Cmd msg
-askChangeTrxProvider model newProviderType ledgerDerivationPath =
+askChangeTrxProvider : Model -> WalletProviderType -> String -> Bool -> Cmd msg
+askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForceRopsten =
     let
         newProviderTypeId =
             case newProviderType of
@@ -785,7 +847,7 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath =
                 _ ->
                     3
     in
-    changeTrxProviderType { newProviderType = newProviderTypeId, ledgerDerivationPath = ledgerDerivationPath }
+    changeTrxProviderType { newProviderType = newProviderTypeId, ledgerDerivationPath = ledgerDerivationPath, ledgerWalletConnectRopsten = ledgerWalletForceRopsten }
 
 
 port changeNetworkIdPort : { newNetworkId : Int } -> Cmd msg
