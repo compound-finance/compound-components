@@ -1,5 +1,5 @@
 import { shouldAutoConnect } from './utils';
-import { getAccounts, getLedgerAddressAndBalance, makeEth, setNetworkId } from './eth';
+import { getAccounts, getLedgerAddressAndBalance, getNetworkId, makeEth, setNetworkId } from './eth';
 import {
   connectLedger,
   connectWalletLink,
@@ -23,6 +23,8 @@ const PROVIDER_TYPE_WALLET_CONNECT = 4;
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
     ethereum.on('accountsChanged', function ([account, _]) {
+      const networkId = ethereum.chainId
+      app.ports.giveNetworkPort.send({ network: parseInt(networkId) });
       app.ports.giveAccountWeb3Port.send({ account: account });
     });
 
@@ -112,8 +114,11 @@ function subscribeToTrxProviderChanges(app, eth, globEthereum) {
   // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String, ledgerWalletConnectRopsten : Bool } -> Cmd msg
   app.ports.changeTrxProviderType.subscribe(
     async ({ newProviderType, ledgerDerivationPath, ledgerWalletConnectRopsten }) => {
+      subscribeToAccountChanges(app, globEthereum);
+      subscribeToNetworkChanges(app, eth, globEthereum);
+
       const desiredNetworkId = ledgerWalletConnectRopsten ? 3 : 1;
-      return await connectToTrxProvider(
+      await connectToTrxProvider(
         app,
         eth,
         globEthereum,
