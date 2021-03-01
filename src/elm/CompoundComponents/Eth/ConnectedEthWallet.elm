@@ -543,9 +543,8 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 []
 
                             else
-                                [ connectItemView userLanguage isCompoundChain Ledger
-                                , lineDivider
-                                ]
+                                [ connectItemView userLanguage isCompoundChain Ledger ]
+                                    ++ lineDivider
 
                         coinbaseWalletItem =
                             if isCompoundChain then
