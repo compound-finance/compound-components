@@ -538,6 +538,14 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 , lineDivider = [ div [ class "line" ] [] ]
                                 }
 
+                        ledgerItem =
+                            if isCompoundChain then
+                                []
+
+                            else
+                                [ connectItemView userLanguage isCompoundChain Ledger ]
+                                    ++ lineDivider
+
                         coinbaseWalletItem =
                             if isCompoundChain then
                                 []
@@ -555,9 +563,7 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                     ([ connectItemView userLanguage isCompoundChain Metamask
                                      ]
                                         ++ lineDivider
-                                        ++ [ connectItemView userLanguage isCompoundChain Ledger
-                                           ]
-                                        ++ lineDivider
+                                        ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
                                         ++ coinbaseWalletItem
