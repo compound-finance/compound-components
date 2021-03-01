@@ -3,7 +3,7 @@ import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from 
 import WalletLink from 'walletlink';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
-async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false) {
+async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false, desiredNetworkId = 1) {
   // Never auto-connect to ledger, since it's complicated
   if (disallowAuthDialog) {
     return {
@@ -13,12 +13,11 @@ async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = fal
     };
   }
 
-  const networkId = 1;
-  await setLedgerProvider(eth, networkId, ledgerDerivationPath);
+  await setLedgerProvider(eth, desiredNetworkId, ledgerDerivationPath);
   let [account, _] = await getAccounts(eth);
 
   return {
-    networkId,
+    desiredNetworkId,
     account,
     ethereum: null,
   };
@@ -124,9 +123,10 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
-async function connectWalletConnect(eth, disallowAuthDialog = false) {
-  const JSONRPC_URL = eth.dataProviders['mainnet'].host;
-  const CHAIN_ID = 1;
+async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1) {
+  const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
+  const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
+  const CHAIN_ID = desiredNetworkId;
 
   const trxProvider = new WalletConnectProvider({
     rpc: { [CHAIN_ID]: JSONRPC_URL },

@@ -1,5 +1,5 @@
 import { shouldAutoConnect } from './utils';
-import { getAccounts, getLedgerAddressAndBalance, makeEth, setNetworkId } from './eth';
+import { getAccounts, getLedgerAddressAndBalance, getNetworkId, makeEth, setNetworkId } from './eth';
 import {
   connectLedger,
   connectWalletLink,
@@ -23,6 +23,8 @@ const PROVIDER_TYPE_WALLET_CONNECT = 4;
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
     ethereum.on('accountsChanged', function ([account, _]) {
+      const networkId = ethereum.chainId
+      app.ports.giveNetworkPort.send({ network: parseInt(networkId) });
       app.ports.giveAccountWeb3Port.send({ account: account });
     });
 
@@ -55,7 +57,8 @@ async function connectToTrxProvider(
   newProviderType,
   ledgerDerivationPath,
   disallowAuthDialog = false,
-  showAccount = undefined
+  showAccount = undefined,
+  desiredNetworkId = 1
 ) {
   // We support 4 real provider types
   // 1. Ledger
@@ -68,7 +71,12 @@ async function connectToTrxProvider(
 
   switch (newProviderType) {
     case PROVIDER_TYPE_LEDGER:
-      ({ networkId, account, ethereum } = await connectLedger(eth, ledgerDerivationPath, disallowAuthDialog));
+      ({ networkId, account, ethereum } = await connectLedger(
+        eth,
+        ledgerDerivationPath,
+        disallowAuthDialog,
+        desiredNetworkId
+      ));
       break;
     case PROVIDER_TYPE_WALLET_LINK:
       ({ networkId, account, ethereum } = await connectWalletLink(eth, disallowAuthDialog));
@@ -80,7 +88,7 @@ async function connectToTrxProvider(
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
       break;
     case PROVIDER_TYPE_WALLET_CONNECT:
-      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount));
+      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount, desiredNetworkId));
       break;
     default:
       ({ networkId, account, ethereum } = await disconnect(eth));
@@ -103,10 +111,25 @@ async function connectToTrxProvider(
 }
 
 function subscribeToTrxProviderChanges(app, eth, globEthereum) {
-  // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String } -> Cmd msg
-  app.ports.changeTrxProviderType.subscribe(async ({ newProviderType, ledgerDerivationPath }) => {
-    return await connectToTrxProvider(app, eth, globEthereum, newProviderType, ledgerDerivationPath, false);
-  });
+  // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String, ledgerWalletConnectRopsten : Bool } -> Cmd msg
+  app.ports.changeTrxProviderType.subscribe(
+    async ({ newProviderType, ledgerDerivationPath, ledgerWalletConnectRopsten }) => {
+      subscribeToAccountChanges(app, globEthereum);
+      subscribeToNetworkChanges(app, eth, globEthereum);
+
+      const desiredNetworkId = ledgerWalletConnectRopsten ? 3 : 1;
+      await connectToTrxProvider(
+        app,
+        eth,
+        globEthereum,
+        newProviderType,
+        ledgerDerivationPath,
+        false,
+        false,
+        desiredNetworkId
+      );
+    }
+  );
 }
 
 function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {
@@ -144,11 +167,11 @@ function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {
     }
   });
 
-  // port retrieveLedgerAccounts : { derivationPaths : List String } -> Cmd msg
-  app.ports.retrieveLedgerAccounts.subscribe(async ({ derivationPaths }) => {
+  // port retrieveLedgerAccounts : { derivationPaths : List String, ledgerConnectRopsten : Bool } -> Cmd msg
+  app.ports.retrieveLedgerAccounts.subscribe(async ({ derivationPaths, ledgerConnectRopsten }) => {
     for (let i = 0; i < derivationPaths.length; i++) {
       const path = derivationPaths[i];
-      let { accountAddress, ethBalanceWei } = await getLedgerAddressAndBalance(eth, path);
+      let { accountAddress, ethBalanceWei } = await getLedgerAddressAndBalance(eth, path, ledgerConnectRopsten);
 
       let ethBalance = null;
       if (ethBalanceWei != null) {

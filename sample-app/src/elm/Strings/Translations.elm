@@ -181,3 +181,10 @@ wallet_connect lang =
     case lang of
         En ->
             "Wallet Connect"
+
+
+get_started : Lang -> String
+get_started lang =
+    case lang of
+        En ->
+            "Get Started"
