@@ -22,7 +22,6 @@ module CompoundComponents.Utils.NumberFormatter exposing
     , formatPercentageWithDots
     , formatProposalId
     , formatRate
-    , formatRiskLimitInNumberSpec
     , formatToDecimalPlaces
     , formatTokenBalance
     , formatTokenBalanceInNumberSpec
@@ -32,6 +31,7 @@ module CompoundComponents.Utils.NumberFormatter exposing
     , formatUsdExtraDecimals
     , formatUsdInNumberSpec
     , formatUsdInThousandsOrMillions
+    , getSignAndAbsValue
     , interestRateAsPercentage
     )
 
@@ -430,25 +430,6 @@ formatGbpInNumberSpec decimalValue =
 formatEuroInNumberSpec : Decimal -> String
 formatEuroInNumberSpec decimalValue =
     commonFormatInNumberSpec "€" decimalValue
-
-
-formatRiskLimitInNumberSpec : Decimal -> String
-formatRiskLimitInNumberSpec decimalValue =
-    let
-        roundedDecimals =
-            2
-
-        roundedValue =
-            decimalValue
-                |> Decimal.truncate -roundedDecimals
-
-        ( signString, absoluteDecimalValue ) =
-            getSignAndAbsValue roundedValue
-
-        shouldDropZeros =
-            Decimal.gt absoluteDecimalValue (Decimal.fromInt 10000)
-    in
-    signString ++ formatToDecimalPlaces roundedDecimals shouldDropZeros absoluteDecimalValue
 
 
 formatTokenBalanceInNumberSpec : Decimal -> String
