@@ -444,8 +444,11 @@ formatRiskLimitInNumberSpec decimalValue =
 
         ( signString, absoluteDecimalValue ) =
             getSignAndAbsValue roundedValue
+
+        shouldDropZeros =
+            Decimal.gt absoluteDecimalValue (Decimal.fromInt 10000)
     in
-    signString ++ formatToDecimalPlaces roundedDecimals True absoluteDecimalValue
+    signString ++ formatToDecimalPlaces roundedDecimals shouldDropZeros absoluteDecimalValue
 
 
 formatTokenBalanceInNumberSpec : Decimal -> String
