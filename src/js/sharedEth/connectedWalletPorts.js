@@ -23,7 +23,7 @@ const PROVIDER_TYPE_WALLET_CONNECT = 4;
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
     ethereum.on('accountsChanged', function ([account, _]) {
-      const networkId = ethereum.chainId
+      const networkId = ethereum.chainId;
       app.ports.giveNetworkPort.send({ network: parseInt(networkId) });
       app.ports.giveAccountWeb3Port.send({ account: account });
     });

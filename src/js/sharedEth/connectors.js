@@ -17,8 +17,8 @@ async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = fal
   let [account, _] = await getAccounts(eth);
 
   return {
-    desiredNetworkId,
-    account,
+    networkId: desiredNetworkId,
+    account: account,
     ethereum: null,
   };
 }
