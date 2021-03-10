@@ -614,8 +614,15 @@ connectingModal userLanguage maybeSelectedProvider isCompoundChain =
                     ( Translations.unlock_wallet userLanguage
                     , Translations.click_extension userLanguage
                     )
+
+        showBorderClass =
+            if isCompoundChain then
+                " connect-wallet-copy--show-border"
+
+            else
+                ""
     in
-    div [ class "connect-wallet-copy connect-wallet-copy--show-border" ]
+    div [ class ("connect-wallet-copy" ++ showBorderClass) ]
         [ inCopyBackArrow isCompoundChain
         , markSpan isCompoundChain
         , h4 [] [ text headerText ]
