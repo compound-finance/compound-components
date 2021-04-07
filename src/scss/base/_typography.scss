@@ -10,7 +10,7 @@
 @font-face {
   font-family: 'Haas Grot Disp R';
   src: url('/compound-components/fonts/NeueHaasGrotDispRound-65Medium.otf');
-  font-style: medium;
+  font-style: normal;
   font-weight: 700;
 }
 
@@ -24,7 +24,7 @@
 @font-face {
   font-family: 'Haas Grot Text R';
   src: url('/compound-components/fonts/NeueHaasGrotTextRound-65Medium.otf');
-  font-style: medium;
+  font-style: normal;
   font-weight: 600;
 }
 
@@ -75,7 +75,7 @@ h2 {
 h3 {
   font-family: 'Haas Grot Disp R';
   font-weight: 700;
-  font-style: medium;
+  font-style: normal;
   font-size: 1.5rem;
   line-height: 2.1rem;
   letter-spacing: 0;
@@ -84,7 +84,7 @@ h3 {
 h4 {
   font-family: 'Haas Grot Disp R';
   font-weight: 700;
-  font-style: medium;
+  font-style: normal;
   font-size: 1.35rem;
   line-height: 1.75rem;
   letter-spacing: 0;
@@ -152,8 +152,9 @@ pre {
 
 .label,
 label {
+  cursor: inherit;
   font-family: 'Haas Grot Text R';
-  font-style: medium;
+  font-style: normal;
   font-weight: 600;
   font-size: 12px;
   color: $color_grey_2;
