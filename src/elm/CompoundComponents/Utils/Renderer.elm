@@ -11,7 +11,7 @@ import Markdown.Block as Block
 import Markdown.Html
 import Markdown.Parser as Markdown
 import Markdown.Renderer as Renderer exposing (Renderer, defaultHtmlRenderer)
-import Parser.Advanced
+import Parser.Advanced as ParserAdvanced
 
 
 renderNav : String -> List (Html msg)
@@ -166,7 +166,7 @@ htmlRenderer =
                                     String.replace "pseudo-table:" "" languageString
 
                                 markdownTable =
-                                    Parser.Advanced.run TableParser.parser body
+                                    ParserAdvanced.run TableParser.parser body
                             in
                             case markdownTable of
                                 Ok (Table headerColumns rows) ->

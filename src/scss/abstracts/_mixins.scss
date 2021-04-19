@@ -115,3 +115,12 @@
 .animated-background--super-dark {
   @include animated-background--super-dark();
 }
+
+@mixin after-badge {
+  border-radius: $border-radius;
+  border: 1px solid $color_blue_1;
+  color: $color_blue_1;
+  padding: 0.3rem;
+  font-size: 12px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
