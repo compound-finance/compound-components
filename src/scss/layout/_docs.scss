@@ -5,6 +5,7 @@ $docs-navigation-height: 4.3125rem;
 
 .docs {
   background-color: $color_light_2;
+  position: relative;
   section,
   section#supply {
     padding: 4rem 0 0 0;
@@ -290,16 +291,20 @@ $docs-navigation-height: 4.3125rem;
       .subsection {
         color: $color_grey_2;
       }
+    }
 
-      &.fixed {
+    &.fixed {
+      .docs__side-navigation__content {
         position: fixed;
         top: 0;
         margin-top: $docs-navigation-height + 3rem;
         bottom: auto;
         width: 19.503rem;
         z-index: 30;
+      }
 
-        &--bottom {
+      &--bottom {
+        .docs__side-navigation__content {
           bottom: 0;
           margin-top: 0;
           width: 19.503rem;
