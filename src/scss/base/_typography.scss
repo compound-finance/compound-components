@@ -126,7 +126,7 @@ p {
 }
 
 pre {
-  padding: 1.43rem 1rem 1.43rem 1rem;
+  padding: $gov-column-gutter $column-gutter;
   font-size: 1rem;
   line-height: 1.25;
   background-color: $color_light_1;
@@ -281,20 +281,6 @@ a:hover {
   font-style: italic;
 }
 
-$background_color: #ffffff;
-$background_highlight: #fffbdd;
-$background_addition: #eaffea;
-$background_deletion: #ffecec;
-$comment_color: #969896;
-$shade0: #24292e;
-$shade1: #005cc5;
-$shade2: #df5000;
-$shade3: #d73a49;
-$shade4: #0086b3;
-$shade5: #63a35c;
-$shade6: #005cc5;
-$shade7: #795da3;
-
 .elmsh {
   color: #9aaab1;
   background: $color_light_2;
@@ -339,7 +325,7 @@ $shade7: #795da3;
 }
 
 .elmsh6 {
-  color: $shade6;
+  color: $color_blue_2;
 }
 
 .elmsh7 {
