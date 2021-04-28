@@ -12,9 +12,8 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@ledgerhq/hw-app-eth": "^5.25.0",
-    "@ledgerhq/hw-transport-webusb": "^5.25.0",
-    "@ledgerhq/web3-subprovider": "^5.25.0",
+    "@ledgerhq/hw-app-eth": "^5.50.0",
+    "@ledgerhq/hw-transport-webusb": "^5.50.0",
     "@walletconnect/web3-provider": "^1.4.1",
     "autoprefixer": "^9.7.6",
     "babel-loader": "^8.0.0",
