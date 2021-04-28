@@ -41,7 +41,7 @@
     "string-replace-loader": "^2.1.1",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
-    "walletlink": "^2.0.1",
+    "walletlink": "^2.1.0",
     "web3-core-helpers": "1.2.7",
     "web3-eth": "1.2.7",
     "web3-utils": "1.2.7",
