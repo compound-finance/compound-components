@@ -19,6 +19,7 @@
             "elm/parser": "1.1.0",
             "elm/regex": "1.0.0",
             "elm/time": "1.0.0",
+            "hecrj/html-parser": "2.3.4",
             "prozacchiwawa/elm-keccak": "2.0.0",
             "rtfeldman/elm-hex": "1.0.0",
             "toastal/either": "3.5.2",
