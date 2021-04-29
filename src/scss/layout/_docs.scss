@@ -175,7 +175,7 @@ $docs-navigation-height: 4.3125rem;
 
       .docs__content {
         background-color: $color_light_2;
-        padding-left: $column-gutter;
+        padding-left: calc(#{$column-gutter} / 2);
       }
     }
   }
