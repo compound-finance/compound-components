@@ -9,8 +9,6 @@ window.addEventListener('load', function () {
   let globEthereum = null;
   if (window['ethereum']) {
     globEthereum = window['ethereum'];
-  } else if (window['web3']) {
-    globEthereum = window['web3'].currentProvider;
   }
 
   const url = new URL(window.location);
@@ -94,7 +92,7 @@ window.addEventListener('load', function () {
     return Object.assign(acc, { [network]: new Eth.providers.HttpProvider(url) });
   }, {});
 
-  connectedWalletPorts.subscribe(app, globEthereum, dataProviders, NETWORK_MAP, {}, 'kovan', {});
   const eth = makeEth(dataProviders, NETWORK_MAP, {}, {}, 'kovan');
+  connectedWalletPorts.subscribe(app, eth, globEthereum, NETWORK_MAP, 'kovan');
   setNewTrxProvider(eth, globEthereum);
 });
