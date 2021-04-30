@@ -142,67 +142,77 @@ htmlRenderer =
         , html = sectionHtml
         , codeBlock =
             \{ body, language } ->
-                case language of
-                    Just "js" ->
-                        Highlighter.highlight body
+                if body == "" then
+                    text ""
 
-                    Just "javascript" ->
-                        Highlighter.highlight body
+                else
+                    case language of
+                        Just "sh" ->
+                            Highlighter.highlight body
 
-                    Just "solc" ->
-                        Highlighter.highlightSol body
+                        Just "bash" ->
+                            Highlighter.highlight body
 
-                    Just "solidity" ->
-                        Highlighter.highlightSol body
+                        Just "js" ->
+                            Highlighter.highlight body
 
-                    Just "note" ->
-                        Html.p [ Attr.class "notice" ]
-                            (renderContents body)
+                        Just "javascript" ->
+                            Highlighter.highlight body
 
-                    Just languageString ->
-                        if String.startsWith "pseudo-table:" languageString then
-                            let
-                                tableClass =
-                                    String.replace "pseudo-table:" "" languageString
+                        Just "solc" ->
+                            Highlighter.highlightSol body
 
-                                markdownTable =
-                                    ParserAdvanced.run TableParser.parser body
-                            in
-                            case markdownTable of
-                                Ok (Table headerColumns rows) ->
-                                    Html.table [ Attr.class tableClass ]
-                                        [ Html.thead []
-                                            [ Html.tr []
-                                                (headerColumns
+                        Just "solidity" ->
+                            Highlighter.highlightSol body
+
+                        Just "note" ->
+                            Html.p [ Attr.class "notice" ]
+                                (renderContents body)
+
+                        Just languageString ->
+                            if String.startsWith "pseudo-table:" languageString then
+                                let
+                                    tableClass =
+                                        String.replace "pseudo-table:" "" languageString
+
+                                    markdownTable =
+                                        ParserAdvanced.run TableParser.parser body
+                                in
+                                case markdownTable of
+                                    Ok (Table headerColumns rows) ->
+                                        Html.table [ Attr.class tableClass ]
+                                            [ Html.thead []
+                                                [ Html.tr []
+                                                    (headerColumns
+                                                        |> List.map
+                                                            (\{ label, alignment } ->
+                                                                Html.th [] [ Html.text label ]
+                                                            )
+                                                    )
+                                                ]
+                                            , Html.tbody []
+                                                (rows
                                                     |> List.map
-                                                        (\{ label, alignment } ->
-                                                            Html.th [] [ Html.text label ]
+                                                        (\rowData ->
+                                                            Html.tr []
+                                                                (rowData
+                                                                    |> List.map
+                                                                        (\rowColumnData ->
+                                                                            Html.td [] (renderContents rowColumnData)
+                                                                        )
+                                                                )
                                                         )
                                                 )
                                             ]
-                                        , Html.tbody []
-                                            (rows
-                                                |> List.map
-                                                    (\rowData ->
-                                                        Html.tr []
-                                                            (rowData
-                                                                |> List.map
-                                                                    (\rowColumnData ->
-                                                                        Html.td [] (renderContents rowColumnData)
-                                                                    )
-                                                            )
-                                                    )
-                                            )
-                                        ]
 
-                                _ ->
-                                    Html.pre [] [ Html.text body ]
+                                    _ ->
+                                        Html.pre [] [ Html.text body ]
 
-                        else
+                            else
+                                Html.pre [] [ Html.text body ]
+
+                        _ ->
                             Html.pre [] [ Html.text body ]
-
-                    _ ->
-                        Html.pre [] [ Html.text body ]
     }
 
 
@@ -229,11 +239,20 @@ sectionHtml =
                 Html.section [ Attr.id id ] renderedChildren
             )
             |> Markdown.Html.withAttribute "id"
+        , Markdown.Html.tag "section"
+            (\class renderedChildren ->
+                Html.section [ Attr.class class ] renderedChildren
+            )
+            |> Markdown.Html.withAttribute "class"
         , Markdown.Html.tag "div"
             (\id renderedChildren ->
                 Html.div [ Attr.id id ] renderedChildren
             )
             |> Markdown.Html.withAttribute "id"
+        , Markdown.Html.tag "div"
+            (\renderedChildren ->
+                Html.div [] renderedChildren
+            )
         ]
 
 

@@ -167,6 +167,17 @@ $docs-navigation-height: 4.3125rem;
         padding-left: 7rem;
       }
     }
+
+    &--no-side-navigation {
+      &::after {
+        background-color: $color_light_2;
+      }
+
+      .docs__content {
+        background-color: $color_light_2;
+        padding-left: calc(#{$column-gutter} / 2);
+      }
+    }
   }
 
   &__content {
