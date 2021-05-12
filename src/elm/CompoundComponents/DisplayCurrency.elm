@@ -47,7 +47,7 @@ readDisplayCurrency =
 
 calculateGbpValue : Decimal -> Maybe Decimal
 calculateGbpValue usdValue =
-    case Decimal.fromFloat 1.3 of
+    case Decimal.fromFloat 1.41 of
         Just gbpDivisor ->
             Decimal.fastdiv usdValue gbpDivisor
 
