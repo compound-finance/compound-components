@@ -29,7 +29,7 @@ import CompoundComponents.Utils.NumberFormatter
         , formatUsdInThousandsOrMillions
         )
 import Decimal exposing (Decimal)
-import Dict exposing (Dict)
+import Dict
 
 
 type DisplayCurrency
@@ -57,7 +57,7 @@ calculateGbpValue usdValue =
 
 calculateEuroValue : Decimal -> Maybe Decimal
 calculateEuroValue usdValue =
-    case Decimal.fromFloat 1.08 of
+    case Decimal.fromFloat 1.21 of
         Just euroDivisor ->
             Decimal.fastdiv usdValue euroDivisor
 
