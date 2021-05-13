@@ -10,6 +10,10 @@
     width: 100%;
     margin-top: -2px;
     z-index: 0;
+
+    &--dark {
+      background-color: $color_dark_1;
+    }
   }
 
   &__options {
@@ -45,6 +49,10 @@
 
     &--action-modal-grey {
       color: $color_grey_2;
+    }
+
+    &--dark {
+      color: $color_grey_1;
     }
 
     &--active {
@@ -91,6 +99,11 @@
       &--purple {
         color: $color_borrow;
         border-color: $color_borrow;
+      }
+
+      &--white {
+        color: #ffffff;
+        border-color: #ffffff;
       }
     }
   }
