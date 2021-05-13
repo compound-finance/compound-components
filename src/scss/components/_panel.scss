@@ -78,8 +78,21 @@
   }
 
   &__section {
-    padding: 1rem $gov-column-gutter;
-    border-top: 1px solid $color_border;
+    border-top: 1px solid $color_dark_1;
+
+    &--row-dividers {
+      & > div {
+        border-right: 1px solid $color_dark_1;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+
+    &__content {
+      padding: 1rem $gov-column-gutter;
+    }
   }
 
   &__footer {
