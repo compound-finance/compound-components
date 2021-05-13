@@ -13,6 +13,7 @@ port module CompoundComponents.Eth.ConnectedEthWallet exposing
     , giveTrxProviderType
     , handleBack
     , init
+    , resetAndChooseProvider
     , resetModel
     , subscriptions
     , translator
@@ -178,6 +179,14 @@ resetModel : Model -> Model
 resetModel model =
     { model
         | chooseWalletState = WalletConnectedChooseHidden
+        , chooseLedgerAcccountState = resetLedgerState
+    }
+
+
+resetAndChooseProvider : Model -> Model
+resetAndChooseProvider model =
+    { model
+        | chooseWalletState = ChooseProvider
         , chooseLedgerAcccountState = resetLedgerState
     }
 
