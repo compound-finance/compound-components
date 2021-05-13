@@ -77,6 +77,11 @@
     }
   }
 
+  &__section {
+    padding: 1rem $gov-column-gutter;
+    border-top: 1px solid $color_border;
+  }
+
   &__footer {
     padding: 1.145rem 1.9375rem;
     border-bottom: none;
