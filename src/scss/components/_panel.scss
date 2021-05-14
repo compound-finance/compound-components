@@ -75,6 +75,10 @@
         padding-right: 0;
       }
     }
+
+    &--no-header {
+      border-radius: 4px 4px 0 0;
+    }
   }
 
   &__section {
