@@ -75,6 +75,28 @@
         padding-right: 0;
       }
     }
+
+    &--no-header {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+
+  &__section {
+    border-top: 1px solid $color_dark_1;
+
+    &--row-dividers {
+      & > div {
+        border-right: 1px solid $color_dark_1;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+
+    &__content {
+      padding: 1rem $gov-column-gutter;
+    }
   }
 
   &__footer {

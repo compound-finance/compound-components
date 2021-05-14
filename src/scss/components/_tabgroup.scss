@@ -10,6 +10,10 @@
     width: 100%;
     margin-top: -2px;
     z-index: 0;
+
+    &--dark {
+      background-color: $color_dark_1;
+    }
   }
 
   &__options {
@@ -26,7 +30,7 @@
   &__option {
     cursor: pointer;
     color: $color_grey_3;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     height: 100%;
     padding: 0.5rem 0;
 
@@ -45,6 +49,10 @@
 
     &--action-modal-grey {
       color: $color_grey_2;
+    }
+
+    &--dark {
+      color: $color_grey_1;
     }
 
     &--active {
@@ -91,6 +99,11 @@
       &--purple {
         color: $color_borrow;
         border-color: $color_borrow;
+      }
+
+      &--white {
+        color: $color_light_1;
+        border-color: $color_light_1;
       }
     }
   }
