@@ -38,8 +38,9 @@ function subscribeToNetworkChanges(app, eth, ethereum) {
     ethereum.autoRefreshOnNetworkChange = false;
 
     ethereum.on('chainChanged', function (networkId) {
-      setNetworkId(eth, networkId);
-      app.ports.giveNetworkPort.send({ network: parseInt(networkId) });
+      const networkIdInt = parseInt(networkId);
+      setNetworkId(eth, networkIdInt);
+      app.ports.giveNetworkPort.send({ network: networkIdInt });
 
       getAccounts(eth).then(([account]) => {
         app.ports.giveAccountWeb3Port.send({ account: account });
