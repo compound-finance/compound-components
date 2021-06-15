@@ -1,0 +1,37 @@
+@import '../abstracts/variables';
+
+.hamburger {
+  position: relative;
+  z-index: 25;
+  user-select: none;
+
+  span {
+    display: block;
+    margin-left: auto;
+    width: 20px;
+    height: 2px;
+    margin-bottom: 5px;
+    position: relative;
+    background: $color_light_1;
+    border-radius: 3px;
+    z-index: 1;
+    transform-origin: 4px 0px;
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
+  }
+
+  &.active {
+    span {
+      opacity: 1;
+      transform: rotate(45deg) translate(0, 2px);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+      transform: rotate(0deg) scale(0.2, 0.2);
+    }
+
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(1px, -5px);
+    }
+  }
+}
