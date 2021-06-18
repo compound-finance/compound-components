@@ -15,6 +15,8 @@ type Network
     | Sokol
     | Core
     | Development
+    | Polygon
+    | PolygonMumbai
     | Unknown
 
 
@@ -51,11 +53,17 @@ networkFromId networkIdVal =
         99 ->
             Core
 
+        137 ->
+            Polygon
+
         999 ->
             Development
 
         1337 ->
             Development
+
+        80001 ->
+            PolygonMumbai
 
         _ ->
             Unknown
@@ -81,6 +89,12 @@ networkFromName name =
 
         "development" ->
             Development
+
+        "polygon" ->
+            Polygon
+
+        "polygon-mumbai" ->
+            PolygonMumbai
 
         _ ->
             MainNet
@@ -118,6 +132,12 @@ networkName network =
 
         Core ->
             "Core"
+
+        Polygon ->
+            "Polygon"
+
+        PolygonMumbai ->
+            "Polygon-Mumbai"
 
         Development ->
             "Development"
@@ -159,8 +179,14 @@ networkId network =
         Core ->
             99
 
+        Polygon ->
+            137
+
         Development ->
             999
+
+        PolygonMumbai ->
+            80001
 
         Unknown ->
             9999
@@ -197,6 +223,12 @@ getEtherscanDomain network =
             Nothing
 
         Core ->
+            Nothing
+
+        Polygon ->
+            Nothing
+
+        PolygonMumbai ->
             Nothing
 
         Development ->
