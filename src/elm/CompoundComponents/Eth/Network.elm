@@ -137,7 +137,7 @@ networkName network =
             "Polygon"
 
         PolygonMumbai ->
-            "Polygon-Mumbai"
+            "Polygon (Mumbai)"
 
         Development ->
             "Development"
