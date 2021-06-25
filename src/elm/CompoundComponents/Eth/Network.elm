@@ -17,6 +17,7 @@ type Network
     | Development
     | Polygon
     | PolygonMumbai
+    | PolygonDevelopment
     | Unknown
 
 
@@ -65,6 +66,9 @@ networkFromId networkIdVal =
         80001 ->
             PolygonMumbai
 
+        888 ->
+            PolygonDevelopment
+
         _ ->
             Unknown
 
@@ -93,8 +97,11 @@ networkFromName name =
         "polygon" ->
             Polygon
 
-        "polygon-mumbai" ->
+        "polygon (mumbai)" ->
             PolygonMumbai
+
+        "polygon (development)" ->
+            PolygonDevelopment
 
         _ ->
             MainNet
@@ -138,6 +145,9 @@ networkName network =
 
         PolygonMumbai ->
             "Polygon (Mumbai)"
+
+        PolygonDevelopment ->
+            "Polygon (Development)"
 
         Development ->
             "Development"
@@ -188,6 +198,9 @@ networkId network =
         PolygonMumbai ->
             80001
 
+        PolygonDevelopment ->
+            888
+
         Unknown ->
             9999
 
@@ -219,20 +232,5 @@ getEtherscanDomain network =
         Kovan ->
             Just "kovan.etherscan.io"
 
-        Sokol ->
-            Nothing
-
-        Core ->
-            Nothing
-
-        Polygon ->
-            Nothing
-
-        PolygonMumbai ->
-            Nothing
-
-        Development ->
-            Nothing
-
-        Unknown ->
+        _ ->
             Nothing
