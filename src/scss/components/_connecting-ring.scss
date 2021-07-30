@@ -19,6 +19,16 @@
     background: $color_borrow;
     border-color: $color_borrow;
   }
+
+  &--error {
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 100px;
+    background-color: transparent;
+    border-color: transparent;
+    background-image: url(/compound-components/assets/icn-ledger-error-no-bkg.svg);
+  }
 }
 .connecting-ring div {
   box-sizing: border-box;
