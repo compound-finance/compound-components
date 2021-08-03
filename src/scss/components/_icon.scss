@@ -29,6 +29,10 @@
     @extend .animated-background;
   }
 
+  &--AAVE {
+    background-image: url('/compound-components/assets/asset_AAVE.svg');
+  }
+
   &--BAT {
     background-image: url('/compound-components/assets/asset_BAT.svg');
   }
@@ -70,6 +74,10 @@
     background-image: url('/compound-components/assets/asset_SAI.svg');
   }
 
+  &--SUSHI {
+    background-image: url('/compound-components/assets/asset_SUSHI.svg');
+  }
+
   &--TUSD {
     background-image: url('/compound-components/assets/asset_TUSD.svg');
   }
@@ -89,6 +97,10 @@
   &--WBTC,
   &--WBTC2 {
     background-image: url('/compound-components/assets/asset_BTC.svg');
+  }
+
+  &--YFI {
+    background-image: url('/compound-components/assets/asset_YFI.svg');
   }
 
   &--ZRX {
