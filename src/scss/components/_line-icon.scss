@@ -14,6 +14,12 @@
     &:hover {
       background-image: url('/compound-components/assets/icn-copy-green.svg');
     }
+
+    &--blue {
+      &:hover {
+        background-image: url('/compound-components/assets/icn-copy-blue.svg');
+      }
+    }
   }
 
   &--external-link {
