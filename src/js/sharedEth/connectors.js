@@ -50,6 +50,7 @@ async function connectWalletLink(eth, disallowAuthDialog = false) {
     networkId = null;
   }
 
+  //TODO: This is going to change in the future with EIP-1193
   // This method actually triggers the UI flow from as spec'd in EIP-1102
   await trxProvider.send('eth_requestAccounts').then((accounts) => {
     //Currently don't need accounts here as we synchronous get next.
@@ -82,6 +83,7 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConn
       };
     }
 
+    //TODO: This is going to change in the future with EIP-1193
     if (!isAutoConnect) {
       ethereum.request({ method: 'eth_requestAccounts' });
     }
@@ -159,7 +161,7 @@ async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetw
   }
 
   // This method actually triggers the UI flow from as spec'd in EIP-1102
-  await trxProvider.send('eth_requestAccounts').then((accounts) => {
+  await trxProvider.request({ method: 'eth_accounts'}).then((accounts) => {
     //Currently don't need accounts here as we synchronous get next.
   });
 
