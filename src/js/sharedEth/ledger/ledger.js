@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 import Transport from '@ledgerhq/hw-transport-webusb';
 import SignerProvider from './signer_provider';
-import { encodeSignedTx, encodeTx } from './trx';
+import { encodeSignedTx, encodeTxForSignature } from './trx';
 
 // We use this to serialize all calls to the Ledger; we should probably do this
 // on a per-transport basis, but we only support one transport (per library)
@@ -58,12 +58,12 @@ class Ledger {
 
   async sign(transaction) {
     transaction.chainId = transaction.chainId || this.networkId;
-    let unsignedTx = encodeTx(transaction);
+    let { trxType, payloadToSign, rlpPayload } = encodeTxForSignature(transaction);
 
     await _pending; // be nice if there's other transactions pending
 
     // set ourselves as the global pending tx
-    _pending = this._eth.signTransaction(this.path, unsignedTx.substring(2)).catch((error) => {
+    _pending = this._eth.signTransaction(this.path, payloadToSign.substring(2)).catch((error) => {
       //User rejected here. Don't have specific rejection UX yet.
     });
     let signature = await _pending; // await completion of our signature trx

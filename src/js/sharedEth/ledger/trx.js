@@ -23,13 +23,12 @@ function makeEven(hex) {
   
   EIP-1559 Introduces new fields to the encoded transaction as follows:
 
-  RLP([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList, signatureYParity, signatureR, signatureS])
+  0x2 || RLP([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList, signatureYParity, signatureR, signatureS])
 
   https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md
 
 ***/
-
-export function encodeTx(tx) {
+export function encodeTxForSignature(tx) {
   if (!tx.gas && !tx.gasLimit) {
     throw new Error('"gas" is missing');
   }
@@ -47,13 +46,10 @@ export function encodeTx(tx) {
   transaction.chainId = utils.numberToHex(tx.chainId);
 
   if (transaction.maxFeePerGas && transaction.maxPriorityFeePerGas) {
-    // EIP-1559
+    // EIP-1559 introduces a new trxType wrapper in addition to the
+    // actual RLP encoded transaction payload.
 
-    // TODO: I think we also need to concat this payload with 0x2 as
-    //       it looks looks like there is an envelope where the trxType is 2
-    //       just before the actualy rlp payload?
-    //       https://github.com/LedgerHQ/ledgerjs/blob/master/packages/hw-app-eth/src/Eth.ts#L222
-    return RLP.encode([
+    const rlpPayload = RLP.encode([
       Bytes.fromNat(transaction.chainId || '0x1'),
       Bytes.fromNat(transaction.nonce),
       Bytes.fromNat(transaction.maxPriorityFeePerGas),
@@ -62,11 +58,20 @@ export function encodeTx(tx) {
       transaction.to.toLowerCase(),
       Bytes.fromNat(transaction.value),
       transaction.data,
-      '0xc0' //empty access_list
+      []
     ]);
+
+    const txPayloadToSign = '0x02' + rlpPayload.slice(2);
+
+    return {
+      trxType : '0x02',
+      payloadToSign: txPayloadToSign,
+      rlpPayload: rlpPayload
+    };
   } else {
     // EIP-155
-    return RLP.encode([
+
+    const txPayloadToSign = RLP.encode([
       Bytes.fromNat(transaction.nonce),
       Bytes.fromNat(transaction.gasPrice),
       Bytes.fromNat(transaction.gas),
@@ -77,29 +82,39 @@ export function encodeTx(tx) {
       '0x',
       '0x',
     ]);
+
+    
+    return {
+      trxType : null,
+      payloadToSign: txPayloadToSign,
+      rlpPayload: txPayloadToSign
+    };
   }
 }
 
 export function encodeSignedTx(tx, signature) {
-  const rlpEncoded = encodeTx(tx);
+  var { trxType, payloadToSign, rlpPayload } = encodeTxForSignature(tx);
 
-  var decodedRawTx = RLP.decode(rlpEncoded);
+  var decodedRawTx = RLP.decode(rlpPayload);
   var rawTx;
 
-  if (decodedRawTx.length == 9) {
+  if (trxType) {
     // EIP-1559
-    rawTx = decodedRawTx.concat([`0x${signature.v}`, `0x${signature.r}`, `0x${signature.s}`]);
 
-    rawTx[9] = makeEven(trimLeadingZero(rawTx[9]));
-    rawTx[10] = makeEven(trimLeadingZero(rawTx[10]));
-    rawTx[11] = makeEven(trimLeadingZero(rawTx[11]));
+    rawTx = decodedRawTx.concat([
+      makeEven(trimLeadingZero(`0x${signature.v}`)),
+      makeEven(trimLeadingZero(`0x${signature.r}`)),
+      makeEven(trimLeadingZero(`0x${signature.s}`))
+    ]);    
+
+    return '0x02' + RLP.encode(rawTx).slice(2);
   } else {
     rawTx = decodedRawTx.slice(0, 6).concat([`0x${signature.v}`, `0x${signature.r}`, `0x${signature.s}`]);
 
     rawTx[6] = makeEven(trimLeadingZero(rawTx[6]));
     rawTx[7] = makeEven(trimLeadingZero(rawTx[7]));
     rawTx[8] = makeEven(trimLeadingZero(rawTx[8]));
-  }
 
-  return RLP.encode(rawTx);
+    return RLP.encode(rawTx);
+  }
 }
