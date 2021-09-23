@@ -48,6 +48,11 @@ export function encodeTx(tx) {
 
   if (transaction.maxFeePerGas && transaction.maxPriorityFeePerGas) {
     // EIP-1559
+
+    // TODO: I think we also need to concat this payload with 0x2 as
+    //       it looks looks like there is an envelope where the trxType is 2
+    //       just before the actualy rlp payload?
+    //       https://github.com/LedgerHQ/ledgerjs/blob/master/packages/hw-app-eth/src/Eth.ts#L222
     return RLP.encode([
       Bytes.fromNat(transaction.chainId || '0x1'),
       Bytes.fromNat(transaction.nonce),
