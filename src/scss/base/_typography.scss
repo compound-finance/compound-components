@@ -236,6 +236,9 @@ label {
   &.borrow {
     color: $color_borrow;
   }
+  &.treasury {
+    color: $color_blue_1;
+  }
 }
 
 a {

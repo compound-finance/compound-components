@@ -53,6 +53,14 @@
     }
   }
 
+  &--no-hover {
+    border-left: none;
+    cursor: auto;
+    &:hover {
+      border-left: none;
+    }
+  }
+
   &:last-child {
     border-bottom: none;
     border-radius: 0 0 $border_radius $border_radius;
