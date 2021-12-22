@@ -1,0 +1,92 @@
+.ctoken {
+  flex-shrink: 0;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+  background-image: url('/compound-components/assets/ctoken_blank.svg');
+  width: 3.375rem;
+  height: 3.375rem;
+
+  &--small {
+    width: 26px;
+    height: 26px;
+  }
+
+  &--cAAVE {
+    background-image: url('/compound-components/assets/ctoken_aave_product.svg');
+  }
+
+  &--cBAT {
+    background-image: url('/compound-components/assets/ctoken_bat_product.svg');
+  }
+
+  &--cCOMP {
+    background-image: url('/compound-components/assets/ctoken_comp_product.svg');
+  }
+
+  &--cDAI {
+    background-image: url('/compound-components/assets/ctoken_dai_product.svg');
+  }
+
+  &--cETH {
+    background-image: url('/compound-components/assets/ctoken_eth_product.svg');
+  }
+
+  &--cLINK {
+    background-image: url('/compound-components/assets/ctoken_link_product.svg');
+  }
+
+  &--cMKR {
+    background-image: url('/compound-components/assets/ctoken_mkr_product.svg');
+  }
+
+  &--cREP {
+    background-image: url('/compound-components/assets/ctoken_rep_product.svg');
+  }
+
+  &--cSAI {
+    background-image: url('/compound-components/assets/ctoken_sai_product.svg');
+  }
+
+  &--cSUSHI {
+    background-image: url('/compound-components/assets/ctoken_sushi_product.svg');
+  }
+
+  &--cTUSD {
+    background-image: url('/compound-components/assets/ctoken_tusd_product.svg');
+  }
+
+  &--cUNI {
+    background-image: url('/compound-components/assets/ctoken_uni_product.svg');
+  }
+
+  &--cUSDC {
+    background-image: url('/compound-components/assets/ctoken_usdc_product.svg');
+  }
+
+  &--cUSDP {
+    background-image: url('/compound-components/assets/ctoken_usdp_product.svg');
+  }
+
+  &--cUSDT {
+    background-image: url('/compound-components/assets/ctoken_usdt_product.svg');
+  }
+
+  &--cWBTC {
+    background-image: url('/compound-components/assets/ctoken_wbtc_product.svg');
+  }
+
+  &--cWBTC2 {
+    background-image: url('/compound-components/assets/ctoken_wbtc_product.svg');
+  }
+
+  &--cYFI {
+    background-image: url('/compound-components/assets/ctoken_yfi_product.svg');
+  }
+
+  &--cZRX {
+    background-image: url('/compound-components/assets/ctoken_zrx_product.svg');
+  }
+}
