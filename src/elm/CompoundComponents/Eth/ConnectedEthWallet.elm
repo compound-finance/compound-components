@@ -39,6 +39,7 @@ import Strings.Translations as Translations
 
 type WalletProviderType
     = Metamask
+    | Tally
     | WalletLink
     | Ledger
     | OtherWeb3Browser
@@ -277,6 +278,12 @@ update internalMsg model =
                         ( Just None, EthProviderInfo.MetaMask ) ->
                             Just Metamask
 
+                        ( Nothing, EthProviderInfo.Tally ) ->
+                            Just Tally
+
+                        ( Just None, EthProviderInfo.Tally ) ->
+                            Just Tally
+
                         ( Nothing, _ ) ->
                             Just OtherWeb3Browser
 
@@ -509,6 +516,11 @@ connectItemView userLanguage isCompoundChain providerType =
                     , Translations.wallet_connect userLanguage
                     )
 
+                Tally ->
+                    ( " connect-wallet-icon--tally"
+                    , Translations.tally userLanguage
+                    )
+
                 _ ->
                     ( " connect-wallet-icon--metamask"
                     , Translations.metamask userLanguage
@@ -571,6 +583,9 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                             ++ [ div [ class "connect-choices" ]
                                     ([ connectItemView userLanguage isCompoundChain Metamask
                                      ]
+                                        ++ lineDivider
+                                        ++ [ connectItemView userLanguage isCompoundChain Tally
+                                            ]
                                         ++ lineDivider
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect

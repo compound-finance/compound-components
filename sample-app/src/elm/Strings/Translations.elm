@@ -36,6 +36,13 @@ metamask lang =
             "Metamask"
 
 
+tally : Lang -> String
+tally lang =
+    case lang of
+        En ->
+            "Tally"
+
+
 choose_wallet_terms_part1 : Lang -> String
 choose_wallet_terms_part1 lang =
     case lang of
