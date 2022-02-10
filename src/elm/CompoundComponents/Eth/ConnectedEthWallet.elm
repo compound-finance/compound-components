@@ -534,7 +534,7 @@ connectItemView userLanguage isCompoundChain providerType =
 
 
 chooseWalletView : Translations.Lang -> Bool -> Model -> Html Msg
-chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
+chooseWalletView userLanguage isCompoundChain ({ chooseWalletState, providerType } as model) =
     let
         walletCopy =
             case chooseWalletState of
@@ -567,6 +567,21 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 [ connectItemView userLanguage isCompoundChain Ledger ]
                                     ++ lineDivider
 
+
+                        tallyItem = 
+                             if model.providerType == EthProviderInfo.Tally  then
+                                [ connectItemView userLanguage isCompoundChain Tally]
+                                ++ lineDivider
+                             else
+                                []
+
+                        metamaskItem = 
+                             if model.providerType /= EthProviderInfo.Tally  then
+                                [ connectItemView userLanguage isCompoundChain Metamask]
+                                ++ lineDivider
+                             else
+                                []
+
                         coinbaseWalletItem =
                             if isCompoundChain then
                                 []
@@ -581,12 +596,9 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                          ]
                             ++ headerDescriptions
                             ++ [ div [ class "connect-choices" ]
-                                    ([ connectItemView userLanguage isCompoundChain Metamask
-                                     ]
-                                        ++ lineDivider
-                                        ++ [ connectItemView userLanguage isCompoundChain Tally
-                                            ]
-                                        ++ lineDivider
+                                     (
+                                           metamaskItem 
+                                        ++ tallyItem
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
@@ -982,6 +994,9 @@ providerTypeFromId id =
 
         4 ->
             Just WalletConnect
+
+        5 -> 
+            Just Tally
 
         _ ->
             Nothing
