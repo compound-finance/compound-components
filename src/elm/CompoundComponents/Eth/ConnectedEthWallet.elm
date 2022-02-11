@@ -646,11 +646,6 @@ connectingModal userLanguage maybeSelectedProvider isCompoundChain =
                     , Translations.open_ethereum_application userLanguage
                     )
 
-                Just Tally ->
-                    ( Translations.unlock_wallet userLanguage
-                    , Translations.set_default_tally  userLanguage
-                    )
-
                 _ ->
                     ( Translations.unlock_wallet userLanguage
                     , Translations.click_extension userLanguage

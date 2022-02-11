@@ -133,12 +133,6 @@ click_extension lang =
         En ->
             "You may need to click the extension."
 
-set_default_tally : Lang -> String
-set_default_tally lang =
-    case lang of
-        En ->
-            "If you have both Metamask and Tally installed. You may need to set Tally as the default wallet by opening Tally, clicking Menu and use Tally as default wallet"
-
 
 select_address : Lang -> String
 select_address lang =
