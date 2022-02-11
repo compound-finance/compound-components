@@ -534,7 +534,7 @@ connectItemView userLanguage isCompoundChain providerType =
 
 
 chooseWalletView : Translations.Lang -> Bool -> Model -> Html Msg
-chooseWalletView userLanguage isCompoundChain ({ chooseWalletState, providerType } as model) =
+chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
     let
         walletCopy =
             case chooseWalletState of
@@ -994,9 +994,6 @@ providerTypeFromId id =
 
         4 ->
             Just WalletConnect
-
-        5 -> 
-            Just Tally
 
         _ ->
             Nothing

@@ -61,7 +61,7 @@ init : Flags -> ( Model, Cmd Msg )
 init {} =
     let
         ( initConnectedEthWalletModel, initConnectedEthWalletCmd ) =
-            ConnectedEthWallet.init False "tally"
+            ConnectedEthWallet.init False "test"
     in
     ( { connectedEthWalletModel = initConnectedEthWalletModel
       , userLanguage = Translations.En
