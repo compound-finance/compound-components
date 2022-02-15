@@ -29,6 +29,10 @@
     @extend .animated-background;
   }
 
+  &--FEI {
+    background-image: url('/compound-components/assets/asset_FEI.svg') ;
+  }
+
   &--AAVE {
     background-image: url('/compound-components/assets/asset_AAVE.svg');
   }
