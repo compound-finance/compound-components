@@ -639,7 +639,7 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
 
                     else
                         (Translations.decline_unlock_tally_wallet userLanguage
-                        ,Translations.click_extension userLanguage)
+                        ,Translations.click_tally_extension userLanguage)
 
                 _ ->
                     ( Translations.unlock_wallet userLanguage
@@ -884,7 +884,7 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForc
 
                 WalletConnect ->
                     4
-                    
+
                 Tally ->
                     5
 
