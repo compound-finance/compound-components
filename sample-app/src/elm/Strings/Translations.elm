@@ -127,6 +127,19 @@ unlock_wallet lang =
             "Unlock Wallet"
 
 
+unlock_tally_wallet : Lang -> String
+unlock_tally_wallet lang =
+    case lang of
+        En ->
+            "Unlock Tally Wallet"
+
+decline_unlock_tally_wallet : Lang -> String
+decline_unlock_tally_wallet lang =
+    case lang of
+        En ->
+            "Sorry you do not currently have Tally wallet installed"
+
+
 click_extension : Lang -> String
 click_extension lang =
     case lang of

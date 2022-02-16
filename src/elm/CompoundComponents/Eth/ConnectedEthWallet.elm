@@ -568,20 +568,6 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                     ++ lineDivider
 
 
-                        tallyItem = 
-                             if model.providerType == EthProviderInfo.Tally  then
-                                [ connectItemView userLanguage isCompoundChain Tally]
-                                ++ lineDivider
-                             else
-                                []
-
-                        metamaskItem = 
-                             if model.providerType /= EthProviderInfo.Tally  then
-                                [ connectItemView userLanguage isCompoundChain Metamask]
-                                ++ lineDivider
-                             else
-                                []
-
                         coinbaseWalletItem =
                             if isCompoundChain then
                                 []
@@ -597,8 +583,8 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                             ++ headerDescriptions
                             ++ [ div [ class "connect-choices" ]
                                      (
-                                           metamaskItem 
-                                        ++ tallyItem
+                                           [ connectItemView userLanguage isCompoundChain Metamask]
+                                        ++  [ connectItemView userLanguage isCompoundChain Tally]
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
@@ -612,10 +598,10 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                     selectLedgerAddressModal userLanguage isCompoundChain model
 
                 LoadingLegerAccounts ->
-                    connectingModal userLanguage (Just Ledger) isCompoundChain
+                    connectingModal userLanguage (Just Ledger) model isCompoundChain
 
                 AttemptingConnectToWallet ->
-                    connectingModal userLanguage model.selectedProvider isCompoundChain
+                    connectingModal userLanguage model.selectedProvider model isCompoundChain
 
                 LedgerConnectionError ->
                     ledgerConnectionErrorModal userLanguage isCompoundChain model
@@ -631,8 +617,8 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
         ]
 
 
-connectingModal : Translations.Lang -> Maybe WalletProviderType -> Bool -> Html Msg
-connectingModal userLanguage maybeSelectedProvider isCompoundChain =
+connectingModal : Translations.Lang -> Maybe WalletProviderType -> Model -> Bool -> Html Msg
+connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as model) isCompoundChain =
     let
         ( headerText, instructionsText ) =
             case maybeSelectedProvider of
@@ -645,6 +631,15 @@ connectingModal userLanguage maybeSelectedProvider isCompoundChain =
                     ( Translations.plugin_ledger_enter_pin userLanguage
                     , Translations.open_ethereum_application userLanguage
                     )
+
+                Just Tally ->
+                    if model.providerType == EthProviderInfo.Tally  then
+                        (Translations.unlock_tally_wallet userLanguage
+                        ,Translations.click_extension userLanguage)
+
+                    else
+                        (Translations.decline_unlock_tally_wallet userLanguage
+                        ,Translations.click_extension userLanguage)
 
                 _ ->
                     ( Translations.unlock_wallet userLanguage
