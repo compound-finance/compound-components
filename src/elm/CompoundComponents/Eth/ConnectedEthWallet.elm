@@ -884,6 +884,9 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForc
 
                 WalletConnect ->
                     4
+                    
+                Tally ->
+                    5
 
                 None ->
                     0

@@ -72,7 +72,44 @@ async function requiresAuthDialog(ethereum) {
 }
 
 async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
-  if (ethereum) {
+  if (ethereum && !ethereum.isTally ) {
+    let trxProvider = ethereum;
+
+    if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
+      return {
+        networkId: null,
+        account: null,
+        ethereum: null,
+      };
+    }
+
+    //TODO: This is going to change in the future with EIP-1193
+    if (!isAutoConnect) {
+      ethereum.request({ method: 'eth_requestAccounts' });
+    }
+
+    setNewTrxProvider(eth, trxProvider);
+
+    let [account, _] = await getAccounts(eth);
+
+    let networkIdStr = await getNetworkId(eth);
+    let networkId = parseInt(networkIdStr);
+    if (networkId === NaN) {
+      networkId = null;
+    }
+
+    return { networkId, account, ethereum };
+  } else {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+}
+
+async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+  if (ethereum.isTally) {
     let trxProvider = ethereum;
 
     if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
@@ -180,4 +217,4 @@ async function disconnect(eth) {
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, connectWalletConnect, disconnect };
+export { connectLedger, connectWalletLink, connectWeb3, connectTally, connectShowAccount, connectWalletConnect, disconnect };
