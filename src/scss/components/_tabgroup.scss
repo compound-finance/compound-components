@@ -96,6 +96,11 @@
         border-color: $color_supply;
       }
 
+      &--blue {
+        color: $color_blue_3;
+        border-color: $color_blue_3; 
+      }
+
       &--purple {
         color: $color_borrow;
         border-color: $color_borrow;
