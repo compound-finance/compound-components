@@ -511,7 +511,7 @@ connectItemView userLanguage isCompoundChain providerType =
                     )
 
                 BlockWallet ->
-                    ( " connect-wallet-icon--block-wallet"
+                    ( " connect-wallet-icon--blockwallet"
                     , Translations.blockWallet userLanguage
                     )
 
