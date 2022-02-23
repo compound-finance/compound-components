@@ -30,7 +30,7 @@
   }
 
   &--FEI {
-    background-image: url('/compound-components/assets/asset_FEI.svg') ;
+    background-image: url('/compound-components/assets/asset_FEI.svg');
   }
 
   &--AAVE {
@@ -125,5 +125,9 @@
 
   &--metamask {
     background-image: url('/compound-components/assets/icn-metamask.svg');
+  }
+
+  &--blockwallet {
+    background-image: url('/compound-components/assets/icn-blockwallet.svg');
   }
 }

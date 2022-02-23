@@ -7,6 +7,7 @@ type ProviderType
     | MetaMask
     | MetaMaskMobile
     | ImToken
+    | BlockWallet
     | Unknown
 
 
@@ -27,6 +28,9 @@ detectProvider providerType =
 
         "im_token" ->
             ImToken
+
+        "blockwallet" ->
+            BlockWallet
 
         _ ->
             Unknown
