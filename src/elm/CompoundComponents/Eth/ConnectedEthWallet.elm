@@ -584,7 +584,9 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                             ++ [ div [ class "connect-choices" ]
                                      (
                                            [ connectItemView userLanguage isCompoundChain Metamask]
+                                        ++ lineDivider   
                                         ++  [ connectItemView userLanguage isCompoundChain Tally]
+                                        ++ lineDivider
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
