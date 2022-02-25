@@ -73,32 +73,7 @@ async function requiresAuthDialog(ethereum) {
 
 async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
   if (ethereum && !ethereum.isTally ) {
-    let trxProvider = ethereum;
-
-    if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
-      return {
-        networkId: null,
-        account: null,
-        ethereum: null,
-      };
-    }
-
-    //TODO: This is going to change in the future with EIP-1193
-    if (!isAutoConnect) {
-      ethereum.request({ method: 'eth_requestAccounts' });
-    }
-
-    setNewTrxProvider(eth, trxProvider);
-
-    let [account, _] = await getAccounts(eth);
-
-    let networkIdStr = await getNetworkId(eth);
-    let networkId = parseInt(networkIdStr);
-    if (networkId === NaN) {
-      networkId = null;
-    }
-
-    return { networkId, account, ethereum };
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
   } else {
     return {
       networkId: null,
@@ -110,6 +85,18 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConn
 
 async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
   if (ethereum.isTally) {
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+  } else {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+}
+
+async function connectWeb3Helper(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+
     let trxProvider = ethereum;
 
     if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
@@ -136,13 +123,7 @@ async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoCon
     }
 
     return { networkId, account, ethereum };
-  } else {
-    return {
-      networkId: null,
-      account: null,
-      ethereum: null,
-    };
-  }
+  
 }
 
 async function connectShowAccount(eth, showAccount) {
