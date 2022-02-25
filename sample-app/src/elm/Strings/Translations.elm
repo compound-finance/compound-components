@@ -137,13 +137,13 @@ decline_unlock_tally_wallet : Lang -> String
 decline_unlock_tally_wallet lang =
     case lang of
         En ->
-            "We have detected that you already have MetaMask installed. If you would prefer to use Tally instead, please download Tally"
+            "We have detected that you have MetaMask installed."
 
 click_tally_extension : Lang -> String
 click_tally_extension lang =
     case lang of
         En ->
-            "Tip: If you already have Tally installed, check your browser extension settings to make sure that you have it enabled and that you have disabled any other browser extension wallets. Then refresh the page."
+            "Tip: If you would prefer to use Tally instead, please download Tally or ensure it is set to default"
 
 
 click_extension : Lang -> String
