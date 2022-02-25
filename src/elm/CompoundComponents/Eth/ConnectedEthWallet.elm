@@ -567,7 +567,6 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 [ connectItemView userLanguage isCompoundChain Ledger ]
                                     ++ lineDivider
 
-
                         coinbaseWalletItem =
                             if isCompoundChain then
                                 []
@@ -582,14 +581,14 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                          ]
                             ++ headerDescriptions
                             ++ [ div [ class "connect-choices" ]
-                                     (
-                                           [ connectItemView userLanguage isCompoundChain Metamask]
-                                        ++ lineDivider   
+                                    ([ connectItemView userLanguage isCompoundChain Metamask ]
+                                        ++ lineDivider
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
                                         ++ coinbaseWalletItem
-                                        ++  [ connectItemView userLanguage isCompoundChain Tally]
+                                        ++ lineDivider
+                                        ++ [ connectItemView userLanguage isCompoundChain Tally ]
                                     )
                                ]
                             ++ [ termsView userLanguage isCompoundChain ]
@@ -634,13 +633,15 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
                     )
 
                 Just Tally ->
-                    if model.providerType == EthProviderInfo.Tally  then
-                        (Translations.unlock_tally_wallet userLanguage
-                        ,Translations.click_extension userLanguage)
+                    if model.providerType == EthProviderInfo.Tally then
+                        ( Translations.unlock_tally_wallet userLanguage
+                        , Translations.click_extension userLanguage
+                        )
 
                     else
-                        (Translations.decline_unlock_tally_wallet userLanguage
-                        ,Translations.click_tally_extension userLanguage)
+                        ( Translations.decline_unlock_tally_wallet userLanguage
+                        , Translations.click_tally_extension userLanguage
+                        )
 
                 _ ->
                     ( Translations.unlock_wallet userLanguage
