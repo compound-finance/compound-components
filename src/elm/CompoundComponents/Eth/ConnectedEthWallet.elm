@@ -39,6 +39,7 @@ import Strings.Translations as Translations
 
 type WalletProviderType
     = Metamask
+    | Tally
     | WalletLink
     | Ledger
     | OtherWeb3Browser
@@ -277,6 +278,12 @@ update internalMsg model =
                         ( Just None, EthProviderInfo.MetaMask ) ->
                             Just Metamask
 
+                        ( Nothing, EthProviderInfo.Tally ) ->
+                            Just Tally
+
+                        ( Just None, EthProviderInfo.Tally ) ->
+                            Just Tally
+
                         ( Nothing, _ ) ->
                             Just OtherWeb3Browser
 
@@ -509,6 +516,11 @@ connectItemView userLanguage isCompoundChain providerType =
                     , Translations.wallet_connect userLanguage
                     )
 
+                Tally ->
+                    ( " connect-wallet-icon--tally"
+                    , Translations.tally userLanguage
+                    )
+
                 _ ->
                     ( " connect-wallet-icon--metamask"
                     , Translations.metamask userLanguage
@@ -555,6 +567,7 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 [ connectItemView userLanguage isCompoundChain Ledger ]
                                     ++ lineDivider
 
+
                         coinbaseWalletItem =
                             if isCompoundChain then
                                 []
@@ -569,13 +582,14 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                          ]
                             ++ headerDescriptions
                             ++ [ div [ class "connect-choices" ]
-                                    ([ connectItemView userLanguage isCompoundChain Metamask
-                                     ]
-                                        ++ lineDivider
+                                     (
+                                           [ connectItemView userLanguage isCompoundChain Metamask]
+                                        ++ lineDivider   
                                         ++ ledgerItem
                                         ++ [ connectItemView userLanguage isCompoundChain WalletConnect
                                            ]
                                         ++ coinbaseWalletItem
+                                        ++  [ connectItemView userLanguage isCompoundChain Tally]
                                     )
                                ]
                             ++ [ termsView userLanguage isCompoundChain ]
@@ -585,10 +599,10 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                     selectLedgerAddressModal userLanguage isCompoundChain model
 
                 LoadingLegerAccounts ->
-                    connectingModal userLanguage (Just Ledger) isCompoundChain
+                    connectingModal userLanguage (Just Ledger) model isCompoundChain
 
                 AttemptingConnectToWallet ->
-                    connectingModal userLanguage model.selectedProvider isCompoundChain
+                    connectingModal userLanguage model.selectedProvider model isCompoundChain
 
                 LedgerConnectionError ->
                     ledgerConnectionErrorModal userLanguage isCompoundChain model
@@ -604,8 +618,8 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
         ]
 
 
-connectingModal : Translations.Lang -> Maybe WalletProviderType -> Bool -> Html Msg
-connectingModal userLanguage maybeSelectedProvider isCompoundChain =
+connectingModal : Translations.Lang -> Maybe WalletProviderType -> Model -> Bool -> Html Msg
+connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as model) isCompoundChain =
     let
         ( headerText, instructionsText ) =
             case maybeSelectedProvider of
@@ -618,6 +632,15 @@ connectingModal userLanguage maybeSelectedProvider isCompoundChain =
                     ( Translations.plugin_ledger_enter_pin userLanguage
                     , Translations.open_ethereum_application userLanguage
                     )
+
+                Just Tally ->
+                    if model.providerType == EthProviderInfo.Tally  then
+                        (Translations.unlock_tally_wallet userLanguage
+                        ,Translations.click_extension userLanguage)
+
+                    else
+                        (Translations.decline_unlock_tally_wallet userLanguage
+                        ,Translations.click_tally_extension userLanguage)
 
                 _ ->
                     ( Translations.unlock_wallet userLanguage
@@ -862,6 +885,9 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForc
 
                 WalletConnect ->
                     4
+
+                Tally ->
+                    5
 
                 None ->
                     0

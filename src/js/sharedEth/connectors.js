@@ -72,7 +72,31 @@ async function requiresAuthDialog(ethereum) {
 }
 
 async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
-  if (ethereum) {
+  if (ethereum && !ethereum.isTally ) {
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+  } else {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+}
+
+async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+  if (ethereum.isTally) {
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+  } else {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+}
+
+async function connectWeb3Helper(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+
     let trxProvider = ethereum;
 
     if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
@@ -99,13 +123,7 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConn
     }
 
     return { networkId, account, ethereum };
-  } else {
-    return {
-      networkId: null,
-      account: null,
-      ethereum: null,
-    };
-  }
+  
 }
 
 async function connectShowAccount(eth, showAccount) {
@@ -180,4 +198,4 @@ async function disconnect(eth) {
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectShowAccount, connectWalletConnect, disconnect };
+export { connectLedger, connectWalletLink, connectWeb3, connectTally, connectShowAccount, connectWalletConnect, disconnect };

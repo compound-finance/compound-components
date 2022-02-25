@@ -4,6 +4,7 @@ import {
   connectLedger,
   connectWalletLink,
   connectWeb3,
+  connectTally,
   connectShowAccount,
   connectWalletConnect,
   disconnect,
@@ -19,6 +20,7 @@ const PROVIDER_TYPE_WALLET_LINK = 2;
 const PROVIDER_TYPE_WEB3 = 3;
 const PROVIDER_TYPE_SHOW_ACCOUNT = 3;
 const PROVIDER_TYPE_WALLET_CONNECT = 4;
+const PROVIDER_TYPE_TALLY = 5;
 
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
@@ -85,6 +87,9 @@ async function connectToTrxProvider(
     case PROVIDER_TYPE_WEB3:
       ({ networkId, account, ethereum } = await connectWeb3(eth, globEthereum, disallowAuthDialog));
       break;
+    case PROVIDER_TYPE_TALLY:
+        ({ networkId, account, ethereum } = await connectTally(eth, globEthereum, disallowAuthDialog));
+        break;
     case PROVIDER_TYPE_SHOW_ACCOUNT:
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
       break;
