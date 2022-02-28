@@ -189,6 +189,9 @@ view { connectedEthWalletModel, userLanguage } =
                             Just ConnectedEthWallet.Metamask ->
                                 "Metamask"
 
+                            Just ConnectedEthWallet.Tally ->
+                                "Tally"
+
                             Just ConnectedEthWallet.WalletLink ->
                                 "Coinbase"
 

@@ -36,6 +36,13 @@ metamask lang =
             "Metamask"
 
 
+tally : Lang -> String
+tally lang =
+    case lang of
+        En ->
+            "Tally"
+
+
 choose_wallet_terms_part1 : Lang -> String
 choose_wallet_terms_part1 lang =
     case lang of
@@ -118,6 +125,25 @@ unlock_wallet lang =
     case lang of
         En ->
             "Unlock Wallet"
+
+
+unlock_tally_wallet : Lang -> String
+unlock_tally_wallet lang =
+    case lang of
+        En ->
+            "Unlock Tally Wallet"
+
+decline_unlock_tally_wallet : Lang -> String
+decline_unlock_tally_wallet lang =
+    case lang of
+        En ->
+            "We have detected that you have MetaMask installed."
+
+click_tally_extension : Lang -> String
+click_tally_extension lang =
+    case lang of
+        En ->
+            "Tip: If you would prefer to use Tally instead, please download Tally or ensure it is set to default"
 
 
 click_extension : Lang -> String

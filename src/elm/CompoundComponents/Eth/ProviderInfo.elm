@@ -3,6 +3,7 @@ module CompoundComponents.Eth.ProviderInfo exposing (ProviderType(..), detectPro
 
 type ProviderType
     = None
+    | Tally
     | CoinbaseMobile
     | MetaMask
     | MetaMaskMobile
@@ -16,6 +17,9 @@ detectProvider providerType =
     case providerType of
         "none" ->
             None
+
+        "tally" ->
+            Tally
 
         "coinbase_mobile" ->
             CoinbaseMobile
