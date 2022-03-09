@@ -6,7 +6,7 @@ const PROVIDER_TYPE_META_MASK = 'meta_mask';
 const PROVIDER_TYPE_META_MASK_MOBILE = 'meta_mask_mobile';
 const PROVIDER_TYPE_OTHER = 'other';
 
-const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK];
+const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK, PROVIDER_TYPE_TALLY];
 
 function reverseObject(obj) {
   return Object.keys(obj).reduce((acc, key) => {
@@ -55,6 +55,26 @@ function providerType(provider) {
       return PROVIDER_TYPE_META_MASK_MOBILE;
     } else {
       return PROVIDER_TYPE_META_MASK;
+    }
+  } else {
+    return null;
+  }
+}
+
+function providerTypeId(provider) {
+  if (provider === undefined || provider == null) {
+    return 3;
+  } else if (provider.isToshi) {
+    return 3;
+  } else if (provider.isImToken) {
+    return 3;
+  }else if (provider.isTally) {
+    return 5;
+  } else if (provider.isMetaMask) {
+    if (provider.constructor.name === 'InpageBridge') {
+      return 3;
+    } else {
+      return 3;
     }
   } else {
     return null;
@@ -143,6 +163,7 @@ export {
   log,
   networkFromId,
   providerType,
+  providerTypeId,
   PROVIDER_TYPE_NONE,
   PROVIDER_TYPE_COINBASE_WALLET,
   PROVIDER_TYPE_IM_TOKEN,
