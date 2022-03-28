@@ -133,11 +133,13 @@ unlock_tally_wallet lang =
         En ->
             "Unlock Tally Wallet"
 
+
 decline_unlock_tally_wallet : Lang -> String
 decline_unlock_tally_wallet lang =
     case lang of
         En ->
             "We have detected that you have MetaMask installed."
+
 
 click_tally_extension : Lang -> String
 click_tally_extension lang =
@@ -145,11 +147,13 @@ click_tally_extension lang =
         En ->
             "Tip: If you would prefer to use Tally instead, please download Tally or ensure it is set to default"
 
+
 decline_unlock_metamask_wallet : Lang -> String
-decline_unlock_metamask_wallet lang =
+decline_unlock_metamask_wallet lang = 
     case lang of
         En ->
-            "We have detected that you have Tally installed."
+            "We have detected that you have Tally installed." 
+
 
 click_metamask_extension : Lang -> String
 click_metamask_extension lang =

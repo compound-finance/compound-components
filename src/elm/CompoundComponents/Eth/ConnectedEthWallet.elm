@@ -34,7 +34,7 @@ import Decimal exposing (Decimal)
 import Html exposing (Html, a, button, div, h3, h4, h5, p, span, text)
 import Html.Events exposing (onClick)
 import Json.Decode
-import Strings.Translations as Translations
+import Strings.Translations as Translations 
 
 
 type WalletProviderType
