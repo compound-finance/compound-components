@@ -34,7 +34,7 @@ import Decimal exposing (Decimal)
 import Html exposing (Html, a, button, div, h3, h4, h5, p, span, text)
 import Html.Events exposing (onClick)
 import Json.Decode
-import Strings.Translations as Translations 
+import Strings.Translations as Translations
 
 
 type WalletProviderType
@@ -645,8 +645,8 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
 
                 _ ->
                     if model.providerType == EthProviderInfo.Tally then
-                          ( Translations.decline_unlock_tally_wallet userLanguage
-                        , Translations.click_tally_extension userLanguage
+                        ( Translations.decline_unlock_metamask_wallet userLanguage
+                        , Translations.click_metamask_extension userLanguage
                         )
 
                     else
