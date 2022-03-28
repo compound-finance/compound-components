@@ -372,12 +372,16 @@ function withWeb3Eth(eth) {
 }
 
 function withTrxWeb3(eth, fnTrxWeb3, fnEls) {
-  if (eth.trxEth) {
-    let res = fnTrxWeb3(eth.trxEth, eth.trxEth.trxPromise);
-    eth.trxEth.trxPromise = res;
-    return res;
-  } else {
-    return fnEls();
+  try{
+    if (eth.trxEth) {
+      let res = fnTrxWeb3(eth.trxEth, eth.trxEth.trxPromise);
+      eth.trxEth.trxPromise = res;
+      return res;
+    } else {
+      return fnEls();
+    }
+  }catch(e){
+    console.log(e);
   }
 }
 
@@ -463,11 +467,18 @@ function setNetworkId(eth, networkId) {
 }
 
 async function getNetworkId(eth) {
-  return withTrxWeb3(
-    eth,
-    (trxEth) => trxEth.net.getId(),
-    () => eth.defaultNetworkId
-  );
+  try{
+      let networkId = await withTrxWeb3(
+        eth,
+        (trxEth) => trxEth.net.getId(),
+        () => eth.defaultNetworkId
+      );
+        return networkId;
+    }catch(e){
+      console.log(e)
+      return eth.defaultNetworkId;
+  
+    }
 }
 
 async function getBalance(eth, address) {
@@ -483,11 +494,18 @@ async function getBlockNumber(eth) {
 }
 
 async function getAccounts(eth) {
-  return withTrxWeb3(
-    eth,
-    (trxEth) => trxEth.getAccounts(),
-    () => (eth.showAccount ? [eth.showAccount] : [])
-  );
+  try{
+    let accs = await withTrxWeb3(
+      eth,
+      (trxEth) => trxEth.getAccounts(),
+      () => (eth.showAccount ? [eth.showAccount] : [])
+    )
+    return accs;
+
+  }catch(e){
+    console.log(e)
+    return [];
+  }
 }
 
 async function getTransaction(eth, trxHash) {
