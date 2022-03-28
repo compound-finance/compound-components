@@ -644,9 +644,16 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
                         )
 
                 _ ->
-                    ( Translations.unlock_wallet userLanguage
-                    , Translations.click_extension userLanguage
-                    )
+                    if model.providerType == EthProviderInfo.Tally then
+                        ( Translations.decline_unlock_metamask_wallet userLanguage
+                        , Translations.click_metamask_extension userLanguage
+                        )
+
+                    else
+                        ( Translations.unlock_wallet userLanguage
+                        , Translations.click_extension userLanguage
+                        )
+
 
         showBorderClass =
             if isCompoundChain then
