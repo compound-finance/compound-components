@@ -148,15 +148,15 @@ click_tally_extension lang =
             "Tip: If you would prefer to use Tally instead, please download Tally or ensure it is set to default"
 
 
-decline_unlock_metamask_wallet : Lang -> String
-decline_unlock_metamask_wallet lang = 
+decline_unlock_mm_wallet : Lang -> String
+decline_unlock_mm_wallet lang = 
     case lang of
         En ->
             "We have detected that you have Tally installed." 
 
 
-click_metamask_extension : Lang -> String
-click_metamask_extension lang =
+click_mm_extension : Lang -> String
+click_mm_extension lang =
     case lang of
         En ->
             "Tip: If you would prefer to use Metamask instead, please ensure Tally is not set as default"
