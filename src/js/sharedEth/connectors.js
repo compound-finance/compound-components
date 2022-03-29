@@ -72,7 +72,7 @@ async function requiresAuthDialog(ethereum) {
   
     }catch(e){
       console.log(e);
-      return false;
+      return true;
   
     }
 }
