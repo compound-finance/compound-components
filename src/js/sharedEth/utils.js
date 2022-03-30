@@ -62,22 +62,10 @@ function providerType(provider) {
 }
 
 function providerTypeId(provider) {
-  if (provider === undefined || provider == null) {
-    return 3;
-  } else if (provider.isToshi) {
-    return 3;
-  } else if (provider.isImToken) {
-    return 3;
-  }else if (provider.isTally) {
+  if (provider.isTally) {
     return 5;
-  } else if (provider.isMetaMask) {
-    if (provider.constructor.name === 'InpageBridge') {
-      return 3;
-    } else {
-      return 3;
-    }
   } else {
-    return null;
+    return 3;
   }
 }
 
