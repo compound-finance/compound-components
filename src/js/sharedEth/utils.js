@@ -6,7 +6,7 @@ const PROVIDER_TYPE_META_MASK = 'meta_mask';
 const PROVIDER_TYPE_META_MASK_MOBILE = 'meta_mask_mobile';
 const PROVIDER_TYPE_OTHER = 'other';
 
-const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK];
+const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK, PROVIDER_TYPE_TALLY];
 
 function reverseObject(obj) {
   return Object.keys(obj).reduce((acc, key) => {
@@ -58,6 +58,14 @@ function providerType(provider) {
     }
   } else {
     return null;
+  }
+}
+
+function providerTypeId(provider) {
+  if (provider.isTally) {
+    return 5;
+  } else {
+    return 3;
   }
 }
 
@@ -143,6 +151,7 @@ export {
   log,
   networkFromId,
   providerType,
+  providerTypeId,
   PROVIDER_TYPE_NONE,
   PROVIDER_TYPE_COINBASE_WALLET,
   PROVIDER_TYPE_IM_TOKEN,
