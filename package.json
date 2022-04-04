@@ -32,7 +32,6 @@
     "fs-extra": "^9.0.0",
     "google-translate": "^3.0.0",
     "html-webpack-plugin": "4.2.1",
-    "node-sass-chokidar": "^1.4.0",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-loader": "3.0.0",
     "promise": "8.1.0",
