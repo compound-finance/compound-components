@@ -90,7 +90,7 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConn
 }
 
 async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
-  if (ethereum.isTally) {
+  if (ethereum && ethereum.isTally) {
     return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
   } else {
     return {
