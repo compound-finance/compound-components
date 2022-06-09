@@ -62,7 +62,7 @@ function providerType(provider) {
 }
 
 function providerTypeId(provider) {
-  if (provider.isTally) {
+  if (provider && provider.isTally) {
     return 5;
   } else {
     return 3;
