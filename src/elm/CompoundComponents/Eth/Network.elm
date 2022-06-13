@@ -13,7 +13,7 @@ type Network
     | Ubiq
     | Kovan
     | Sokol
-    | Arbitrum_test
+    | Arbitrumtest
     | Core
     | Development
     | Unknown
@@ -50,7 +50,7 @@ networkFromId networkIdVal =
             Sokol
 
         421611 ->
-            Arbitrum_test 
+            Arbitrumtest 
 
         99 ->
             Core
@@ -86,8 +86,8 @@ networkFromName name =
         "development" ->
             Development
 
-        "arbitrum_test" ->
-            Arbitrum_test   
+        "arbitrumtest" ->
+            Arbitrumtest   
 
         _ ->
             MainNet
@@ -123,7 +123,7 @@ networkName network =
         Sokol ->
             "Sokol"
 
-        Arbitrum_test ->
+        Arbitrumtest ->
             "Arbitrum Rinkeby"    
 
         Core ->
@@ -166,7 +166,7 @@ networkId network =
         Sokol ->
             77
 
-        Arbitrum_test ->
+        Arbitrumtest ->
             421611    
 
         Core ->
@@ -209,7 +209,7 @@ getEtherscanDomain network =
         Sokol ->
             Nothing
 
-        Arbitrum_test ->
+        Arbitrumtest ->
             Just "testnet.arbiscan.io"
 
         Core ->
