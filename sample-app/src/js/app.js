@@ -77,8 +77,10 @@ window.addEventListener('load', function () {
     kovan: 'https://kovan-eth.compound.finance',
     ropsten: 'https://ropsten-eth.compound.finance',
     mainnet: 'https://mainnet-eth.compound.finance',
+    arbitrumtest: 'https://arbitrum-rinkeby.infura.io/v3/448697ced2cd4adeb091d14fce4f0681'
   };
 
+  
   const NETWORK_MAP = {
     mainnet: 1,
     ropsten: 3,
@@ -86,6 +88,7 @@ window.addEventListener('load', function () {
     goerli: 5,
     kovan: 42,
     development: 999,
+    arbitrumtest: 421611
   };
 
   const dataProviders = Object.entries(DATA_PROVIDERS).reduce((acc, [network, url]) => {
