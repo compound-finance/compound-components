@@ -101,6 +101,9 @@ function networkFromId(id) {
     case 99:
       return 'core';
 
+    case 421611:
+      return 'arbitrumtest';
+
     case 999:
       return 'development';
 
