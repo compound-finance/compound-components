@@ -124,7 +124,7 @@ networkName network =
             "Sokol"
 
         Arbitrumtest ->
-            "Arbitrum Rinkeby"    
+            "Arbitrumtest"
 
         Core ->
             "Core"
