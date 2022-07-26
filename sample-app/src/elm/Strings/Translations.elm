@@ -42,6 +42,12 @@ tally lang =
         En ->
             "Tally"
 
+brave_wallet : Lang -> String
+brave_wallet lang =
+    case lang of
+        En ->
+            "Brave Wallet"
+
 
 choose_wallet_terms_part1 : Lang -> String
 choose_wallet_terms_part1 lang =
@@ -133,9 +139,21 @@ unlock_tally_wallet lang =
         En ->
             "Unlock Tally Wallet"
 
+unlock_brave_wallet : Lang -> String
+unlock_brave_wallet lang =
+    case lang of
+        En ->
+            "Unlock Brave Wallet"
+
 
 decline_unlock_tally_wallet : Lang -> String
 decline_unlock_tally_wallet lang =
+    case lang of
+        En ->
+            "We have detected that you have MetaMask installed."
+
+decline_unlock_brave_wallet : Lang -> String
+decline_unlock_brave_wallet lang =
     case lang of
         En ->
             "We have detected that you have MetaMask installed."
@@ -147,6 +165,12 @@ click_tally_extension lang =
         En ->
             "Tip: If you would prefer to use Tally instead, please download Tally or ensure it is set to default"
 
+click_brave_wallet : Lang -> String
+click_brave_wallet lang =
+    case lang of
+        En ->
+            "Tip: If you would prefer to use Brave Wallet instead, please download Brave or ensure it is set to default"
+
 
 decline_unlock_mm_wallet : Lang -> String
 decline_unlock_mm_wallet lang = 
@@ -154,12 +178,24 @@ decline_unlock_mm_wallet lang =
         En ->
             "We have detected that you have Tally installed." 
 
+decline_unlock_mm_wallet_brave_wallet_detected : Lang -> String
+decline_unlock_mm_wallet_brave_wallet_detected lang = 
+    case lang of
+        En ->
+            "We have detected that you have Brave Wallet installed." 
+
 
 click_mm_extension : Lang -> String
 click_mm_extension lang =
     case lang of
         En ->
             "Tip: If you would prefer to use Metamask instead, please ensure Tally is not set as default"
+
+click_mm_extension_brave_wallet : Lang -> String
+click_mm_extension_brave_wallet lang =
+    case lang of
+        En ->
+            "Tip: If you would prefer to use Metamask instead, please ensure Brave Wallet is not set as default"
 
 
 click_extension : Lang -> String

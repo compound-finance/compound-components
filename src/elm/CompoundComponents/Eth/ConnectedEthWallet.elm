@@ -35,11 +35,13 @@ import Html exposing (Html, a, button, div, h3, h4, h5, p, span, text)
 import Html.Events exposing (onClick)
 import Json.Decode
 import Strings.Translations as Translations
+import CompoundComponents.Eth.ProviderInfo exposing (ProviderType(..))
 
 
 type WalletProviderType
     = Metamask
     | Tally
+    | BraveWallet
     | WalletLink
     | Ledger
     | OtherWeb3Browser
@@ -272,12 +274,19 @@ update internalMsg model =
             let
                 updatedSelectedProvider =
                     case ( model.selectedProvider, model.providerType ) of
+
                         ( Nothing, EthProviderInfo.MetaMask ) ->
                             Just Metamask
+                        
+                        ( Nothing, EthProviderInfo.BraveWallet ) ->
+                            Just BraveWallet
+
+                        ( Just None, EthProviderInfo.BraveWallet ) ->
+                            Just BraveWallet
 
                         ( Just None, EthProviderInfo.MetaMask ) ->
                             Just Metamask
-
+                        
                         ( Nothing, EthProviderInfo.Tally ) ->
                             Just Tally
 
@@ -516,6 +525,11 @@ connectItemView userLanguage isCompoundChain providerType =
                     , Translations.wallet_connect userLanguage
                     )
 
+                BraveWallet ->
+                    ( " connect-wallet-icon--brave-wallet"
+                    , Translations.brave_wallet userLanguage
+                    )
+
                 Tally ->
                     ( " connect-wallet-icon--tally"
                     , Translations.tally userLanguage
@@ -588,6 +602,8 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                            ]
                                         ++ coinbaseWalletItem
                                         ++ lineDivider
+                                        ++ [ connectItemView userLanguage isCompoundChain BraveWallet ]
+                                        ++ lineDivider
                                         ++ [ connectItemView userLanguage isCompoundChain Tally ]
                                     )
                                ]
@@ -632,6 +648,17 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
                     , Translations.open_ethereum_application userLanguage
                     )
 
+                Just BraveWallet ->
+                    if model.providerType == EthProviderInfo.BraveWallet then
+                        ( Translations.unlock_brave_wallet userLanguage
+                        , Translations.click_mm_extension_brave_wallet userLanguage
+                        )
+
+                    else
+                        ( Translations.decline_unlock_brave_wallet userLanguage
+                        , Translations.click_brave_wallet userLanguage
+                        )
+                
                 Just Tally ->
                     if model.providerType == EthProviderInfo.Tally then
                         ( Translations.unlock_tally_wallet userLanguage
@@ -647,6 +674,11 @@ connectingModal userLanguage maybeSelectedProvider ({ chooseWalletState } as mod
                     if model.providerType == EthProviderInfo.Tally then
                         ( Translations.decline_unlock_mm_wallet userLanguage
                         , Translations.click_mm_extension userLanguage
+                        )
+                    
+                    else if model.providerType == EthProviderInfo.BraveWallet then
+                        ( Translations.decline_unlock_mm_wallet_brave_wallet_detected userLanguage
+                        , Translations.click_mm_extension_brave_wallet userLanguage
                         )
 
                     else
@@ -896,6 +928,9 @@ askChangeTrxProvider model newProviderType ledgerDerivationPath ledgerWalletForc
 
                 Tally ->
                     5
+
+                BraveWallet ->
+                    6
 
                 None ->
                     0

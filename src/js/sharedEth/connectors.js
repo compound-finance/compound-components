@@ -78,7 +78,7 @@ async function requiresAuthDialog(ethereum) {
 }
 
 async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
-  if (ethereum && !ethereum.isTally ) {
+  if (ethereum && !ethereum.isTally && !ethereum.isBraveWallet) {
     return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
   } else {
     return {
@@ -93,6 +93,21 @@ async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoCon
   if (ethereum && ethereum.isTally) {
     return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
   } else {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
+}
+
+async function connectBraveWallet(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+  console.log('connectBraveWallet')
+  if (ethereum && ethereum.isBraveWallet) {
+    console.log('is brave')
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+  } else {
+    console.log('NOT brave')
     return {
       networkId: null,
       account: null,
@@ -204,4 +219,4 @@ async function disconnect(eth) {
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectTally, connectShowAccount, connectWalletConnect, disconnect };
+export { connectLedger, connectWalletLink, connectWeb3, connectTally, connectShowAccount, connectWalletConnect, disconnect, connectBraveWallet };

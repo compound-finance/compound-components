@@ -191,6 +191,9 @@ view { connectedEthWalletModel, userLanguage } =
 
                             Just ConnectedEthWallet.Tally ->
                                 "Tally"
+                            
+                            Just ConnectedEthWallet.BraveWallet ->
+                                "Brave Wallet"
 
                             Just ConnectedEthWallet.WalletLink ->
                                 "Coinbase"

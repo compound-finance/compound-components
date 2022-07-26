@@ -2,11 +2,12 @@ const PROVIDER_TYPE_NONE = 'none';
 const PROVIDER_TYPE_COINBASE_WALLET = 'coinbase_mobile';
 const PROVIDER_TYPE_IM_TOKEN = 'im_token';
 const PROVIDER_TYPE_TALLY = 'tally';
+const PROVIDER_TYPE_BRAVE_WALLET = 'brave_wallet';
 const PROVIDER_TYPE_META_MASK = 'meta_mask';
 const PROVIDER_TYPE_META_MASK_MOBILE = 'meta_mask_mobile';
 const PROVIDER_TYPE_OTHER = 'other';
 
-const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK, PROVIDER_TYPE_TALLY];
+const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK, PROVIDER_TYPE_TALLY, PROVIDER_TYPE_BRAVE_WALLET];
 
 function reverseObject(obj) {
   return Object.keys(obj).reduce((acc, key) => {
@@ -48,9 +49,11 @@ function providerType(provider) {
     return PROVIDER_TYPE_COINBASE_WALLET;
   } else if (provider.isImToken) {
     return PROVIDER_TYPE_IM_TOKEN;
+  }else if (provider.isBraveWallet) {
+    return PROVIDER_TYPE_BRAVE_WALLET;
   }else if (provider.isTally) {
     return PROVIDER_TYPE_TALLY;
-  } else if (provider.isMetaMask) {
+  } else if (provider.isMetaMask && !provider.isBraveWallet) {
     if (provider.constructor.name === 'InpageBridge') {
       return PROVIDER_TYPE_META_MASK_MOBILE;
     } else {
@@ -62,11 +65,16 @@ function providerType(provider) {
 }
 
 function providerTypeId(provider) {
+  if (provider && provider.isBraveWallet) {
+    console.log('providerTypeId: brave (6)')
+    return 6;
+  }
+
   if (provider && provider.isTally) {
     return 5;
-  } else {
-    return 3;
   }
+
+  return 3;
 }
 
 function networkFromId(id) {
@@ -156,6 +164,7 @@ export {
   PROVIDER_TYPE_COINBASE_WALLET,
   PROVIDER_TYPE_IM_TOKEN,
   PROVIDER_TYPE_TALLY,
+  PROVIDER_TYPE_BRAVE_WALLET,
   PROVIDER_TYPE_META_MASK,
   PROVIDER_TYPE_META_MASK_MOBILE,
   shouldAutoConnect,

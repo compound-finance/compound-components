@@ -5,6 +5,7 @@ import {
   connectWalletLink,
   connectWeb3,
   connectTally,
+  connectBraveWallet,
   connectShowAccount,
   connectWalletConnect,
   disconnect,
@@ -21,6 +22,7 @@ const PROVIDER_TYPE_WEB3 = 3;
 const PROVIDER_TYPE_SHOW_ACCOUNT = 3;
 const PROVIDER_TYPE_WALLET_CONNECT = 4;
 const PROVIDER_TYPE_TALLY = 5;
+const PROVIDER_TYPE_BRAVE_WALLET = 6;
 
 function subscribeToAccountChanges(app, ethereum) {
   if (ethereum && typeof ethereum.on !== 'undefined' && !ethereum.accountsChangedSet) {
@@ -89,6 +91,9 @@ async function connectToTrxProvider(
       break;
     case PROVIDER_TYPE_TALLY:
         ({ networkId, account, ethereum } = await connectTally(eth, globEthereum, disallowAuthDialog));
+        break;
+    case PROVIDER_TYPE_BRAVE_WALLET:
+        ({ networkId, account, ethereum } = await connectBraveWallet(eth, globEthereum, disallowAuthDialog));
         break;
     case PROVIDER_TYPE_SHOW_ACCOUNT:
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
