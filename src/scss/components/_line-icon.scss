@@ -9,53 +9,53 @@
   height: 17px;
 
   &--copy {
-    background-image: url('/compound-components/assets/icn-copy.svg');
+    background-image: url('../../public/assets/icn-copy.svg');
 
     &:hover {
-      background-image: url('/compound-components/assets/icn-copy-green.svg');
+      background-image: url('../../public/assets/icn-copy-green.svg');
     }
 
     &--blue {
       &:hover {
-        background-image: url('/compound-components/assets/icn-copy-blue.svg');
+        background-image: url('../../public/assets/icn-copy-blue.svg');
       }
     }
   }
 
   &--external-link {
-    background-image: url('/compound-components/assets/icn-external-link.svg');
+    background-image: url('../../public/assets/icn-external-link.svg');
 
     &:hover {
-      background-image: url('/compound-components/assets/icn-external-link-green.svg');
+      background-image: url('../../public/assets/icn-external-link-green.svg');
     }
 
     &--gray {
-      background-image: url('/compound-components/assets/icn-external-link-gray.svg');
+      background-image: url('../../public/assets/icn-external-link-gray.svg');
     }
 
     &--green {
-      background-image: url('/compound-components/assets/icn-external-link-green.svg');
+      background-image: url('../../public/assets/icn-external-link-green.svg');
     }
 
     &--black {
-      background-image: url('/compound-components/assets/icn-external-link-black.svg');
+      background-image: url('../../public/assets/icn-external-link-black.svg');
     }
   }
 
   &--complete {
-    background-image: url('/compound-components/assets/icn-complete.svg');
+    background-image: url('../../public/assets/icn-complete.svg');
   }
 
   &--edit {
     height: 30px;
     width: 30px;
-    background-image: url('/compound-components/assets/icn-edit.svg');
+    background-image: url('../../public/assets/icn-edit.svg');
   }
 
   &--plus {
     height: 30px;
     width: 30px;
-    background-image: url('/compound-components/assets/icn-plus.svg');
+    background-image: url('../../public/assets/icn-plus.svg');
   }
 
   &--small {
