@@ -5,15 +5,15 @@
   height: 12px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url('../../public/assets/icn-build-arrows-green.svg');
+  background-image: url('../../assets/icn-build-arrows-green.svg');
   margin-right: 8px;
   margin-left: 8px;
   &.borrow {
-    background-image: url('../../public/assets/icn-build-arrows-purple.svg');
+    background-image: url('../../assets/icn-build-arrows-purple.svg');
   }
 
   &--dark {
-    background-image: url('../../public/assets/icn-build-arrows.svg');
+    background-image: url('../../assets/icn-build-arrows.svg');
   }
 
   &--big {
