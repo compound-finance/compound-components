@@ -264,6 +264,7 @@ navRenderer =
     , blockQuote = empty
     , strong = empty
     , emphasis = empty
+    , strikethrough = empty
     , codeSpan = empty
     , link = empty2
     , image = empty
@@ -295,7 +296,7 @@ navRenderer =
     , tableBody = empty
     , tableRow = empty
     , tableHeaderCell = empty2
-    , tableCell = empty
+    , tableCell = empty2
     }
 
 
