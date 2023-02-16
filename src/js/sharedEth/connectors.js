@@ -160,7 +160,6 @@ async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetw
     rpcMap: { [CHAIN_ID]: JSONRPC_URL }, // OPTIONAL rpc urls for each chain
   });
 
-  console.log('trxProvider', trxProvider)
   try {
     // Open the walletconnect modal
     await trxProvider.enable();
