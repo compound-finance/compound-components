@@ -14,7 +14,7 @@
     "@babel/preset-env": "^7.0.0",
     "@ledgerhq/hw-app-eth": "6.6.0",
     "@ledgerhq/hw-transport-webusb": "6.27.1",
-    "@walletconnect/web3-provider": "^1.5.4",
+    "@walletconnect/ethereum-provider": "2.4.3",
     "autoprefixer": "^9.7.6",
     "babel-loader": "^8.0.0",
     "bnc-sdk": "^2.1.5",
