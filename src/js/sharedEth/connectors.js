@@ -149,13 +149,13 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
-async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1) {
+async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1, walletConnectProjectId) {
   const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
   const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
   const CHAIN_ID = desiredNetworkId;
 
   const trxProvider = await EthereumProvider.init({
-    projectId: 'c93bda592eaac4f3195114b11c2f28bb', // REQUIRED your projectId
+    projectId: walletConnectProjectId, // REQUIRED your projectId
     chains: [CHAIN_ID], // REQUIRED chain ids
     rpcMap: { [CHAIN_ID]: JSONRPC_URL }, // OPTIONAL rpc urls for each chain
   });

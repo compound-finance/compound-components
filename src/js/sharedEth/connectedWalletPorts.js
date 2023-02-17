@@ -61,7 +61,8 @@ async function connectToTrxProvider(
   ledgerDerivationPath,
   disallowAuthDialog = false,
   showAccount = undefined,
-  desiredNetworkId = 1
+  desiredNetworkId = 1,
+  walletConnectProjectId,
 ) {
   // We support 4 real provider types
   // 1. Ledger
@@ -94,7 +95,7 @@ async function connectToTrxProvider(
       ({ networkId, account, ethereum } = await connectShowAccount(eth, showAccount));
       break;
     case PROVIDER_TYPE_WALLET_CONNECT:
-      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount, desiredNetworkId));
+      ({ networkId, account, ethereum } = await connectWalletConnect(eth, showAccount, desiredNetworkId, walletConnectProjectId));
       break;
     default:
       ({ networkId, account, ethereum } = await disconnect(eth));
@@ -116,7 +117,7 @@ async function connectToTrxProvider(
   }
 }
 
-function subscribeToTrxProviderChanges(app, eth, globEthereum) {
+function subscribeToTrxProviderChanges(app, eth, globEthereum, walletConnectProjectId) {
   // port changeTrxProviderType : { newProviderType: Int, ledgerDerivationPath: String, ledgerWalletConnectRopsten : Bool } -> Cmd msg
   app.ports.changeTrxProviderType.subscribe(
     async ({ newProviderType, ledgerDerivationPath, ledgerWalletConnectRopsten }) => {
@@ -132,13 +133,14 @@ function subscribeToTrxProviderChanges(app, eth, globEthereum) {
         ledgerDerivationPath,
         false,
         false,
-        desiredNetworkId
+        desiredNetworkId,
+        walletConnectProjectId
       );
     }
   );
 }
 
-function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {
+function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId, walletConnectProjectId) {
   let urlParams = new URLSearchParams(document.location.search.substring(1));
   if (urlParams.get('account')) {
     return showAccount(app, eth, urlParams.get('account'));
@@ -159,7 +161,7 @@ function subscribeToTryConnect(app, eth, globEthereum, defaultNetworkId) {
       // We'll try to set to the user's last chosen provider, otherwise
       // defaulting to Web3.
       let providerType = Number(storage('chosenProvider').get(providerTypeId(globEthereum)));
-      let connected = await connectToTrxProvider(app, eth, globEthereum, providerType, '', true);
+      let connected = await connectToTrxProvider(app, eth, globEthereum, providerType, '', true, walletConnectProjectId);
 
       if (!connected) {
         // Otherwise, let's connect to mainnet to show numbers
@@ -216,9 +218,9 @@ async function showAccount(app, eth, showAccount) {
   await establishConnection(app, eth, networkId, account, ethereum, PROVIDER_TYPE_SHOW_ACCOUNT);
 }
 
-function subscribe(app, eth, globEthereum, networkMap, defaultNetwork) {
-  subscribeToTrxProviderChanges(app, eth, globEthereum);
-  subscribeToTryConnect(app, eth, globEthereum, networkMap[defaultNetwork]);
+function subscribe(app, eth, globEthereum, networkMap, defaultNetwork, walletConnectProjectId) {
+  subscribeToTrxProviderChanges(app, eth, globEthereum, walletConnectProjectId);
+  subscribeToTryConnect(app, eth, globEthereum, networkMap[defaultNetwork], walletConnectProjectId);
 }
 
 export default {
