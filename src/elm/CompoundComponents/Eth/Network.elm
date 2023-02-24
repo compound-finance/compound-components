@@ -16,6 +16,8 @@ type Network
     | Core
     | Development
     | Unknown
+    | Polygon
+    | Mumbai
 
 
 networkFromId : Int -> Network
@@ -51,11 +53,17 @@ networkFromId networkIdVal =
         99 ->
             Core
 
+        137 ->
+            Polygon
+
         999 ->
             Development
 
         1337 ->
             Development
+
+        80001 ->
+            Mumbai
 
         _ ->
             Unknown
@@ -119,6 +127,12 @@ networkName network =
         Core ->
             "Core"
 
+        Polygon ->
+            "Polygon"
+
+        Mumbai ->
+            "Mumbai"
+
         Development ->
             "Development"
 
@@ -159,8 +173,14 @@ networkId network =
         Core ->
             99
 
+        Polygon ->
+            137
+
         Development ->
             999
+
+        Mumbai ->
+            80001
 
         Unknown ->
             9999
@@ -198,6 +218,12 @@ getEtherscanDomain network =
 
         Core ->
             Nothing
+
+        Polygon ->
+            Just "polygonscan.com"
+
+        Mumbai ->
+            Just "mumbai.polygonscan.com"
 
         Development ->
             Nothing

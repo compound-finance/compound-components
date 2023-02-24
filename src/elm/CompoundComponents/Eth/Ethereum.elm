@@ -108,6 +108,11 @@ etherscanUrl network urlValue =
         Goerli ->
             Just ("https://goerli.etherscan.io/" ++ linkType ++ "/" ++ linkValue)
 
+        Polygon ->
+            Just ("https://polygonscan.com/" ++ linkType ++ "/" ++ linkValue)
+
+        Mumbai ->
+            Just ("https://mumbai.polygonscan.com/" ++ linkType ++ "/" ++ linkValue)
         _ ->
             Nothing
 

@@ -1,6 +1,6 @@
 {
   "name": "compound-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Compound component library",
   "main": "index.js",
   "scripts": {
