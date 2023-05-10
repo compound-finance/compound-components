@@ -113,6 +113,25 @@ etherscanUrl network urlValue =
 
         Mumbai ->
             Just ("https://mumbai.polygonscan.com/" ++ linkType ++ "/" ++ linkValue)
+
+        Arbitrum ->
+            Just ("https://arbiscan.io/" ++ linkType ++ "/" ++ linkValue)
+
+        ArbitrumGoerli ->
+            Just ("https://goerli.arbiscan.io/" ++ linkType ++ "/" ++ linkValue)
+
+        Optimism ->
+            Just ("https://optimistic.etherscan.io/" ++ linkType ++ "/" ++ linkValue)
+
+        OptimismGoerli ->
+            Just ("https://goerli-optimism.etherscan.io/" ++ linkType ++ "/" ++ linkValue)
+
+        Base ->
+            Just ("https://basescan.org/" ++ linkType ++ "/" ++ linkValue)
+
+        BaseGoerli ->
+            Just ("https://goerli.basescan.org/" ++ linkType ++ "/" ++ linkValue)
+
         _ ->
             Nothing
 

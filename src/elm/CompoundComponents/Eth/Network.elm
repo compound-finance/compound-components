@@ -18,6 +18,12 @@ type Network
     | Unknown
     | Polygon
     | Mumbai
+    | Arbitrum
+    | ArbitrumGoerli
+    | Optimism
+    | OptimismGoerli
+    | Base
+    | BaseGoerli
 
 
 networkFromId : Int -> Network
@@ -44,6 +50,9 @@ networkFromId networkIdVal =
         8 ->
             Ubiq
 
+        10 ->
+            Optimism
+
         42 ->
             Kovan
 
@@ -56,14 +65,29 @@ networkFromId networkIdVal =
         137 ->
             Polygon
 
+        420 ->
+            OptimismGoerli
+
         999 ->
             Development
 
         1337 ->
             Development
 
+        8453 ->
+            Base
+
+        42161 ->
+            Arbitrum
+
         80001 ->
             Mumbai
+
+        84531 ->
+            BaseGoerli
+
+        421613 ->
+            ArbitrumGoerli
 
         _ ->
             Unknown
@@ -133,6 +157,24 @@ networkName network =
         Mumbai ->
             "Mumbai"
 
+        Arbitrum ->
+            "Arbitrum"
+
+        ArbitrumGoerli ->
+            "Arbitrum Goerli"
+
+        Optimism ->
+            "Optimism"
+
+        OptimismGoerli ->
+            "Optimism Goerli"
+
+        Base ->
+            "Base"
+
+        BaseGoerli ->
+            "Base Goerli"
+
         Development ->
             "Development"
 
@@ -164,6 +206,9 @@ networkId network =
         Ubiq ->
             8
 
+        Optimism ->
+            10
+
         Kovan ->
             42
 
@@ -176,11 +221,26 @@ networkId network =
         Polygon ->
             137
 
+        OptimismGoerli ->
+            420
+
         Development ->
             999
 
+        Base ->
+            8453
+
+        Arbitrum ->
+            42161
+
         Mumbai ->
             80001
+
+        BaseGoerli ->
+            84531
+
+        ArbitrumGoerli ->
+            421613
 
         Unknown ->
             9999
@@ -224,6 +284,24 @@ getEtherscanDomain network =
 
         Mumbai ->
             Just "mumbai.polygonscan.com"
+
+        Arbitrum ->
+            Just "arbiscan.io"
+
+        ArbitrumGoerli ->
+            Just "goerli.arbiscan.io"
+
+        Optimism ->
+            Just "optimistic.etherscan.io"
+
+        OptimismGoerli ->
+            Just "goerli-optimism.etherscan.io"
+
+        Base ->
+            Just "basescan.org"
+
+        BaseGoerli ->
+            Just "goerli.basescan.org"
 
         Development ->
             Nothing
