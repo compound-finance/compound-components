@@ -1,7 +1,7 @@
 import Eth from 'web3-eth';
 import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from './eth';
 import WalletLink from 'walletlink';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
 async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false, desiredNetworkId = 1) {
   // Never auto-connect to ledger, since it's complicated
@@ -66,20 +66,18 @@ async function connectWalletLink(eth, disallowAuthDialog = false) {
 }
 
 async function requiresAuthDialog(ethereum) {
-  try{
+  try {
     let [account, _] = await new Eth(ethereum).getAccounts();
     return !account;
-  
-    }catch(e){
-      console.log(e);
-      return true;
-  
-    }
+  } catch (e) {
+    console.log(e);
+    return true;
+  }
 }
 
 async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
-  if (ethereum && !ethereum.isTally ) {
-    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+  if (ethereum && !ethereum.isTally) {
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog, isAutoConnect);
   } else {
     return {
       networkId: null,
@@ -91,7 +89,7 @@ async function connectWeb3(eth, ethereum, disallowAuthDialog = false, isAutoConn
 
 async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
   if (ethereum && ethereum.isTally) {
-    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog,isAutoConnect);
+    return await connectWeb3Helper(eth, ethereum, disallowAuthDialog, isAutoConnect);
   } else {
     return {
       networkId: null,
@@ -102,34 +100,32 @@ async function connectTally(eth, ethereum, disallowAuthDialog = false, isAutoCon
 }
 
 async function connectWeb3Helper(eth, ethereum, disallowAuthDialog = false, isAutoConnect = false) {
+  let trxProvider = ethereum;
 
-    let trxProvider = ethereum;
+  if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
+    return {
+      networkId: null,
+      account: null,
+      ethereum: null,
+    };
+  }
 
-    if (disallowAuthDialog && (await requiresAuthDialog(ethereum))) {
-      return {
-        networkId: null,
-        account: null,
-        ethereum: null,
-      };
-    }
+  //TODO: This is going to change in the future with EIP-1193
+  if (!isAutoConnect) {
+    ethereum.request({ method: 'eth_requestAccounts' });
+  }
 
-    //TODO: This is going to change in the future with EIP-1193
-    if (!isAutoConnect) {
-      ethereum.request({ method: 'eth_requestAccounts' });
-    }
+  setNewTrxProvider(eth, trxProvider);
 
-    setNewTrxProvider(eth, trxProvider);
+  let [account, _] = await getAccounts(eth);
 
-    let [account, _] = await getAccounts(eth);
+  let networkIdStr = await getNetworkId(eth);
+  let networkId = parseInt(networkIdStr);
+  if (networkId === NaN) {
+    networkId = null;
+  }
 
-    let networkIdStr = await getNetworkId(eth);
-    let networkId = parseInt(networkIdStr);
-    if (networkId === NaN) {
-      networkId = null;
-    }
-
-    return { networkId, account, ethereum };
-  
+  return { networkId, account, ethereum };
 }
 
 async function connectShowAccount(eth, showAccount) {
@@ -149,13 +145,15 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
-async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1) {
+async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1, walletConnectProjectId) {
   const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
   const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
   const CHAIN_ID = desiredNetworkId;
 
-  const trxProvider = new WalletConnectProvider({
-    rpc: { [CHAIN_ID]: JSONRPC_URL },
+  const trxProvider = await EthereumProvider.init({
+    projectId: walletConnectProjectId,
+    chains: [1],
+    showQrCode: true,
   });
 
   try {
@@ -185,7 +183,7 @@ async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetw
   }
 
   // This method actually triggers the UI flow from as spec'd in EIP-1102
-  await trxProvider.request({ method: 'eth_accounts'}).then((accounts) => {
+  await trxProvider.request({ method: 'eth_accounts' }).then((accounts) => {
     //Currently don't need accounts here as we synchronous get next.
   });
 
@@ -204,4 +202,12 @@ async function disconnect(eth) {
   return [null, null, null];
 }
 
-export { connectLedger, connectWalletLink, connectWeb3, connectTally, connectShowAccount, connectWalletConnect, disconnect };
+export {
+  connectLedger,
+  connectWalletLink,
+  connectWeb3,
+  connectTally,
+  connectShowAccount,
+  connectWalletConnect,
+  disconnect,
+};
