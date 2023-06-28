@@ -158,7 +158,7 @@ async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetw
 
   try {
     // Open the walletconnect modal
-    await trxProvider.enable();
+    await trxProvider.connect();
   } catch (e) {
     // If the error is not just from the user closing the modal, we log it for debugging in the future
     if (e.message !== 'User closed modal') {
