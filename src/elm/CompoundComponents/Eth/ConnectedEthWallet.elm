@@ -584,8 +584,6 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                     ([ connectItemView userLanguage isCompoundChain Metamask ]
                                         ++ lineDivider
                                         ++ ledgerItem
-                                        ++ [ connectItemView userLanguage isCompoundChain WalletConnect
-                                           ]
                                         ++ coinbaseWalletItem
                                         ++ lineDivider
                                         ++ [ connectItemView userLanguage isCompoundChain Tally ]
