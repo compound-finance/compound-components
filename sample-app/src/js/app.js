@@ -94,6 +94,6 @@ window.addEventListener('load', function () {
   }, {});
 
   const eth = makeEth(dataProviders, NETWORK_MAP, {}, {}, 'kovan');
-  connectedWalletPorts.subscribe(app, eth, globEthereum, NETWORK_MAP, 'kovan');
+  connectedWalletPorts.subscribe(app, eth, globEthereum, NETWORK_MAP, 'kovan', process.env.WC_PROJECT_ID);
   setNewTrxProvider(eth, globEthereum);
 });
