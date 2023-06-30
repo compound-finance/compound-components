@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --unhandled-rejections=strict sample-app/scripts/start.js"
+    "start": "npx dart-sass -I. -Inode_modules sample-app/src/scss:sample-app/src/css-build && node --unhandled-rejections=strict sample-app/scripts/start.js",
+    "build-css": "npx dart-sass -I. -Inode_modules sample-app/src/scss:sample-app/src/css-build"
   },
   "author": "",
   "license": "ISC",

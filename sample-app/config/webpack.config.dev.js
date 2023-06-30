@@ -268,6 +268,18 @@ module.exports = {
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebook/create-react-app/issues/240
     new CaseSensitivePathsPlugin(),
+    new webpack.NormalModuleReplacementPlugin(
+      /@ledgerhq\/cryptoassets\/data\/eip712/,
+      '@ledgerhq/cryptoassets/lib/data/eip712'
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+      /@ledgerhq\/cryptoassets\/data\/evm\/index/,
+      '@ledgerhq/cryptoassets/lib/data/evm/index'
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+      /@ledgerhq\/devices\/hid-framing/,
+      '@ledgerhq/devices/lib/hid-framing'
+    ),
   ],
 
   // Some libraries import Node modules but don't use them in the browser.

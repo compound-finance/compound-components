@@ -141,6 +141,10 @@ choosePort(HOST, DEFAULT_PORT)
     console.log(appName);
 
     const urls = prepareUrls(protocol, HOST, port);
+    urls.lanUrlForTerminal = urls.lanUrlForTerminal + "app.html";
+    urls.localUrlForTerminal = urls.localUrlForTerminal + "app.html";
+    urls.localUrlForBrowser = urls.localUrlForBrowser + "app.html";
+
     // Create a webpack compiler that is configured with custom messages.
     const compiler = createCompiler(webpack, config, appName, urls);
 
