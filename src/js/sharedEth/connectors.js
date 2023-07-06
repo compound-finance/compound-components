@@ -146,24 +146,23 @@ async function connectShowAccount(eth, showAccount) {
 }
 
 async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1, walletConnectProjectId) {
-  const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
-  const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
-  const CHAIN_ID = desiredNetworkId;
-
-  const trxProvider = await EthereumProvider.init({
-    projectId: walletConnectProjectId,
-    chains: [1],
-    showQrCode: true,
-  });
+  let trxProvider;
 
   try {
+    trxProvider = await EthereumProvider.init({
+      projectId: walletConnectProjectId,
+      chains: [desiredNetworkId],
+      showQrModal: true,
+    });
+
     // Open the walletconnect modal
-    await trxProvider.enable();
+    await trxProvider.connect();
   } catch (e) {
     // If the error is not just from the user closing the modal, we log it for debugging in the future
     if (e.message !== 'User closed modal') {
       console.log(e);
     }
+    return;
   }
 
   if (disallowAuthDialog && (await requiresAuthDialog(trxProvider))) {
