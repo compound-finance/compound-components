@@ -164,7 +164,7 @@ view { connectedEthWalletModel, userLanguage } =
                     []
                  )
                     ++ [ div [ class "close-x" ]
-                            [ button [ onClick (HideAndResetConnectModal False) ] []
+                            [ button [ onClick (HideAndResetConnectModal False) ] [ text "reset"]
                             ]
                        ]
                 )

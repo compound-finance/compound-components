@@ -4,6 +4,7 @@ import { providerType, langFromURL } from '../../../src/js/sharedEth/utils';
 import connectedWalletPorts from '../../../src/js/sharedEth/connectedWalletPorts';
 import { makeEth, setNewTrxProvider } from '../../../src/js/sharedEth/eth';
 import sharedJsPorts from '../../../src/js/sharedJs/sharedJsPorts';
+import '../css-build/main.css';
 
 window.addEventListener('load', function () {
   let globEthereum = null;
@@ -93,6 +94,6 @@ window.addEventListener('load', function () {
   }, {});
 
   const eth = makeEth(dataProviders, NETWORK_MAP, {}, {}, 'kovan');
-  connectedWalletPorts.subscribe(app, eth, globEthereum, NETWORK_MAP, 'kovan');
+  connectedWalletPorts.subscribe(app, eth, globEthereum, NETWORK_MAP, 'kovan', process.env.WC_PROJECT_ID);
   setNewTrxProvider(eth, globEthereum);
 });

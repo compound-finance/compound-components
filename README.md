@@ -21,7 +21,7 @@ Next, install yarn dependencies (note, you should not use `npm` instead of `yarn
 Next, start your development server for the sample app:
 
 ```bash
-> yarn start
+> yarn start <Wallet Connect Project Id>
 ```
 
 Lastly navigate to this url; for some reason webpack dev server isn't serving as default :(

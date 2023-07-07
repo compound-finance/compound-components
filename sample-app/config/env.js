@@ -57,6 +57,8 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
 const ELM_APP = /^ELM_APP_/i;
 
 function getClientEnvironment(publicUrl) {
+
+
   const mountPath = process.env.MOUNT_PATH || publicUrl ? new URL(publicUrl).pathname.slice(1) : null;
 
   const raw = Object.keys(process.env)
@@ -75,6 +77,7 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
         MOUNT_PATH: mountPath,
+        WC_PROJECT_ID: process.argv[2]
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

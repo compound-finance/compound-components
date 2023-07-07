@@ -15,3 +15,4 @@ yarn-error.log
 
 # sass build artifacts
 src/**/*.css
+/sample-app/src/css-build

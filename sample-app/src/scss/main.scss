@@ -1,0 +1,17 @@
+@import '../../../src/scss/abstracts/variables';
+
+@import '../../../src/scss/components/connect-wallet';
+
+body {
+  background: $color_light_2;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 100vh;
+}
+
+#main {
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}

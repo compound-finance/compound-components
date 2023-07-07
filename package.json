@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --unhandled-rejections=strict sample-app/scripts/start.js"
+    "start": "npx dart-sass -I. -Inode_modules sample-app/src/scss:sample-app/src/css-build && node --unhandled-rejections=strict sample-app/scripts/start.js",
+    "build-css": "npx dart-sass -I. -Inode_modules sample-app/src/scss:sample-app/src/css-build"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,8 @@
     "@babel/preset-env": "^7.0.0",
     "@ledgerhq/hw-app-eth": "^6.6.0",
     "@ledgerhq/hw-transport-webusb": "^6.6.0",
-    "@walletconnect/web3-provider": "^1.5.4",
+    "@walletconnect/ethereum-provider": "^2.8.4",
+    "@walletconnect/modal": "^2.5.4",
     "autoprefixer": "^9.7.6",
     "babel-loader": "^8.0.0",
     "bnc-sdk": "^2.1.5",
