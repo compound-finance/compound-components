@@ -1,7 +1,7 @@
 import Eth from 'web3-eth';
 import { getAccounts, getNetworkId, setLedgerProvider, setNewTrxProvider } from './eth';
 import WalletLink from 'walletlink';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 async function connectLedger(eth, ledgerDerivationPath, disallowAuthDialog = false, desiredNetworkId = 1) {
   // Never auto-connect to ledger, since it's complicated
@@ -149,13 +149,15 @@ async function connectShowAccount(eth, showAccount) {
   };
 }
 
-async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1) {
+async function connectWalletConnect(eth, disallowAuthDialog = false, desiredNetworkId = 1, walletConnectProjectId) {
   const ethProviderName = desiredNetworkId == 3 ? 'ropsten' : 'mainnet';
   const JSONRPC_URL = eth.dataProviders[ethProviderName].host;
   const CHAIN_ID = desiredNetworkId;
 
-  const trxProvider = new WalletConnectProvider({
-    rpc: { [CHAIN_ID]: JSONRPC_URL },
+  const trxProvider = await EthereumProvider.init({
+    projectId: walletConnectProjectId, // REQUIRED your projectId
+    chains: [CHAIN_ID], // REQUIRED chain ids
+    rpcMap: { [CHAIN_ID]: JSONRPC_URL }, // OPTIONAL rpc urls for each chain
   });
 
   try {
