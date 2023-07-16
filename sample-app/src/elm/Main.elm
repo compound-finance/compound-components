@@ -204,6 +204,9 @@ view { connectedEthWalletModel, userLanguage } =
                             Just ConnectedEthWallet.WalletConnect ->
                                 "Wallet Connect"
 
+                            Just ConnectedEthWallet.BlockWallet ->
+                                "BlockWallet"
+
                             _ ->
                                 "None"
 

@@ -4,6 +4,7 @@ const PROVIDER_TYPE_IM_TOKEN = 'im_token';
 const PROVIDER_TYPE_TALLY = 'tally';
 const PROVIDER_TYPE_META_MASK = 'meta_mask';
 const PROVIDER_TYPE_META_MASK_MOBILE = 'meta_mask_mobile';
+const PROVIDER_TYPE_BLOCKWALLET = 'blockwallet';
 const PROVIDER_TYPE_OTHER = 'other';
 
 const NON_AUTOCONNECT_PROVIDERS = [PROVIDER_TYPE_NONE, PROVIDER_TYPE_META_MASK, PROVIDER_TYPE_TALLY];
@@ -48,8 +49,10 @@ function providerType(provider) {
     return PROVIDER_TYPE_COINBASE_WALLET;
   } else if (provider.isImToken) {
     return PROVIDER_TYPE_IM_TOKEN;
-  }else if (provider.isTally) {
+  } else if (provider.isTally) {
     return PROVIDER_TYPE_TALLY;
+  } else if (provider.isBlockWallet) {
+    return PROVIDER_TYPE_BLOCKWALLET;
   } else if (provider.isMetaMask) {
     if (provider.constructor.name === 'InpageBridge') {
       return PROVIDER_TYPE_META_MASK_MOBILE;
@@ -158,6 +161,7 @@ export {
   PROVIDER_TYPE_TALLY,
   PROVIDER_TYPE_META_MASK,
   PROVIDER_TYPE_META_MASK_MOBILE,
+  PROVIDER_TYPE_BLOCKWALLET,
   shouldAutoConnect,
   supportFromEntries,
   langFromURL,
