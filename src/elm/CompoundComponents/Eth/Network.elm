@@ -24,6 +24,7 @@ type Network
     | OptimismGoerli
     | Base
     | BaseGoerli
+    | Dmctest
 
 
 networkFromId : Int -> Network
@@ -89,6 +90,9 @@ networkFromId networkIdVal =
         421613 ->
             ArbitrumGoerli
 
+        1131 ->
+            Dmctest
+
         _ ->
             Unknown
 
@@ -113,6 +117,9 @@ networkFromName name =
 
         "development" ->
             Development
+
+        "dmctest" ->
+            Dmctest
 
         _ ->
             MainNet
@@ -181,6 +188,9 @@ networkName network =
         Unknown ->
             "unknown"
 
+        Dmctest ->
+            "dmctest"
+
 
 networkId : Network -> Int
 networkId network =
@@ -244,6 +254,9 @@ networkId network =
 
         Unknown ->
             9999
+        
+        Dmctest ->
+            1131
 
 
 getEtherscanDomain : Network -> Maybe String
@@ -308,3 +321,6 @@ getEtherscanDomain network =
 
         Unknown ->
             Nothing
+
+        Dmctest -> 
+            Just "https://meta.defiscan.live/"
