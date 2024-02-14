@@ -189,7 +189,7 @@ networkName network =
             "unknown"
 
         Dmctest ->
-            "dmctest"
+            "Dmctest"
 
 
 networkId : Network -> Int
