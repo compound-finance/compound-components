@@ -13,8 +13,8 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@ledgerhq/hw-app-eth": "^6.6.0",
-    "@ledgerhq/hw-transport-webusb": "^6.6.0",
+    "@ledgerhq/hw-app-eth": "^5.53.0",
+    "@ledgerhq/hw-transport-webusb": "^5.53.0",
     "@walletconnect/ethereum-provider": "^2.8.4",
     "@walletconnect/modal": "^2.5.4",
     "autoprefixer": "^9.7.6",

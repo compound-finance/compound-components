@@ -48,7 +48,7 @@ function providerType(provider) {
     return PROVIDER_TYPE_COINBASE_WALLET;
   } else if (provider.isImToken) {
     return PROVIDER_TYPE_IM_TOKEN;
-  }else if (provider.isTally) {
+  } else if (provider.isTally) {
     return PROVIDER_TYPE_TALLY;
   } else if (provider.isMetaMask) {
     if (provider.constructor.name === 'InpageBridge') {
@@ -103,6 +103,9 @@ function networkFromId(id) {
 
     case 999:
       return 'development';
+
+    case 1131:
+      return 'dmctest';
 
     default:
       'development';

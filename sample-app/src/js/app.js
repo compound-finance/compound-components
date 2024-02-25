@@ -78,6 +78,7 @@ window.addEventListener('load', function () {
     kovan: 'https://kovan-eth.compound.finance',
     ropsten: 'https://ropsten-eth.compound.finance',
     mainnet: 'https://mainnet-eth.compound.finance',
+    dmctest: 'https://dmc.mydefichain.com/testnet',
   };
 
   const NETWORK_MAP = {
@@ -87,6 +88,7 @@ window.addEventListener('load', function () {
     goerli: 5,
     kovan: 42,
     development: 999,
+    dmctest: 1131,
   };
 
   const dataProviders = Object.entries(DATA_PROVIDERS).reduce((acc, [network, url]) => {
