@@ -1,22 +1,22 @@
-$color_supply: #00D395;
-$color_borrow: #9669ED;
-$color_dark_1: #070A0E;
-$color_dark_2: #141E27;
-$color_dark_3: #2F3F4E;
-$color_light_1: #FFFFFF;
-$color_light_2: #F9FAFB;
+$color_supply: #00d395;
+$color_borrow: #9669ed;
+$color_dark_1: #070a0e;
+$color_dark_2: #141e27;
+$color_dark_3: #2f3f4e;
+$color_light_1: #ffffff;
+$color_light_2: #f9fafb;
 $color_grey_1: #657786;
-$color_grey_2: #AAB8C1;
-$color_grey_3: #CCD6DD;
-$color_blue_1: #0DAEF3;
+$color_grey_2: #aab8c1;
+$color_grey_3: #ccd6dd;
+$color_blue_1: #0daef3;
 $color_blue_2: #005cc5;
 $color_blue_3: #045385;
-$color_blue_4: #223D50;
-$color_red_1: #DF5F67;
+$color_blue_4: #223d50;
+$color_red_1: #df5f67;
 
-$color_supply_light: #D4F6EC;
-$color_borrow_light: #EAE1FB;
-$color_neutral: #546E7A;
+$color_supply_light: #d4f6ec;
+$color_borrow_light: #eae1fb;
+$color_neutral: #546e7a;
 
 $color_border: rgba(#000000, 0.05);
 
@@ -24,12 +24,12 @@ $color_dark_mostly_opaque: rgba(20, 30, 39, 0.98);
 $color_dark_clear: rgba(54, 61, 68, 0.5);
 $color_dark_matting_clear: rgba(40, 49, 55, 0.1);
 
-$color_label: #ACBBC2;
-$color_disabled: #CFD8DC;
+$color_label: #acbbc2;
+$color_disabled: #cfd8dc;
 
-$color_caution: #F35454;
-$color_text_muted: #90A4AE;  //TODO: See if we can kill in favor of color grey 2?
-$color_notice: #FFD24A;
+$color_caution: #f35454;
+$color_text_muted: #90a4ae; //TODO: See if we can kill in favor of color grey 2?
+$color_notice: #ffd24a;
 
 $device-sm: 40em;
 $device-md: 60em;
@@ -38,17 +38,17 @@ $column-gutter: 1.33rem;
 $gov-column-gutter: 1.75rem;
 $border_radius: 3px;
 
-$color_kovan: #6C58F6;
-$color_rinkeby: #EEC55C;
-$color_goerli: #5197EB;
-$color_ropsten: #EC598D;
+$color_kovan: #6c58f6;
+$color_rinkeby: #eec55c;
+$color_goerli: #5197eb;
+$color_ropsten: #ec598d;
+$color_dmctest: #ec598d;
 
 // code/pre colors
 $background_highlight: #fffbdd;
 $background_addition: #eaffea;
 $background_deletion: #ffecec;
 $comment_color: #969896;
-
 
 //TODO: Should probably have this kept in typography but we'll leave here for now.
 @mixin typography-colors {
@@ -69,7 +69,7 @@ $comment_color: #969896;
   }
 }
 
-@mixin transition($transition-property, $transition-time, $method){
+@mixin transition($transition-property, $transition-time, $method) {
   -webkit-transition: $transition-property $transition-time $method;
   -moz-transition: $transition-property $transition-time $method;
   -ms-transition: $transition-property $transition-time $method;
@@ -77,39 +77,38 @@ $comment_color: #969896;
   transition: $transition-property $transition-time $method;
 }
 
-@mixin linear-gradient($fromColor, $toColor, $degree){
+@mixin linear-gradient($fromColor, $toColor, $degree) {
   background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor));
   background-image: -webkit-linear-gradient($degree, $fromColor, $toColor);
-  background-image:    -moz-linear-gradient($degree, $fromColor, $toColor);
-  background-image:     -ms-linear-gradient($degree, $fromColor, $toColor);
-  background-image:      -o-linear-gradient($degree, $fromColor, $toColor);
-  background-image:         linear-gradient($degree, $fromColor, $toColor);
+  background-image: -moz-linear-gradient($degree, $fromColor, $toColor);
+  background-image: -ms-linear-gradient($degree, $fromColor, $toColor);
+  background-image: -o-linear-gradient($degree, $fromColor, $toColor);
+  background-image: linear-gradient($degree, $fromColor, $toColor);
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
 }
 
-@mixin shadow(){
+@mixin shadow() {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.04);
 }
 
-@mixin panel(){
-  background: #FFFFFF;
+@mixin panel() {
+  background: #ffffff;
   border: 1px solid $color_light_2;
   border-radius: $border_radius;
   @include shadow();
 }
 
-@mixin contrast($color_base){
+@mixin contrast($color_base) {
   background-color: $color_base;
 
-  @if lightness($color_base) > 80%{
+  @if lightness($color_base) > 80% {
     color: mix($color_base, #000000, 20%);
-  }
-  @else{
-    color: #FFFFFF;
+  } @else {
+    color: #ffffff;
   }
 }
 
-@mixin anchor(){
+@mixin anchor() {
   letter-spacing: 1px;
   font-size: 12px;
   font-weight: 700;
@@ -149,7 +148,7 @@ $comment_color: #969896;
     left: -12px;
     top: 0px;
     transform: translateY(-50%);
-    content: " ";
+    content: ' ';
     border-radius: 500%;
     background: $background-color;
     height: 24px;
@@ -161,7 +160,7 @@ $comment_color: #969896;
 
 @mixin after-checkmark() {
   &::after {
-    content: " ";
+    content: ' ';
     display: block;
     width: 0.3em; // the short bar of the mark is half as long as the long bar
     height: 0.6em;
