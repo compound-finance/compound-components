@@ -24,6 +24,7 @@ type Network
     | OptimismGoerli
     | Base
     | BaseGoerli
+    | Scroll
 
 
 networkFromId : Int -> Network
@@ -88,6 +89,9 @@ networkFromId networkIdVal =
 
         421613 ->
             ArbitrumGoerli
+
+        534352 ->
+            Scroll
 
         _ ->
             Unknown
@@ -178,6 +182,9 @@ networkName network =
         Development ->
             "Development"
 
+        Scroll ->
+            "Scroll"
+
         Unknown ->
             "unknown"
 
@@ -242,6 +249,9 @@ networkId network =
         ArbitrumGoerli ->
             421613
 
+        Scroll ->
+            534352
+
         Unknown ->
             9999
 
@@ -302,6 +312,9 @@ getEtherscanDomain network =
 
         BaseGoerli ->
             Just "goerli.basescan.org"
+
+        Scroll ->
+            Just "scrollscan.com"
 
         Development ->
             Nothing
