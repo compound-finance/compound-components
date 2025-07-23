@@ -25,9 +25,9 @@ type Network
     | Base
     | BaseGoerli
     | Scroll
+    | Linea
     | Ronin
     | Unichain
-    | Linea
     | Mantle
 
 
@@ -212,6 +212,7 @@ networkName network =
 
         Mantle ->
             "Mantle"
+
         Unknown ->
             "unknown"
 
