@@ -25,6 +25,10 @@ type Network
     | Base
     | BaseGoerli
     | Scroll
+    | Ronin
+    | Unichain
+    | Linea
+    | Mantle
 
 
 networkFromId : Int -> Network
@@ -92,6 +96,18 @@ networkFromId networkIdVal =
 
         534352 ->
             Scroll
+
+        59144 ->
+            Linea
+
+        2020 ->
+            Ronin
+
+        130 ->
+            Unichain
+
+        5000 ->
+            Mantle
 
         _ ->
             Unknown
@@ -185,6 +201,17 @@ networkName network =
         Scroll ->
             "Scroll"
 
+        Linea ->
+            "Linea"
+
+        Ronin ->
+            "Ronin"
+
+        Unichain ->
+            "Unichain"
+
+        Mantle ->
+            "Mantle"
         Unknown ->
             "unknown"
 
@@ -252,6 +279,18 @@ networkId network =
         Scroll ->
             534352
 
+        Linea ->
+            59144
+
+        Ronin ->
+            2020
+
+        Unichain ->
+            130
+
+        Mantle ->
+            5000
+
         Unknown ->
             9999
 
@@ -315,6 +354,18 @@ getEtherscanDomain network =
 
         Scroll ->
             Just "scrollscan.com"
+
+        Linea ->
+            Just "lineascan.build"
+
+        Ronin ->
+            Just "app.roninchain.com"
+
+        Unichain ->
+            Just "uniscan.xyz"
+
+        Mantle ->
+            Just "mantlescan.xyz"
 
         Development ->
             Nothing
