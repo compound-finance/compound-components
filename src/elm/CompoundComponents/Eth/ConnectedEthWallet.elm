@@ -44,6 +44,7 @@ type WalletProviderType
     | Ledger
     | OtherWeb3Browser
     | WalletConnect
+    | BlockWallet
     | None
 
 
@@ -521,6 +522,11 @@ connectItemView userLanguage isCompoundChain providerType =
                     , Translations.tally userLanguage
                     )
 
+                BlockWallet ->
+                    ( " connect-wallet-icon--blockwallet"
+                    , Translations.blockWallet userLanguage
+                    )
+
                 _ ->
                     ( " connect-wallet-icon--metamask"
                     , Translations.metamask userLanguage
@@ -575,6 +581,15 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                 [ div [ class "line" ] []
                                 , connectItemView userLanguage isCompoundChain WalletLink
                                 ]
+
+                        blockWalletItem = 
+                            if isCompoundChain then
+                                []
+
+                            else
+                                [ div [ class "line" ] []
+                                , connectItemView userLanguage isCompoundChain BlockWallet
+                                ]
                     in
                     div [ class "connect-wallet-copy connect-wallet-copy--small-top" ]
                         ([ markSpan isCompoundChain
@@ -589,6 +604,7 @@ chooseWalletView userLanguage isCompoundChain ({ chooseWalletState } as model) =
                                         ++ coinbaseWalletItem
                                         ++ lineDivider
                                         ++ [ connectItemView userLanguage isCompoundChain Tally ]
+                                        ++ blockWalletItem
                                     )
                                ]
                             ++ [ termsView userLanguage isCompoundChain ]

@@ -224,6 +224,12 @@ wallet_connect lang =
         En ->
             "Wallet Connect"
 
+blockWallet : Lang -> String
+blockWallet lang =
+    case lang of
+        En ->
+            "BlockWallet"
+
 
 get_started : Lang -> String
 get_started lang =
