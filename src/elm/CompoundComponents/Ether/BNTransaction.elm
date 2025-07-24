@@ -451,7 +451,7 @@ getPendingBNTransactionsForAccount maybeNetwork account { transactions } =
 getUserTxModule : Maybe Network -> Account -> String
 getUserTxModule maybeNetwork account =
     case ( maybeNetwork, account ) of
-        ( Just network, Acct customer _ ) ->
+        ( Just network, Acct customer _ _ ) ->
             getTxModule network customer
 
         _ ->

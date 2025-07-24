@@ -56,8 +56,7 @@ type CustomerAddress
 type Account
     = UnknownAcct
     | NoAccount
-    | Acct CustomerAddress (Maybe Decimal)
-
+    | Acct CustomerAddress (Maybe Decimal) (Maybe String)
 
 
 --- FUNCTIONS
